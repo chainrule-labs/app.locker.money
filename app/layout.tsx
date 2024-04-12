@@ -1,0 +1,31 @@
+import { GeistMono } from "geist/font/mono";
+import { GeistSans } from "geist/font/sans";
+import type { Metadata } from "next";
+
+import { cn } from "@/lib/utils";
+
+import { Toaster } from "sonner";
+
+import { ReactNode } from "react";
+import GlobalProviders from "./GlobalProviders";
+import "./globals.css";
+
+export const metadata: Metadata = {
+  title: process.env.NEXT_PUBLIC_APP_NAME!,
+  description: process.env.NEXT_PUBLIC_APP_DESCRIPTION!,
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: ReactNode;
+}>) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body className={cn(GeistSans.variable, GeistMono.variable, "font-sans")}>
+        <Toaster />
+        <GlobalProviders>{children}</GlobalProviders>
+      </body>
+    </html>
+  );
+}
