@@ -6,15 +6,16 @@ import { useState } from "react";
 
 import { DEFAULT_SAVINGS_FACTOR } from "@/lib/constants";
 import { createKernel } from "@/lib/zerodev";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { ConnectButton, useConnectModal } from "@rainbow-me/rainbowkit";
 import { getWalletClient } from "@wagmi/core";
 import { useAccount, useConfig } from "wagmi";
 
 export default function DashboardPage() {
   const { openConnectModal } = useConnectModal();
   const config = useConfig();
+  const [isCreatingLocker, setIsCreatingLocker] = useState(false);
 
-  const { isConnected, address } = useAccount();
+  const { isConnected, address, chain } = useAccount();
   // 0-1
   const [savingsFactor, setSavingsFactor] = useState(
     parseFloat(DEFAULT_SAVINGS_FACTOR),
@@ -30,17 +31,43 @@ export default function DashboardPage() {
 
   const onCreateLocker = async () => {
     console.log("onCreateLocker", isConnected, address);
-    if (!isConnected && openConnectModal) {
-      openConnectModal();
-    } else {
-      const walletClient = await getWalletClient(config);
-      createKernel(walletClient);
-    }
+    setIsCreatingLocker(true);
+    // if (!isConnected && openConnectModal) {
+    //   openConnectModal();
+    // } else {
+    const walletClient = await getWalletClient(config);
+    await createKernel(walletClient, chain!);
+    setIsCreatingLocker(false);
+    // }
   };
 
   const spendPct = (1 - savingsFactor) * 100;
   const savingsPct = savingsFactor * 100;
 
+  const destination = isConnected ? address : "the address you connect";
+
+  let createLockerButton = null;
+  if (isConnected) {
+    if (isCreatingLocker) {
+      createLockerButton = (
+        <button
+          className="w-full rounded-lg bg-blue-500 py-2 text-white"
+          disabled
+        >
+          Creating Locker...
+        </button>
+      );
+    } else {
+      createLockerButton = (
+        <button
+          className="w-full rounded-lg bg-blue-500 py-2 text-white"
+          onClick={onCreateLocker}
+        >
+          Create Locker
+        </button>
+      );
+    }
+  }
   const stepCreateLocker = (
     <>
       <span className="poppins w-full text-2xl font-bold">
@@ -52,7 +79,7 @@ export default function DashboardPage() {
           type="text"
           value={savingsPct}
           onChange={setPctChanged}
-          className="h-36 w-36 text-8xl"
+          className="h-40 w-40 text-8xl"
         />
         <span className="text-8xl">%</span>
       </div>
@@ -65,16 +92,12 @@ export default function DashboardPage() {
           you get paid.
         </p>
         <p className="text">
-          3. The remaining {spendPct}% will be automatically forwarded to any
-          address you want.
+          3. The remaining {spendPct}% will be automatically forwarded to{" "}
+          {destination}.
         </p>
       </div>
-      <button
-        className="w-full rounded-lg bg-blue-500 py-2 text-white"
-        onClick={onCreateLocker}
-      >
-        Create Locker
-      </button>
+      <ConnectButton />
+      {createLockerButton}
     </>
   );
 

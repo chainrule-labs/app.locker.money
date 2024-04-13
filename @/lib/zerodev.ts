@@ -5,8 +5,7 @@ import {
   bundlerActions,
   walletClientToSmartAccountSigner,
 } from "permissionless";
-import { createPublicClient, http, zeroAddress } from "viem";
-import { sepolia } from "viem/chains";
+import { Chain, createPublicClient, http, zeroAddress } from "viem";
 if (
   !process.env.NEXT_PUBLIC_BUNDLER_RPC ||
   !process.env.NEXT_PUBLIC_PAYMASTER_RPC
@@ -18,12 +17,12 @@ const publicClient = createPublicClient({
   transport: http(process.env.NEXT_PUBLIC_BUNDLER_RPC),
 });
 
-const chain = sepolia;
 const entryPoint = ENTRYPOINT_ADDRESS_V07;
 
-export const createKernel = async (walletClient: any) => {
+export const createKernel = async (walletClient: any, chain: Chain) => {
   console.log("createKernel");
   console.log(walletClient);
+
   const signer = walletClientToSmartAccountSigner(walletClient!);
   const ecdsaValidator = await signerToEcdsaValidator(publicClient, {
     signer: signer,
@@ -43,19 +42,7 @@ export const createKernel = async (walletClient: any) => {
     entryPoint,
     chain,
     bundlerTransport: http(process.env.NEXT_PUBLIC_BUNDLER_RPC),
-    middleware: {
-      //   sponsorUserOperation: async ({ userOperation }) => {
-      //     const paymasterClient = createZeroDevPaymasterClient({
-      //       chain,
-      //       transport: http(process.env.NEXT_PUBLIC_PAYMASTER_RPC),
-      //       entryPoint,
-      //     });
-      //     return paymasterClient.sponsorUserOperation({
-      //       userOperation,
-      //       entryPoint,
-      //     });
-      //   },
-    },
+    middleware: {},
   });
 
   console.log("created kernel client");
