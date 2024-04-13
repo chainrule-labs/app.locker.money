@@ -1,5 +1,9 @@
 import { signerToEcdsaValidator } from "@zerodev/ecdsa-validator";
-import { createKernelAccount, createKernelAccountClient } from "@zerodev/sdk";
+import {
+  createKernelAccount,
+  createKernelAccountClient,
+  createZeroDevPaymasterClient,
+} from "@zerodev/sdk";
 import {
   ENTRYPOINT_ADDRESS_V07,
   bundlerActions,
@@ -42,7 +46,19 @@ export const createKernel = async (walletClient: any, chain: Chain) => {
     entryPoint,
     chain,
     bundlerTransport: http(process.env.NEXT_PUBLIC_BUNDLER_RPC),
-    middleware: {},
+    middleware: {
+      sponsorUserOperation: async ({ userOperation }) => {
+        const paymasterClient = createZeroDevPaymasterClient({
+          chain,
+          transport: http(process.env.NEXT_PUBLIC_PAYMASTER_RPC),
+          entryPoint,
+        });
+        return paymasterClient.sponsorUserOperation({
+          userOperation,
+          entryPoint,
+        });
+      },
+    },
   });
 
   console.log("created kernel client");

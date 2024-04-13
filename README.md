@@ -1,4 +1,30 @@
-<img width="1280" alt="zephyr-logo" src="https://github.com/zenzen-sol/zephyr/assets/57605723/10940acb-858e-471e-b266-1d7b2300a33a">
+# Locker Dashboard
+
+Save every time you interact or get paid on-chain.
+
+- Web: [app.locker.money](https://app.lockher.money)
+
+## Getting started
+
+Prerequisites:
+
+- NeonDB
+- WalletConnect
+- Clerk
+- ZeroDev: Will need to have a policy created, permitting the address new Kernel to use the paymaster.
+
+```sh
+# setup environment
+cp .env.example .env.local
+
+# install dependencies
+yarn install
+
+# run
+yarn dev
+```
+
+## About Lockers
 
 #### Zephyr is an opinionated starter kit for web3 frontends.
 
