@@ -4,92 +4,86 @@ import { Input } from "@/components/ui/input";
 import "@rainbow-me/rainbowkit/styles.css";
 import { useState } from "react";
 
-import { ILocker } from "@/lib/types";
-import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { WagmiProvider } from "wagmi";
-import { arbitrum, base, mainnet, optimism, polygon } from "wagmi/chains";
-
-const queryClient = new QueryClient();
-
-const config = getDefaultConfig({
-  appName: "Locker Beta",
-  projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_ID!,
-  chains: [mainnet, polygon, optimism, arbitrum, base],
-  ssr: true, // If your dApp uses server side rendering (SSR)
-});
-
-type IDashboardPageProps = {
-  locker: ILocker | null;
-};
+import { DEFAULT_SAVINGS_FACTOR } from "@/lib/constants";
+import { createKernel } from "@/lib/zerodev";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { getWalletClient } from "@wagmi/core";
+import { useAccount, useConfig } from "wagmi";
 
 export default function DashboardPage() {
-  // if locker exists
-  // retrieve savings ID and cumulative balance
-  // const [stepName, setStepName] = useState<IOnboardState>(defaultStep);
-  const [savingsFactor, setSavingsFactor] = useState(0.2); // 0-1
-  // console.log(user);
+  const { openConnectModal } = useConnectModal();
+  const config = useConfig();
 
-  // console.log(wallets);
-
-  // const address = wallets?.[0]?.web3Wallet;
+  const { isConnected, address } = useAccount();
+  // 0-1
+  const [savingsFactor, setSavingsFactor] = useState(
+    parseFloat(DEFAULT_SAVINGS_FACTOR),
+  );
 
   const setPctChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("setPctChanged");
     e.preventDefault();
-    setSavingsFactor(parseFloat(e.target.value) / 100);
+    console.log("setPctChanged", e.target.value);
+    const _savingsFactor = parseFloat(e.target.value) / 100;
+    if (_savingsFactor <= 1 && _savingsFactor >= 0)
+      setSavingsFactor(_savingsFactor);
   };
 
-  const address = "0x1234...";
+  const onCreateLocker = async () => {
+    console.log("onCreateLocker", isConnected, address);
+    if (!isConnected && openConnectModal) {
+      openConnectModal();
+    } else {
+      const walletClient = await getWalletClient(config);
+      createKernel(walletClient);
+    }
+  };
+
   const spendPct = (1 - savingsFactor) * 100;
   const savingsPct = savingsFactor * 100;
 
-  const stepOnboardWallet = <></>;
-
-  const step1HowItWorks = (
-    <>
-      <span className="poppins w-full text-4xl font-bold">How it works</span>
-
-      <span className="text-lg">1. Create Locker for your savings.</span>
-      <span className="text-lg">
-        2. Deposit into Locker to route money anywhere and auto-save.
-      </span>
-      <button className="w-full rounded-lg bg-blue-500 py-2 text-white">
-        I understand
-      </button>
-    </>
-  );
-
-  const step2SavingsFactor = (
+  const stepCreateLocker = (
     <>
       <span className="poppins w-full text-2xl font-bold">
         What percentage of incoming deposits do you want to save?
       </span>
-      <Input name="savings-pct" value={savingsPct} onChange={setPctChanged} />
-      <span>
-        The remaining {spendPct}% will be automatically forwarded to {address}.
-      </span>
+      <div className="flex flex-row">
+        <Input
+          name="savings-pct"
+          type="text"
+          value={savingsPct}
+          onChange={setPctChanged}
+          className="h-36 w-36 text-8xl"
+        />
+        <span className="text-8xl">%</span>
+      </div>
+
+      <div>
+        <p className="poppins w-full text-lg font-bold">How it works</p>
+        <p className="text">1. Create Locker for your savings.</p>
+        <p className="text">
+          2. Deposit into Locker and automatically save {savingsPct}% every time
+          you get paid.
+        </p>
+        <p className="text">
+          3. The remaining {spendPct}% will be automatically forwarded to any
+          address you want.
+        </p>
+      </div>
       <button
         className="w-full rounded-lg bg-blue-500 py-2 text-white"
-        onClick={() => console.log("Locker created")}
+        onClick={onCreateLocker}
       >
         Create Locker
       </button>
     </>
   );
 
-  const step = step1HowItWorks;
+  const step = stepCreateLocker;
   return (
-    <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider>
-          <div className="xs:grid xs:place-content-center h-[100svh] w-full">
-            <div className="flex justify-center">
-              <div className="min-w-1/3 flex flex-col space-y-12">{step}</div>
-            </div>
-          </div>
-        </RainbowKitProvider>
-      </QueryClientProvider>
-    </WagmiProvider>
+    <div className="xs:grid xs:place-content-center h-[100svh] w-full">
+      <div className="flex justify-center">
+        <div className="min-w-1/3 flex flex-col space-y-12">{step}</div>
+      </div>
+    </div>
   );
 }
