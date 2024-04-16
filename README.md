@@ -12,10 +12,11 @@ Prerequisites:
 - WalletConnect
 - Clerk
 - ZeroDev: Will need to have a policy created, permitting the address new Kernel to use the paymaster.
+- Moralis API key
 
 ```sh
 # setup environment
-cp .env.example .env.local
+cp .env.example .env.development.local
 
 # install dependencies
 yarn install
@@ -23,6 +24,10 @@ yarn install
 # run
 yarn dev
 ```
+
+### Moralis Stream ID
+
+[Moralis Streams](https://docs.moralis.io/streams-api/evm) are used for getting realtime updates about deposits into Lockers. A single stream is used for processing updates across all chains and addresses. That stream must be created manually and added to your `.env` as `MORALIS_STREAM_ID`. To generate the stream id, `yarn stream:gen`.
 
 ## About Lockers
 
