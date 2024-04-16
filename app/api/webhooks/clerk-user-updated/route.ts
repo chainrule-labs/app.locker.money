@@ -1,7 +1,12 @@
 "use server";
 
+import { PROVIDER_ZERODEV } from "@/lib/constants";
+import { lockers } from "db/schema";
+import { eq } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/node-postgres";
+import Moralis from "moralis";
 import { headers } from "next/headers";
-
+import { Pool } from "pg";
 // {
 //   data: {
 //     backup_code_enabled: false,
@@ -61,11 +66,49 @@ export async function POST(request: Request) {
   const res = await request.json();
   const {
     id,
-    private_metadata: { lockerAddress },
+    private_metadata: { _lockerAddress, lockerSeed, ownerAddress },
   } = res.data;
+  const lockerAddress = _lockerAddress.toLowerCase();
   console.log(lockerAddress);
 
+  // if locker already exists, return
+  const client = new Pool({
+    connectionString: process.env.DATABASE_URL,
+  });
+  const db = drizzle(client);
+
+  const existingLockers = await db
+    .select()
+    .from(lockers)
+    .where(eq(lockers.lockerAddress, lockerAddress));
+
+  if (existingLockers.length < 1) Response.json({ done: true });
+
+  try {
+    await Moralis.start({
+      apiKey: process.env.MORALIS_API_KEY,
+    });
+  } catch (e: any) {
+    // Swallow error. Moralis probably already started.
+    console.warn("Moralis failed to start", e);
+  }
+
   // add locker to stream
+  const response = await Moralis.Streams.addAddress({
+    id: process.env.MORALIS_STREAM_ID!,
+    address: [lockerAddress],
+  });
+
+  // insert seed into db
+  await db.insert(lockers).values({
+    user_id: id,
+    seed: lockerSeed,
+    provider: PROVIDER_ZERODEV,
+    ownerAddress,
+    lockerAddress,
+  });
+
+  console.log(response.toJSON());
 
   return Response.json({ done: true });
 }

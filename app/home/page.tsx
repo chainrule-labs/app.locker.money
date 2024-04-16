@@ -5,14 +5,12 @@ import { currentUser } from "@clerk/nextjs";
 export default async function Home() {
   // query for locker
   const user = await currentUser();
+  const lockerAddress = user?.privateMetadata?.lockerAddress as string;
+  // find transactions belonging to locker
 
-  // console.log("userss");
-  // console.log(user);
   return (
     <RainbowProvider>
-      <DashboardPage
-        lockerAddress={user?.privateMetadata?.lockerAddress as string}
-      />
+      <DashboardPage lockerAddress={lockerAddress} />
     </RainbowProvider>
   );
 }
