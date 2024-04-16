@@ -15,7 +15,8 @@
     "drizzle:push": "drizzle-kit push:pg --config ./drizzle.config.ts",
     "drizzle:studio": "drizzle-kit studio",
     "drizzle:seed": "node -r esbuild-register ./db/seed.ts",
-    "test": "jest --watch --verbose true"
+    "test": "jest --watch --verbose true",
+    "stream:gen": "tsx scripts/gen-moralis-stream.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.12",
@@ -81,6 +82,7 @@
     "tailwind-merge": "^2.2.2",
     "tailwindcss": "^3.3.0",
     "tslib": "^2.6.2",
+    "tsx": "^4.7.2",
     "typescript": "^5"
   }
 }

@@ -1,6 +1,5 @@
 "use server";
 
-import Moralis from "moralis";
 import { headers } from "next/headers";
 
 // {
@@ -66,21 +65,7 @@ export async function POST(request: Request) {
   } = res.data;
   console.log(lockerAddress);
 
-  await Moralis.start({
-    apiKey: process.env.MORALIS_API_KEY,
-  });
+  // add locker to stream
 
-  console.log("Moralis started");
-  const host = "http://localhost:3000";
-  const txUpdatePath = `api/webhookes/moralis-tx-stream/${id}`;
-  const response = await Moralis.Streams.add({
-    webhookUrl: `${host}/${txUpdatePath}`, // replace with your own webhook URL
-    description: "My first stream",
-    tag: "my_stream",
-    chains: ["0x1"],
-    includeNativeTxs: true,
-  });
-
-  console.log(response.toJSON().id); // print the stream id
   return Response.json({ done: true });
 }
