@@ -39,7 +39,7 @@ export default function RootLayout({
       >
         <Toaster />
         <GlobalProviders>
-          <main className="relative mx-auto max-w-5xl">
+          <main className="relative mx-auto max-w-2xl">
             <Header />
             {children}
           </main>
