@@ -95,3 +95,29 @@ export const explorersRelations = relations(explorers, ({ one }) => ({
     references: [chains.id],
   }),
 }));
+
+export const lockers = pgTable("lockers", {
+  id: serial("id").primaryKey(),
+  user_id: text("user_id").notNull().unique(),
+  seed: text("seed").notNull(),
+  provider: text("provider").notNull(),
+  // eventually we will support multiple lockers per EOA, but not yet
+  ownerAddress: text("ownerAddress").notNull().unique(),
+  lockerAddress: text("lockerAddress").notNull().unique(),
+});
+
+export const transactions = pgTable("transactions", {
+  id: serial("id").primaryKey(),
+  hash: text("hash").notNull(),
+  chainId: numeric("chainId").notNull(),
+  fromAddress: text("fromAddress").notNull(),
+  toAddress: text("toAddress").notNull(),
+  timestamp: timestamp("updated_at", {
+    mode: "date",
+    precision: 6,
+    withTimezone: true,
+  }).notNull(),
+  tokenName: text("tokenName").notNull(),
+  tokenSymbol: text("tokenSymbol").notNull(),
+  amount: text("amount").notNull(),
+});
