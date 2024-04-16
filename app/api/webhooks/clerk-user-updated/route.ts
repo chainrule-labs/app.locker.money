@@ -1,5 +1,8 @@
 "use server";
 
+import Moralis from "moralis";
+import { headers } from "next/headers";
+
 // {
 //   data: {
 //     backup_code_enabled: false,
@@ -47,9 +50,37 @@
 // }
 export async function POST(request: Request) {
   console.log("user-updated");
+  const headersList = headers();
+  const apiKey = headersList.get("api-key");
+
+  if (apiKey !== process.env.API_KEY) {
+    return new Response(`Wrong api-key`, {
+      status: 400,
+    });
+  }
 
   const res = await request.json();
-  const { lockerAddress } = res.data.private_metadata;
+  const {
+    id,
+    private_metadata: { lockerAddress },
+  } = res.data;
   console.log(lockerAddress);
+
+  await Moralis.start({
+    apiKey: process.env.MORALIS_API_KEY,
+  });
+
+  console.log("Moralis started");
+  const host = "http://localhost:3000";
+  const txUpdatePath = `api/webhookes/moralis-tx-stream/${id}`;
+  const response = await Moralis.Streams.add({
+    webhookUrl: `${host}/${txUpdatePath}`, // replace with your own webhook URL
+    description: "My first stream",
+    tag: "my_stream",
+    chains: ["0x1"],
+    includeNativeTxs: true,
+  });
+
+  console.log(response.toJSON().id); // print the stream id
   return Response.json({ done: true });
 }
