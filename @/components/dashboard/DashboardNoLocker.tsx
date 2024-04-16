@@ -1,7 +1,6 @@
 "use client";
 
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import "@rainbow-me/rainbowkit/styles.css";
 import { setLocker } from "app/actions/setLocker";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

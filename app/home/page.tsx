@@ -5,6 +5,7 @@ import { currentUser } from "@clerk/nextjs";
 export default async function Home() {
   // query for locker
   const user = await currentUser();
+
   // console.log("userss");
   // console.log(user);
   return (
