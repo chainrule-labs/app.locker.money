@@ -1,8 +1,9 @@
-import type { WebhookEvent } from "@clerk/nextjs/server";
+"use server";
 
 export async function POST(request: Request) {
-  const res = (await request.json()) as WebhookEvent;
-  console.log("user-updated");
+  console.log("user-updated fool");
+
+  const res = await request.json();
   console.log(res);
-  return Response.json({ res });
+  return Response.json({ worked: true });
 }
