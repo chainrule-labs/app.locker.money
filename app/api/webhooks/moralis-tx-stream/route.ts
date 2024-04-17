@@ -107,7 +107,13 @@ export async function POST(request: Request) {
 
   // Filter for confirmed: false
   // We will err on the side of confirming too soon
-  const { confirmed, toAddress } = res;
+  const {
+    confirmed,
+    chainId: chainIdHex,
+    block: { timestamp },
+  } = res;
+  const chainId = parseInt(chainIdHex, 16);
+  const blockAt = new Date(parseInt(timestamp) * 1000);
 
   if (confirmed) return Response.json({ done: true });
 
@@ -117,10 +123,23 @@ export async function POST(request: Request) {
   });
   const db = drizzle(client);
 
-  for (let tx of res.txs) {
+  for (let tx of res.erc20Transfers) {
     console.log("Proccessing tx", tx);
 
-    const { hash, toAddress } = tx;
+    const {
+      transactionHash: hash,
+      to: toAddress,
+      from: fromAddress,
+      tokenName,
+      tokenSymbol,
+      possibleSpam,
+      valueWithDecimals: amount,
+    } = tx;
+
+    // Ignore spam tokens
+    if (possibleSpam) break;
+    console.log("Not spam");
+
     // To address is a known Locker address
     const existingLockers = await db
       .select()
@@ -128,6 +147,7 @@ export async function POST(request: Request) {
       .where(eq(lockers.lockerAddress, toAddress.toLowerCase()));
 
     if (existingLockers.length < 1) break;
+    console.log("Existing lockers");
 
     // Check DB to confirm the transaction is not already processed
     const existingTxs = await db
@@ -135,8 +155,21 @@ export async function POST(request: Request) {
       .from(transactions)
       .where(eq(transactions.hash, hash.toLowerCase()));
 
-    if (existingTxs.length < 1) break;
+    if (existingTxs.length > 0) break;
+    console.log("No existing tx");
 
+    const newTx = {
+      hash,
+      chainId: chainId.toString(),
+      fromAddress,
+      toAddress,
+      timestamp: blockAt,
+      tokenName,
+      tokenSymbol,
+      amount,
+    };
+
+    await db.insert(transactions).values(newTx).execute();
     // If not processed, process it
   }
 
