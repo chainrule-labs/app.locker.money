@@ -6,8 +6,8 @@ import { getSmartAccountAddress } from "@/lib/zerodev";
 import { clerkClient, currentUser } from "@clerk/nextjs";
 import { lockers } from "db/schema";
 
-export async function createLockerRecord(ownerAddress: string | undefined) {
-  if (!ownerAddress) {
+export async function createLockerRecord(_ownerAddress: string | undefined) {
+  if (!_ownerAddress) {
     throw new Error(`ownerAddress not provided.`);
   }
 
@@ -19,8 +19,10 @@ export async function createLockerRecord(ownerAddress: string | undefined) {
   // Compute and validate seed
   const lockerSeed = BigInt(DEFAULT_ZERODEV_SEED);
 
-  // Compute and validate address
-  const lockerAddress = await getSmartAccountAddress(ownerAddress);
+  // Compute and validate addresses
+  const ownerAddress = _ownerAddress.toLowerCase();
+  const _lockerAddress = await getSmartAccountAddress(ownerAddress);
+  const lockerAddress = _lockerAddress.toLowerCase();
 
   const lockerInfo = {
     lockerSeed: lockerSeed.toString(),
@@ -33,8 +35,8 @@ export async function createLockerRecord(ownerAddress: string | undefined) {
     userId: user.id,
     seed: lockerSeed.toString(),
     provider: PROVIDER_ZERODEV,
-    ownerAddress: ownerAddress,
-    lockerAddress: lockerAddress,
+    ownerAddress,
+    lockerAddress,
   };
 
   const db = getDrizzleDb();
