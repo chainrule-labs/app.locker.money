@@ -3415,15 +3415,15 @@
     "@walletconnect/window-getters" "^1.0.1"
     tslib "1.14.1"
 
-"@zerodev/ecdsa-validator@^5.2.1":
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/@zerodev/ecdsa-validator/-/ecdsa-validator-5.2.1.tgz#888056308a6a834049ddfe8ab067668b2ea592cf"
-  integrity sha512-/VDxntTzalQFGOEY3JbM1c39p0jiLbrF97E2V4NR5L4cRgNiWBu/QycW10zUeoeyFuqeghc6vPhNe/M1e7HTig==
+"@zerodev/ecdsa-validator@^5.2.2":
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/@zerodev/ecdsa-validator/-/ecdsa-validator-5.2.2.tgz#95e7dde6b07255eae50b1aa948a5b2f4e56f9793"
+  integrity sha512-K/vYejUbIESwaiF2eelaTXqKJeyU/KwSTbf1Z/WqlmCr7cf20O4YxNcogSqEInXpk5B2qSr/F7nZDA2Iz6wVsg==
 
-"@zerodev/sdk@^5.2.0":
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/@zerodev/sdk/-/sdk-5.2.0.tgz#bfa50a99783c84a37c0ebcdb3f30d641e49f947c"
-  integrity sha512-bNrcIeMCwW/oifFa9ycLBPHbcP9vlfdlGJbsHiWWN7hw+Z2JAny2dT4BZ03iztWQYlSrbxA+lkcsWYUJocN3Kg==
+"@zerodev/sdk@^5.2.3":
+  version "5.2.3"
+  resolved "https://registry.yarnpkg.com/@zerodev/sdk/-/sdk-5.2.3.tgz#86febb6de91839f61e7eac30c11c55aa16cd3109"
+  integrity sha512-8A1tVOgR67GnT0CGnYZOkMtroUnIq9T5JgBZBqc6X8O9IsVhPChMGVvT3k2fCHo1eUXEjOZDxdKrtcX7YYQFcw==
   dependencies:
     semver "^7.6.0"
 

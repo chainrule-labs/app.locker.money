@@ -96,7 +96,7 @@ export const getSmartAccountAddress = async (address: string | undefined) => {
     eoaAddress: address as `0x${string}`,
     index: BigInt(DEFAULT_ZERODEV_SEED),
     // v6 entrypoint address, should be the same on most chains
-    entryPointAddress: ENTRYPOINT_V6, // ECDSA_VALIDATOR_ADDRESS_V06,
+    entryPointAddress: entryPoint, // ECDSA_VALIDATOR_ADDRESS_V06,
   });
 
   return smartAccountAddress;
