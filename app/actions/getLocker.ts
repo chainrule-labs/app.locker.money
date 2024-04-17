@@ -1,10 +1,9 @@
 "use server";
 
+import { getDrizzleDb } from "@/lib/drizzle";
 import { currentUser } from "@clerk/nextjs";
 import { lockers, transactions } from "db/schema";
 import { eq } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/node-postgres";
-import { Pool } from "pg";
 
 export async function getLocker() {
   const user = await currentUser();
@@ -12,10 +11,8 @@ export async function getLocker() {
     return { locker: null, txs: [] };
   }
 
-  const client = new Pool({
-    connectionString: process.env.DATABASE_URL,
-  });
-  const db = drizzle(client);
+  const db = getDrizzleDb();
+
   const _locker = await db
     .select()
     .from(lockers)

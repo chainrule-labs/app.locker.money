@@ -1,5 +1,6 @@
 // We use Moralis for listening to on-chain events
 // One stream is created for all addresses we want to
+import { ERC20TransferEventABI } from "@/abis/erc20-transfer-event";
 import dotenv from "dotenv";
 import Moralis from "moralis";
 import path from "path";
@@ -53,35 +54,10 @@ const updateStream = async (
 ) => {
   console.log("updateStream", streamId);
 
-  const ERC20TransferABI = [
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: true,
-          name: "from",
-          type: "address",
-        },
-        {
-          indexed: true,
-          name: "to",
-          type: "address",
-        },
-        {
-          indexed: false,
-          name: "value",
-          type: "uint256",
-        },
-      ],
-      name: "Transfer",
-      type: "event",
-    },
-  ];
-
   const topic = "Transfer(address,address,uint256)";
   const updateResponse = await Moralis.Streams.update({
     id: streamId,
-    abi: ERC20TransferABI,
+    abi: ERC20TransferEventABI,
     chains,
     includeContractLogs: true,
     topic0: [topic],

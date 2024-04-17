@@ -1,7 +1,7 @@
 "use client";
 
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { setLocker } from "app/actions/setLocker";
+import { createLockerRecord } from "app/actions/createLockerRecord";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAccount, useConfig } from "wagmi";
@@ -23,7 +23,7 @@ export default function DashboardNoLocker() {
 
   const genLockerAddress = async () => {
     console.log("genLockerAddress", address);
-    const lockerInfo = await setLocker(address);
+    const lockerInfo = await createLockerRecord(address);
     console.log("lockerInfo", lockerInfo);
     router.refresh();
   };
