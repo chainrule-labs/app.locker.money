@@ -1,5 +1,5 @@
 "use client";
-
+import { RainbowProvider } from "@/components/context/RainbowProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { ThemeProvider } from "next-themes";
@@ -12,14 +12,16 @@ type GlobalProvidersProps = {
 const GlobalProviders: FC<GlobalProvidersProps> = ({ children }) => {
   return (
     <ClerkProvider appearance={{ baseTheme: dark }}>
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="dark"
-        // enableSystem
-        disableTransitionOnChange
-      >
-        {children}
-      </ThemeProvider>
+      <RainbowProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          // enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+      </RainbowProvider>
     </ClerkProvider>
   );
 };

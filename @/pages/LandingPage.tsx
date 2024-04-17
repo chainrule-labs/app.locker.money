@@ -24,13 +24,13 @@ export default function LandingPage({ userId }: ILandingPageProps) {
       </div>
       {userId ? (
         <Link href={PATHS.HOME}>
-          <button className="w-full rounded-lg bg-[#4C4FE4] py-2">
+          <button className="w-full rounded-lg bg-[#4A22EC] py-2 hover:bg-[#4C4FE4]">
             Open Dashboard
           </button>
         </Link>
       ) : (
         <button
-          className="w-full rounded-lg bg-[#4C4FE4] py-2"
+          className="w-full rounded-lg bg-[#4A22EC] py-2 hover:bg-[#4C4FE4]"
           onClick={() => Clerk.openSignIn()}
         >
           Get Started

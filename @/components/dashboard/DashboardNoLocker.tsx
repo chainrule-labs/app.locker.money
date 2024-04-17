@@ -4,14 +4,13 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { setLocker } from "app/actions/setLocker";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useAccount, useConfig } from "wagmi";
+import { useAccount } from "wagmi";
 
 export default function DashboardNoLocker() {
   const { openConnectModal } = useConnectModal();
-  const config = useConfig();
   const [isCreatingLocker, setIsCreatingLocker] = useState(false);
   const router = useRouter();
-  const { isConnected, address, chain } = useAccount();
+  const { isConnected, address } = useAccount();
 
   const onCreateLocker = async () => {
     console.log("onCreateLocker", isConnected, address);
@@ -39,7 +38,7 @@ export default function DashboardNoLocker() {
   if (isCreatingLocker) {
     createLockerButton = (
       <button
-        className="w-full rounded-lg bg-[#4C4FE4] py-2 text-white"
+        className="w-full rounded-lg bg-[#4A22EC] py-2 text-white hover:bg-[#4C4FE4]"
         disabled
       >
         Setting up Locker...
@@ -48,7 +47,7 @@ export default function DashboardNoLocker() {
   } else {
     createLockerButton = (
       <button
-        className="w-full rounded-lg bg-[#4C4FE4] py-2 text-white"
+        className="w-full rounded-lg bg-[#4A22EC] py-2 text-white hover:bg-[#4C4FE4]"
         onClick={onCreateLocker}
       >
         Create a Locker

@@ -1,4 +1,3 @@
-import { RainbowProvider } from "@/components/context/RainbowProvider";
 import DashboardPage from "@/pages/DashboardPage";
 import { currentUser } from "@clerk/nextjs";
 
@@ -8,9 +7,5 @@ export default async function Home() {
   const lockerAddress = user?.privateMetadata?.lockerAddress as string;
   // find transactions belonging to locker
 
-  return (
-    <RainbowProvider>
-      <DashboardPage lockerAddress={lockerAddress} />
-    </RainbowProvider>
-  );
+  return <DashboardPage lockerAddress={lockerAddress} />;
 }
