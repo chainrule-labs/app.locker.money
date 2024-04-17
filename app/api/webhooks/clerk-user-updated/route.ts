@@ -58,6 +58,7 @@ export async function POST(request: Request) {
   const apiKey = headersList.get("api-key");
 
   if (apiKey !== process.env.API_KEY) {
+    console.warn("Wrong api-key");
     return new Response(`Wrong api-key`, {
       status: 400,
     });
@@ -86,7 +87,8 @@ export async function POST(request: Request) {
     .from(lockers)
     .where(eq(lockers.lockerAddress, lockerAddress));
 
-  if (existingLockers.length < 1) Response.json({ done: true });
+  if (existingLockers.length > 0) Response.json({ done: true });
+  console.log("No existing locker");
 
   try {
     await Moralis.start({
