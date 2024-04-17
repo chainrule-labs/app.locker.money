@@ -1,12 +1,10 @@
 "use server";
 
-import { PROVIDER_ZERODEV } from "@/lib/constants";
-import { lockers } from "db/schema";
-import { eq } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/node-postgres";
 import Moralis from "moralis";
 import { headers } from "next/headers";
-import { Pool } from "pg";
+
+// Triggered after a Locker is created in DB.
+// This webhook is used to add the Locker address to the Moralis Stream.
 // {
 //   data: {
 //     backup_code_enabled: false,
@@ -67,28 +65,10 @@ export async function POST(request: Request) {
   const res = await request.json();
   const {
     id,
-    private_metadata: {
-      lockerAddress: _lockerAddress,
-      lockerSeed,
-      ownerAddress,
-    },
+    private_metadata: { lockerAddress: _lockerAddress },
   } = res.data;
   const lockerAddress = _lockerAddress.toLowerCase();
   console.log(lockerAddress);
-
-  // if locker already exists, return
-  const client = new Pool({
-    connectionString: process.env.DATABASE_URL,
-  });
-  const db = drizzle(client);
-
-  const existingLockers = await db
-    .select()
-    .from(lockers)
-    .where(eq(lockers.lockerAddress, lockerAddress));
-
-  if (existingLockers.length > 0) Response.json({ done: true });
-  console.log("No existing locker");
 
   try {
     await Moralis.start({
@@ -106,16 +86,23 @@ export async function POST(request: Request) {
   });
   console.log(response.toJSON());
 
-  // insert seed into db
-  const locker = {
-    user_id: id,
-    seed: lockerSeed,
-    provider: PROVIDER_ZERODEV,
-    ownerAddress,
-    lockerAddress,
-  };
-  await db.insert(lockers).values(locker);
-  console.log("inserted locker", locker);
-
   return Response.json({ done: true });
 }
+
+// Endpoint testing
+/*
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "api-key: AAA" \
+  -d '{
+    "data": {
+      "id": "user_2fEaMCBZK7IiXwucWg2jJZ2MuJ0",
+      "private_metadata": {
+        "lockerAddress": "0xAF98E80b40817f08D28e00dbdDdE8a4958713037",
+        "lockerSeed": "639875",
+        "ownerAddress": "0xAF115955b028c145cE3A7367B25A274723C5104B"
+      }
+    }
+  }' \
+  http://localhost:3000/api/webhooks/clerk-user-updated
+*/

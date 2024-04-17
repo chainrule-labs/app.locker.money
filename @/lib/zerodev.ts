@@ -2,6 +2,7 @@ import {
   getKernelAddressFromECDSA,
   signerToEcdsaValidator,
 } from "@zerodev/ecdsa-validator";
+import { toECDSASigner } from "@zerodev/permissions/signers";
 import {
   createKernelAccount,
   createKernelAccountClient,
@@ -14,6 +15,7 @@ import {
 } from "permissionless";
 import { Chain, createPublicClient, http, zeroAddress } from "viem";
 import { DEFAULT_ZERODEV_SEED } from "./constants";
+
 if (
   !process.env.NEXT_PUBLIC_BUNDLER_RPC ||
   !process.env.NEXT_PUBLIC_PAYMASTER_RPC
@@ -26,21 +28,56 @@ const publicClient = createPublicClient({
 });
 
 const entryPoint = ENTRYPOINT_ADDRESS_V07;
-const ENTRYPOINT_V6 = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
 
+/**
+ * Create a kernel that:
+ *  - is controlled by the user's EOA
+ *  - creates a session key that can transfer ERC20 to the EOA
+ * @param walletClient
+ * @param chain
+ */
 export const createKernel = async (walletClient: any, chain: Chain) => {
   console.log("createKernel");
   console.log(walletClient);
 
   const signer = walletClientToSmartAccountSigner(walletClient!);
+
+  const sessionKeySigner = await toECDSASigner({
+    signer,
+  });
+
   const ecdsaValidator = await signerToEcdsaValidator(publicClient, {
     signer: signer,
     entryPoint,
   });
 
+  // const callPolicy = toCallPolicy({
+  //   permissions: [
+  //     {
+  //       target: zeroAddress,
+  //       valueLimit: BigInt(0),
+  //       abi: ERC20TransferFunctionABI,
+  //       functionName: "transfer",
+  //       args: [
+  //         {
+  //           condition: ParamCondition.EQUAL,
+  //           value: masterAccount.address
+  //         },
+  //       ]
+  //     },
+  //   ],
+  // });
+
+  // const sessionKeyValidator = await toPermissionValidator(publicClient, {
+  //   entryPoint,
+  //   signer: sessionKeySigner,
+  //   policies: [callPolicy],
+  // });
+
   const account = await createKernelAccount(publicClient, {
     plugins: {
       sudo: ecdsaValidator,
+      // regular: sessionKeyValidator,
     },
     entryPoint,
   });
@@ -88,15 +125,19 @@ export const createKernel = async (walletClient: any, chain: Chain) => {
   console.log(_receipt);
 };
 
+/**
+ * Get the kernel address for a given owner EOA address
+ * @param address
+ * @returns
+ */
 export const getSmartAccountAddress = async (address: string | undefined) => {
-  if (!address) return null;
+  if (!address) throw new Error(`address not provided.`);
 
   const smartAccountAddress = await getKernelAddressFromECDSA({
     publicClient,
     eoaAddress: address as `0x${string}`,
     index: BigInt(DEFAULT_ZERODEV_SEED),
-    // v6 entrypoint address, should be the same on most chains
-    entryPointAddress: entryPoint, // ECDSA_VALIDATOR_ADDRESS_V06,
+    entryPointAddress: entryPoint,
   });
 
   return smartAccountAddress;

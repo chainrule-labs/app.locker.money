@@ -1,0 +1,1 @@
+ALTER TABLE "transactions" ALTER COLUMN "locker_id" SET NOT NULL;

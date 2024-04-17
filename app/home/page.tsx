@@ -1,11 +1,11 @@
 import DashboardPage from "@/pages/DashboardPage";
-import { currentUser } from "@clerk/nextjs";
+import { getLocker } from "app/actions/getLocker";
 
 export default async function Home() {
-  // query for locker
-  const user = await currentUser();
-  const lockerAddress = user?.privateMetadata?.lockerAddress as string;
   // find transactions belonging to locker
+  const { locker, txs } = await getLocker();
 
-  return <DashboardPage lockerAddress={lockerAddress} />;
+  const lockerAddress = locker?.lockerAddress;
+
+  return <DashboardPage lockerAddress={lockerAddress} numTxs={txs.length} />;
 }

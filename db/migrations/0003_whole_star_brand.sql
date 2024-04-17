@@ -1,0 +1,1 @@
+ALTER TABLE "lockers" ADD COLUMN "encrypted_session_key" text;

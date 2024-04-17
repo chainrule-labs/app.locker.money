@@ -1,5 +1,6 @@
 // We use Moralis for listening to on-chain events
 // One stream is created for all addresses we want to
+import { ERC20TransferEventABI } from "@/abis/erc20-transfer-event";
 import dotenv from "dotenv";
 import Moralis from "moralis";
 import path from "path";
@@ -29,9 +30,6 @@ const tag = "locker_transactions_stream";
 
 const createStream = async () => {
   console.log("Starting Moralis");
-  await Moralis.start({
-    apiKey: process.env.MORALIS_API_KEY,
-  });
 
   console.log("Moralis started");
   const host = process.env.API_HOST;
@@ -48,38 +46,19 @@ const createStream = async () => {
   });
 
   console.log(JSON.stringify(response.toJSON(), null, 2));
-  const streamId = response.toJSON().id;
+  return response.toJSON().id;
+};
 
-  const ERC20TransferABI = [
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: true,
-          name: "from",
-          type: "address",
-        },
-        {
-          indexed: true,
-          name: "to",
-          type: "address",
-        },
-        {
-          indexed: false,
-          name: "value",
-          type: "uint256",
-        },
-      ],
-      name: "Transfer",
-      type: "event",
-    },
-  ];
+const updateStream = async (
+  streamId: string = "0755a037-14fa-49b5-bbfb-fc0229743c6d",
+) => {
+  console.log("updateStream", streamId);
 
   const topic = "Transfer(address,address,uint256)";
-
   const updateResponse = await Moralis.Streams.update({
     id: streamId,
-    abi: ERC20TransferABI,
+    abi: ERC20TransferEventABI,
+    chains,
     includeContractLogs: true,
     topic0: [topic],
   });
@@ -88,4 +67,14 @@ const createStream = async () => {
   console.log(updateResponse.toJSON());
 };
 
-createStream();
+const createAndUpdateStream = async () => {
+  await Moralis.start({
+    apiKey: process.env.MORALIS_API_KEY,
+  });
+
+  const streamId = await createStream();
+  await updateStream(streamId);
+  // await updateStream();
+};
+
+createAndUpdateStream();
