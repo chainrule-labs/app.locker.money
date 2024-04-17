@@ -1,10 +1,13 @@
 "use server";
 
+import { clerkClient } from "@clerk/nextjs";
 import { lockers, transactions } from "db/schema";
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
+import { Resend } from "resend";
 
+const resend = new Resend(process.env.RESEND_API_KEY);
 /**
  * Invoked whenever a new transaction is detected by Moralis.
  *      1) Filter for confirmed: false
@@ -169,8 +172,25 @@ export async function POST(request: Request) {
       amount,
     };
 
-    await db.insert(transactions).values(newTx).execute();
-    // If not processed, process it
+    const insertedTxs = await db
+      .insert(transactions)
+      .values(newTx)
+      .returning({ insertedId: transactions.id });
+    // TODO trigger locker to move funds if it has already been deployed
+
+    const { user_id: userId } = existingLockers[0];
+    // Update metadata with Locker information
+    const user = await clerkClient.users.getUser(userId);
+    console.log("User", user);
+
+    const amountStr = `${amount} ${tokenSymbol}`;
+    const link = `${process.env.API_HOST}/dashboard?tx=${insertedTxs[0].insertedId}`;
+    resend.emails.send({
+      from: "Locker <contact@noreply.locker.money>",
+      to: user.emailAddresses[0].emailAddress,
+      subject: `Locker received ${amountStr}`,
+      html: `<p>Congrats you received a ${amountStr} deposit to your locker at ${toAddress}. <a href=${link}>See more.</a></p>`,
+    });
   }
 
   return Response.json({ done: true });
