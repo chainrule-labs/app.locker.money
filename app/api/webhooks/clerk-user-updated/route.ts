@@ -66,7 +66,11 @@ export async function POST(request: Request) {
   const res = await request.json();
   const {
     id,
-    private_metadata: { _lockerAddress, lockerSeed, ownerAddress },
+    private_metadata: {
+      lockerAddress: _lockerAddress,
+      lockerSeed,
+      ownerAddress,
+    },
   } = res.data;
   const lockerAddress = _lockerAddress.toLowerCase();
   console.log(lockerAddress);
@@ -98,17 +102,18 @@ export async function POST(request: Request) {
     id: process.env.MORALIS_STREAM_ID!,
     address: [lockerAddress],
   });
+  console.log(response.toJSON());
 
   // insert seed into db
-  await db.insert(lockers).values({
+  const locker = {
     user_id: id,
     seed: lockerSeed,
     provider: PROVIDER_ZERODEV,
     ownerAddress,
     lockerAddress,
-  });
-
-  console.log(response.toJSON());
+  };
+  await db.insert(lockers).values(locker);
+  console.log("inserted locker", locker);
 
   return Response.json({ done: true });
 }
