@@ -185,12 +185,15 @@ export async function POST(request: Request) {
 
     const amountStr = `${amount} ${tokenSymbol}`;
     const link = `${process.env.API_HOST}/dashboard?tx=${insertedTxs[0].insertedId}`;
-    resend.emails.send({
+    const to = user.emailAddresses[0].emailAddress;
+    await resend.emails.send({
       from: "Locker <contact@noreply.locker.money>",
-      to: user.emailAddresses[0].emailAddress,
+      to,
       subject: `Locker received ${amountStr}`,
       html: `<p>Congrats you received a ${amountStr} deposit to your locker at ${toAddress}. <a href=${link}>See more.</a></p>`,
     });
+
+    console.log("Email sent to " + to);
   }
 
   return Response.json({ done: true });
