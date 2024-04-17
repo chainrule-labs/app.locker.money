@@ -6,9 +6,22 @@ import path from "path";
 
 dotenv.config({ path: path.resolve(__dirname, "../.env.development.local") });
 
+// https://docs.moralis.io/supported-chains
 const chains = [
-  // sepolia
+  // sepolia - 11155111
   "0xaa36a7",
+
+  // arbitrum sepolia - 421614
+  "0x66eee",
+
+  // base sepolia - 84532
+  "0x14a34",
+
+  // linea sepolia - 59141
+  "0xe705",
+
+  // gnosis mainnet - 100
+  "0x64",
 ];
 
 const description = "Locker transactions stream";
@@ -72,7 +85,7 @@ const createStream = async () => {
   });
 
   console.log("Stream updated to listen for ERC20");
-  console.log(response.toJSON());
+  console.log(updateResponse.toJSON());
 };
 
 createStream();
