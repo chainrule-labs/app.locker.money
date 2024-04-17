@@ -1,27 +1,20 @@
-import { relations } from "drizzle-orm";
 import {
   integer,
   numeric,
-  pgEnum,
   pgTable,
   serial,
   text,
   timestamp,
 } from "drizzle-orm/pg-core";
 
-/**
- * * NOTE: This schema does not strictly conform to Ethereum's EIP155/CAIP spec.
- * * We made some adjustments to the labels and data structures to better fit
- * * the needs of this app. */
-
-export const logoImageFormatEnum = pgEnum("logo_image_format", ["png", "svg"]);
-
-export const accounts = pgTable("accounts", {
+export const lockers = pgTable("lockers", {
   id: serial("id").primaryKey(),
-  address: text("address").notNull().unique(),
-  name: text("name").notNull(),
-  userId: text("user_id").notNull(),
-  hint: text("hint"),
+  userId: text("user_id").notNull().unique(),
+  seed: text("seed").notNull(),
+  provider: text("provider").notNull(),
+  // eventually we will support multiple lockers per EOA, but not yet
+  ownerAddress: text("owner_address").notNull().unique(),
+  lockerAddress: text("locker_address").notNull().unique(),
   createdAt: timestamp("created_at", {
     mode: "date",
     precision: 6,
@@ -39,85 +32,21 @@ export const accounts = pgTable("accounts", {
     .notNull(),
 });
 
-export const ecosystems = pgTable("ecosystems", {
-  id: serial("id").primaryKey(),
-  name: text("name"),
-  ticker: text("ticker").unique(),
-});
-
-export const tokens = pgTable("tokens", {
-  id: serial("id").primaryKey(),
-  name: text("name").notNull(),
-  symbol: text("symbol").notNull().unique(),
-  decimals: numeric("decimals"),
-});
-
-export const chains = pgTable("chains", {
-  id: serial("id").primaryKey(),
-  name: text("name").notNull().unique(),
-  shortName: text("short_name").unique(),
-  infoUrl: text("info_url"),
-  interface: text("interface").notNull(),
-  chainSpec: integer("chain_spec").notNull(),
-  networkSpec: integer("network_spec").notNull(),
-  parentChainSpec: integer("parent_chain_spec"),
-  slipSpec: integer("slip_spec"),
-  ensRegistry: text("ens_registry"),
-  layer: text("layer"),
-  ecosystemId: integer("ecosystem_id").references(() => ecosystems.id),
-  nativeCoinId: integer("native_coin_id").references(() => tokens.id),
-});
-
-export const explorers = pgTable("explorers", {
-  id: serial("id").primaryKey(),
-  name: text("name").notNull(),
-  url: text("url").notNull().unique(),
-  spec: text("spec"),
-  chainId: integer("chain_id").references(() => chains.id),
-});
-
-export const accountsToChains = pgTable("accounts_to_chains", {
-  accountId: integer("account_id")
-    .notNull()
-    .references(() => accounts.id),
-  chainId: integer("chain_id")
-    .notNull()
-    .references(() => chains.id),
-});
-
-export const chainsRelations = relations(chains, ({ many }) => ({
-  explorers: many(explorers),
-}));
-
-export const explorersRelations = relations(explorers, ({ one }) => ({
-  chain: one(chains, {
-    fields: [explorers.chainId],
-    references: [chains.id],
-  }),
-}));
-
-export const lockers = pgTable("lockers", {
-  id: serial("id").primaryKey(),
-  user_id: text("user_id").notNull().unique(),
-  seed: text("seed").notNull(),
-  provider: text("provider").notNull(),
-  // eventually we will support multiple lockers per EOA, but not yet
-  ownerAddress: text("ownerAddress").notNull().unique(),
-  lockerAddress: text("lockerAddress").notNull().unique(),
-});
-
 export const transactions = pgTable("transactions", {
   id: serial("id").primaryKey(),
   hash: text("hash").notNull(),
-  chainId: numeric("chainId").notNull(),
-  fromAddress: text("fromAddress").notNull(),
-  toAddress: text("toAddress").notNull(),
+  chainId: numeric("chain_id").notNull(),
+  fromAddress: text("from_address").notNull(),
+  toAddress: text("to_address").notNull(),
   timestamp: timestamp("updated_at", {
     mode: "date",
     precision: 6,
     withTimezone: true,
   }).notNull(),
-  tokenName: text("tokenName").notNull(),
-  tokenSymbol: text("tokenSymbol").notNull(),
+  tokenName: text("token_name").notNull(),
+  tokenSymbol: text("token_symbol").notNull(),
   amount: text("amount").notNull(),
+  lockerId: integer("locker_id")
+    .references(() => lockers.id)
+    .notNull(),
 });
