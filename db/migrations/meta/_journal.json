@@ -8,6 +8,20 @@
       "when": 1713309682648,
       "tag": "0000_smiling_sleepwalker",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1713365386215,
+      "tag": "0001_wealthy_richard_fisk",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1713365572169,
+      "tag": "0002_organic_richard_fisk",
+      "breakpoints": true
     }
   ]
 }

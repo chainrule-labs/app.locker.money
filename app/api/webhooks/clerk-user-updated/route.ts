@@ -7,6 +7,7 @@ import { drizzle } from "drizzle-orm/node-postgres";
 import Moralis from "moralis";
 import { headers } from "next/headers";
 import { Pool } from "pg";
+
 // {
 //   data: {
 //     backup_code_enabled: false,
@@ -108,7 +109,7 @@ export async function POST(request: Request) {
 
   // insert seed into db
   const locker = {
-    user_id: id,
+    userId: id,
     seed: lockerSeed,
     provider: PROVIDER_ZERODEV,
     ownerAddress,
@@ -119,3 +120,21 @@ export async function POST(request: Request) {
 
   return Response.json({ done: true });
 }
+
+// Endpoint testing
+/*
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "api-key: AAA" \
+  -d '{
+    "data": {
+      "id": "user_2fEaMCBZK7IiXwucWg2jJZ2MuJ0",
+      "private_metadata": {
+        "lockerAddress": "0xAF98E80b40817f08D28e00dbdDdE8a4958713037",
+        "lockerSeed": "639875",
+        "ownerAddress": "0xAF115955b028c145cE3A7367B25A274723C5104B"
+      }
+    }
+  }' \
+  http://localhost:3000/api/webhooks/clerk-user-updated
+*/

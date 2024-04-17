@@ -2,28 +2,25 @@
 
 import DashboardLockerEmpty from "@/components/dashboard/DashboardLockerEmpty";
 import DashboardNoLocker from "@/components/dashboard/DashboardNoLocker";
-import { useEvmNativeBalance } from "@moralisweb3/next";
 
 import "@rainbow-me/rainbowkit/styles.css";
 
 export default function DashboardPage({
   lockerAddress,
+  numTxs,
 }: {
   lockerAddress: string | undefined;
+  numTxs: number;
 }) {
   console.log("lockerAddress", lockerAddress);
-  const { data: nativeBalance } = useEvmNativeBalance({
-    address: lockerAddress || "",
-    chain: "sepolia",
-  });
-
-  console.log("nativeBalance", nativeBalance);
 
   const lockerState = !lockerAddress ? (
     <DashboardNoLocker />
-  ) : !nativeBalance ? (
+  ) : numTxs < 1 ? (
     <DashboardLockerEmpty lockerAddress={lockerAddress} />
-  ) : null;
+  ) : (
+    <p>Locker deposits: {numTxs}</p>
+  );
 
   return (
     <div className="xs:grid xs:place-content-center h-[100svh] w-full">

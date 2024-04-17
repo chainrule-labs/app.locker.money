@@ -27,6 +27,7 @@ export default function DashboardNoLocker() {
     console.log("lockerInfo", lockerInfo);
     router.refresh();
   };
+
   useEffect(() => {
     console.log("trigger gen-address", address, isCreatingLocker);
     if (isCreatingLocker && address) {

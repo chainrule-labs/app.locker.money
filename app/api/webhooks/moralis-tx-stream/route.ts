@@ -5,6 +5,7 @@ import { lockers, transactions } from "db/schema";
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
+import process from "process";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -127,7 +128,7 @@ export async function POST(request: Request) {
   const db = drizzle(client);
 
   for (let tx of res.erc20Transfers) {
-    console.log("Proccessing tx", tx);
+    console.log("Processing tx", tx);
 
     const {
       transactionHash: hash,
@@ -160,6 +161,7 @@ export async function POST(request: Request) {
 
     if (existingTxs.length > 0) break;
     console.log("No existing tx");
+    const locker = existingLockers[0];
 
     const newTx = {
       hash,
@@ -170,6 +172,7 @@ export async function POST(request: Request) {
       tokenName,
       tokenSymbol,
       amount,
+      lockerId: locker.id,
     };
 
     const insertedTxs = await db
@@ -178,7 +181,7 @@ export async function POST(request: Request) {
       .returning({ insertedId: transactions.id });
     // TODO trigger locker to move funds if it has already been deployed
 
-    const { user_id: userId } = existingLockers[0];
+    const { userId } = locker;
     // Update metadata with Locker information
     const user = await clerkClient.users.getUser(userId);
     console.log("User", user);
@@ -198,3 +201,56 @@ export async function POST(request: Request) {
 
   return Response.json({ done: true });
 }
+
+// Endpoint testing
+/*
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+  "confirmed": false,
+  "chainId": "0xaa36a7",
+  "block": {
+    "number": "5713300",
+    "hash": "0x17174de6e84c1a8d78946a202f605703104646cd932b1dc4ae2dbbe5a23af63a",
+    "timestamp": "1713302148"
+  },
+  "txs": [
+    {
+      "hash": "0xee6ea2562c609b5143692451b11b16488ac5bcc1d5430ac4845510513726735a",
+      "gas": "52243",
+      "gasPrice": "1500443500",
+      "nonce": "18",
+      "input": "0xa9059cbb000000000000000000000000614406b955abd0797945badf3d8e890ab85723fb000000000000000000000000000000000000000000000000000000174876e800",
+      "transactionIndex": "45",
+      "fromAddress": "0xf650429129ab74d1f2b647cd1d7e3b022f26181d",
+      "toAddress": "0xfff9976782d46cc05630d1f6ebab18b2324d6b14",
+      "value": "0",
+      "type": "2",
+      "v": "0",
+      "r": "103700873731177040420514073429661925012145625457050003797663653252122366337645",
+      "s": "17054028290029081517627299868376790025841372696387000571904358411846752788623",
+      "receiptCumulativeGasUsed": "9452380",
+      "receiptGasUsed": "34470",
+      "receiptContractAddress": null,
+      "receiptRoot": null,
+      "receiptStatus": "1"
+    }
+  ],
+  "erc20Transfers": [
+    {
+      "transactionHash": "0xee6ea2562c609b5143692451b11b16488ac5bcc1d5430ac4845510513726735a",
+      "logIndex": "60",
+      "contract": "0xfff9976782d46cc05630d1f6ebab18b2324d6b14",
+      "from": "0xf650429129ab74d1f2b647cd1d7e3b022f26181d",
+      "to": "0xAF98E80b40817f08D28e00dbdDdE8a4958713037",
+      "value": "100000000000",
+      "tokenName": "Wrapped Ether",
+      "tokenSymbol": "WETH",
+      "tokenDecimals": "18",
+      "valueWithDecimals": "1e-7",
+      "possibleSpam": false
+    }
+  ]
+}' \
+  http://localhost:3000/api/webhooks/moralis-tx-stream
+*/

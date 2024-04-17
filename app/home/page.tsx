@@ -1,16 +1,16 @@
 import { RainbowProvider } from "@/components/context/RainbowProvider";
 import DashboardPage from "@/pages/DashboardPage";
-import { currentUser } from "@clerk/nextjs";
+import { getLocker } from "app/actions/getLocker";
 
 export default async function Home() {
-  // query for locker
-  const user = await currentUser();
-  const lockerAddress = user?.privateMetadata?.lockerAddress as string;
   // find transactions belonging to locker
+  const { locker, txs } = await getLocker();
+
+  const lockerAddress = locker?.lockerAddress;
 
   return (
     <RainbowProvider>
-      <DashboardPage lockerAddress={lockerAddress} />
+      <DashboardPage lockerAddress={lockerAddress} numTxs={txs.length} />
     </RainbowProvider>
   );
 }
