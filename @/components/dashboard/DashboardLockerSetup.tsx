@@ -1,6 +1,6 @@
 "use client";
 
-export default function DashboardLockerEmpty({
+export default function DashboardLockerSetup({
   lockerAddress,
 }: {
   lockerAddress: string;
@@ -9,12 +9,15 @@ export default function DashboardLockerEmpty({
     <>
       <div className="space-y-12">
         <p className="poppins w-full text-2xl font-bold">
-          Deposit ETH or any ERC20, to complete setup
+          Set up savings rules
         </p>
 
         <div>
-          <p className="text-wrap break-all text-5xl">Locker address:</p>
-          <p className="text-wrap break-all text-2xl">{lockerAddress}</p>
+          <p>Congratulations, you funded your Locker with $0.00.</p>
+          <p>
+            To take it to the next level, automate your money moves by setting
+            up a saving rule.
+          </p>
         </div>
 
         <p className="text">

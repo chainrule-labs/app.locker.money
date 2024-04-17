@@ -30,6 +30,7 @@ export const lockers = pgTable("lockers", {
     .defaultNow()
     .$onUpdate(() => new Date())
     .notNull(),
+  encryptedSessionKey: text("encrypted_session_key"),
 });
 
 export const transactions = pgTable("transactions", {
