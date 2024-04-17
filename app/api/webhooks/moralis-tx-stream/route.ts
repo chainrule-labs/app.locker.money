@@ -117,20 +117,23 @@ export async function POST(request: Request) {
   });
   const db = drizzle(client);
 
-  // To address is a known Locker address
-  const existingLockers = await db
-    .select()
-    .from(lockers)
-    .where(eq(lockers.lockerAddress, toAddress.toLowerCase()));
-
-  if (existingLockers.length < 1) Response.json({ done: true });
-
   for (let tx of res.txs) {
+    console.log("Proccessing tx", tx);
+
+    const { hash, toAddress } = tx;
+    // To address is a known Locker address
+    const existingLockers = await db
+      .select()
+      .from(lockers)
+      .where(eq(lockers.lockerAddress, toAddress.toLowerCase()));
+
+    if (existingLockers.length < 1) break;
+
     // Check DB to confirm the transaction is not already processed
     const existingTxs = await db
       .select()
       .from(transactions)
-      .where(eq(transactions.hash, res.txs[0].hash.toLowerCase()));
+      .where(eq(transactions.hash, hash.toLowerCase()));
 
     if (existingTxs.length < 1) break;
 
