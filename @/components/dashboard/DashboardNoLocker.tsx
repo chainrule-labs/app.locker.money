@@ -39,7 +39,7 @@ export default function DashboardNoLocker() {
   if (isCreatingLocker) {
     createLockerButton = (
       <button
-        className="w-full rounded-lg bg-blue-500 py-2 text-white"
+        className="w-full rounded-lg bg-[#4C4FE4] py-2 text-white"
         disabled
       >
         Setting up Locker...
@@ -48,25 +48,45 @@ export default function DashboardNoLocker() {
   } else {
     createLockerButton = (
       <button
-        className="w-full rounded-lg bg-blue-500 py-2 text-white"
+        className="w-full rounded-lg bg-[#4C4FE4] py-2 text-white"
         onClick={onCreateLocker}
       >
-        Create Locker
+        Create a Locker
       </button>
     );
   }
 
   return (
-    <>
-      <div className="space-y-12">
-        <p className="poppins w-full text-2xl font-bold">How Locker works</p>
-        <p className="text">1. Create a Locker for your savings.</p>
-        <p className="text">
-          2. Deposit into your Locker to route money anywhere and save
-          automoatically.
-        </p>
-        {createLockerButton}
+    <div className="xs:grid xs:place-content-center h-full w-full p-4">
+      <div className="mb-12 flex flex-col space-y-4">
+        <h1 className="font- w-full text-3xl font-normal">
+          How does Locker work?
+        </h1>
+        <ol className="list-decimal space-y-4 pl-8 font-normal text-zinc-300">
+          <li>Create a Locker for your savings.</li>
+          <li>
+            <span>
+              Program your Locker so it knows what to do with future deposits.
+              Here is an example program:
+            </span>
+            <ul className="mt-2 list-disc space-y-2 pl-8 font-normal text-zinc-300">
+              <li>
+                Swap 10% to ETH, stake it on Lido, and store the received stETH
+                in the Locker.
+              </li>
+              <li>Swap 10% to WBTC and store it in the Locker.</li>
+              <li>Deposit 10% into a Locker Pool to earn yield.</li>
+              <li>
+                Send the remaining 70% to Coinbase for off-ramping into fiat.
+              </li>
+            </ul>
+          </li>
+          <li>
+            Tell your employer or clients to pay you at your Locker address.
+          </li>
+        </ol>
       </div>
-    </>
+      {createLockerButton}
+    </div>
   );
 }

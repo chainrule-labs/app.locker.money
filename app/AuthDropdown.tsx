@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth, useClerk, useUser } from "@clerk/nextjs";
-import { CaretSortIcon } from "@radix-ui/react-icons";
+import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import { FC } from "react";
 
@@ -35,11 +35,8 @@ const AuthDropdown: FC = () => {
       {isLoaded && isSignedIn ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline">
-              <span className="flex flex-row items-center space-x-2">
-                <span>{user?.username}</span>
-                <CaretSortIcon />
-              </span>
+            <Button variant="secondary">
+              <HamburgerMenuIcon />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
@@ -54,7 +51,9 @@ const AuthDropdown: FC = () => {
           </DropdownMenuContent>
         </DropdownMenu>
       ) : (
-        <Button onClick={() => Clerk.openSignIn()}>Sign in</Button>
+        <Button variant="default" onClick={() => Clerk.openSignIn()}>
+          Sign in
+        </Button>
       )}
     </>
   );
