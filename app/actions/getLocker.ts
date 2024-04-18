@@ -25,7 +25,5 @@ export async function getLocker() {
     .leftJoin(lockers, eq(transactions.lockerId, lockers.id))
     .where(eq(lockers.userId, user.id));
 
-  console.log("txs:", txs);
-
   return { locker: _locker[0], txs };
 }

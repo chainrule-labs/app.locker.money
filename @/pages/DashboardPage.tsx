@@ -15,10 +15,6 @@ export default function DashboardPage() {
 
   const getLockerInfo = async () => {
     const { locker, txs } = await getLocker();
-    console.log("\n\nlocker", locker);
-    console.log("\n\ntxs", txs);
-    console.log("\n\n");
-    console.log(txs.length > 0 ? "funded" : "empty");
     setLockerAddress(locker?.lockerAddress as `0x${string}`);
     setNumTxs(txs.length);
   };

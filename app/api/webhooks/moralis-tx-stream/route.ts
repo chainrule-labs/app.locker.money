@@ -8,6 +8,9 @@ import { Pool } from "pg";
 import process from "process";
 import { Resend } from "resend";
 
+// TODO: monitor native token TXs too
+// https://moralis.io/how-to-monitor-all-eth-transfer-transactions/
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 /**
  * Invoked whenever a new transaction is detected by Moralis.
