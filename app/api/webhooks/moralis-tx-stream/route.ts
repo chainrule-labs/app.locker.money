@@ -137,7 +137,9 @@ export async function POST(request: Request) {
       tokenName,
       tokenSymbol,
       possibleSpam,
+      value: amountRaw,
       valueWithDecimals: amount,
+      contract,
     } = tx;
 
     // Ignore spam tokens
@@ -169,9 +171,11 @@ export async function POST(request: Request) {
       fromAddress,
       toAddress,
       timestamp: blockAt,
+      tokenAddress: contract,
       tokenName,
       tokenSymbol,
       amount,
+      amountRaw,
       lockerId: locker.id,
     };
 

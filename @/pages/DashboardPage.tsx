@@ -1,25 +1,32 @@
 "use client";
 
 import DashboardLockerEmpty from "@/components/dashboard/DashboardLockerEmpty";
+import DashboardLockerSetup from "@/components/dashboard/DashboardLockerSetup";
 import DashboardNoLocker from "@/components/dashboard/DashboardNoLocker";
 
 import "@rainbow-me/rainbowkit/styles.css";
 
 export default function DashboardPage({
-  lockerAddress,
-  numTxs,
+  locker,
+  lockerUsdValue,
+  transaction,
 }: {
-  lockerAddress: string | undefined;
-  numTxs: number;
+  locker: any;
+  lockerUsdValue: string;
+  transaction: any;
 }) {
-  console.log("lockerAddress", lockerAddress);
+  console.log("lockerAddress", locker?.lockerAddress);
 
-  const lockerState = !lockerAddress ? (
+  const lockerState = !locker?.lockerAddress ? (
     <DashboardNoLocker />
-  ) : numTxs < 1 ? (
-    <DashboardLockerEmpty lockerAddress={lockerAddress} />
+  ) : !transaction ? (
+    <DashboardLockerEmpty lockerAddress={locker?.lockerAddress} />
   ) : (
-    <p>Locker deposits: {numTxs}</p>
+    <DashboardLockerSetup
+      locker={locker}
+      transaction={transaction}
+      lockerUsdValue={lockerUsdValue}
+    />
   );
 
   return (

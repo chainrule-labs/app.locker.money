@@ -1,6 +1,6 @@
 "use server";
 
-import { getDrizzleDb } from "@/lib/drizzle";
+import { getNeonDrizzleDb } from "@/lib/database";
 import { currentUser } from "@clerk/nextjs";
 import { lockers, transactions } from "db/schema";
 import { eq } from "drizzle-orm";
@@ -11,7 +11,7 @@ export async function getLocker() {
     return { locker: null, txs: [] };
   }
 
-  const db = getDrizzleDb();
+  const db = getNeonDrizzleDb();
 
   const _locker = await db
     .select()
