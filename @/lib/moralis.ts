@@ -1,3 +1,5 @@
+"use server";
+
 import Moralis from "moralis";
 
 export const getPortfolio = async (walletAddress: string) => {
@@ -7,7 +9,7 @@ export const getPortfolio = async (walletAddress: string) => {
     });
   } catch (e) {
     // Moraolis probably already started
-    console.warn(e);
+    // console.warn(e);
   }
 
   try {
@@ -17,9 +19,8 @@ export const getPortfolio = async (walletAddress: string) => {
       address: walletAddress,
     });
 
-    console.log(response.result);
     // return response.
-    return response.result;
+    return { netWorthUsd: response.result.totalNetworthUsd };
   } catch (e) {
     console.error(e);
   }

@@ -23,8 +23,8 @@ export default function DashboardPage() {
     // setNumTxs(txs.length);
     setTransaction(txs[0] && txs.length > 0);
     if (!!locker) {
-      const portfolio = await getPortfolio(locker?.lockerAddress);
-      setLockerUsdValue(portfolio!.totalNetworthUsd);
+      const { netWorthUsd } = await getPortfolio(locker?.lockerAddress);
+      setLockerUsdValue(netWorthUsd);
     }
   };
 
@@ -34,8 +34,8 @@ export default function DashboardPage() {
     // setNumTxs(txs.length);
     setTransaction(txs[0]);
     if (!!locker && txs.length > 0) {
-      const portfolio = await getPortfolio(locker?.lockerAddress);
-      setLockerUsdValue(portfolio!.totalNetworthUsd);
+      const { netWorthUsd } = await getPortfolio(locker?.lockerAddress);
+      setLockerUsdValue(netWorthUsd);
     }
     setIsInitialCheck(false);
   };
