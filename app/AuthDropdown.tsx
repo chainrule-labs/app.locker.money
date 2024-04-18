@@ -10,9 +10,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { copyToClipboard, truncateAddress } from "@/lib/utils";
 import { useAuth, useClerk } from "@clerk/nextjs";
-import { CheckIcon, CopyIcon, HamburgerMenuIcon } from "@radix-ui/react-icons";
+import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import { FC, useState } from "react";
+import { PiCheckSquareOffset, PiCopy } from "react-icons/pi";
 import { useAccount, useBalance, useDisconnect } from "wagmi";
 
 const AuthDropdown: FC = () => {
@@ -62,9 +63,9 @@ const AuthDropdown: FC = () => {
               >
                 <span>{truncateAddress(address as `0x${string}`)}</span>
                 {copied ? (
-                  <CheckIcon className="text-emerald-500" />
+                  <PiCheckSquareOffset className="text-emerald-500" />
                 ) : (
-                  <CopyIcon />
+                  <PiCopy />
                 )}
               </button>
               <DropdownMenuItem

@@ -21,7 +21,7 @@ export default function DashboardPage() {
     const { locker, txs } = await getLocker();
     setLockerAddress(locker?.lockerAddress as `0x${string}`);
     // setNumTxs(txs.length);
-    setTransaction(txs[0]);
+    setTransaction(txs[0] && txs.length > 0);
     if (!!locker) {
       const portfolio = await getPortfolio(locker?.lockerAddress);
       setLockerUsdValue(portfolio!.totalNetworthUsd);
@@ -33,7 +33,7 @@ export default function DashboardPage() {
     setLockerAddress(locker?.lockerAddress as `0x${string}`);
     // setNumTxs(txs.length);
     setTransaction(txs[0]);
-    if (!!locker) {
+    if (!!locker && txs.length > 0) {
       const portfolio = await getPortfolio(locker?.lockerAddress);
       setLockerUsdValue(portfolio!.totalNetworthUsd);
     }

@@ -18,12 +18,14 @@ export default function DashboardNoLocker() {
       await createLockerRecord(address);
       router.refresh();
     } catch (error) {
-      if (error.message.includes("lockers_owner_address_unique")) {
-        setErrorMessage(
-          "A Locker already exists for this wallet address. Try switching to a different account in your wallet.",
-        );
-      } else {
-        setErrorMessage(`${error}`);
+      if (error instanceof Error) {
+        if (error.message.includes("lockers_owner_address_unique")) {
+          setErrorMessage(
+            "A Locker already exists for this wallet address. Try switching to a different account in your wallet.",
+          );
+        } else {
+          setErrorMessage(`${error}`);
+        }
       }
     }
   };
