@@ -8,16 +8,23 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useAuth, useClerk, useUser } from "@clerk/nextjs";
-import { CaretSortIcon } from "@radix-ui/react-icons";
+import { copyToClipboard, truncateAddress } from "@/lib/utils";
+import { useAuth, useClerk } from "@clerk/nextjs";
+import { CheckIcon, CopyIcon, HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
-import { FC } from "react";
+import { FC, useState } from "react";
+import { useAccount, useBalance } from "wagmi";
 
 const AuthDropdown: FC = () => {
   const router = useRouter();
-  const { user } = useUser();
   const { isLoaded, isSignedIn } = useAuth();
   const Clerk = useClerk();
+  const { isConnected, address, chain } = useAccount();
+  const [copied, setCopied] = useState<boolean>(false);
+
+  const { data } = useBalance({
+    address: address,
+  });
 
   const openUserProfile = () => {
     router.push("/user-profile");
@@ -32,29 +39,52 @@ const AuthDropdown: FC = () => {
 
   return (
     <>
-      {isLoaded && isSignedIn ? (
+      {isLoaded && isSignedIn && isConnected ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline">
-              <span className="flex flex-row items-center space-x-2">
-                <span>{user?.username}</span>
-                <CaretSortIcon />
-              </span>
+            <Button variant="secondary">
+              <HamburgerMenuIcon />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuGroup>
-              <DropdownMenuItem onSelect={() => openUserProfile()}>
+              <span className="relative flex items-center rounded-sm px-2 py-1.5 text-sm text-zinc-300 outline-none transition-colors focus:bg-zinc-100 focus:text-zinc-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:focus:bg-zinc-700 dark:focus:text-zinc-50">
+                {chain?.name}
+              </span>
+              <span className="relative flex items-center rounded-sm px-2 py-1.5 text-sm text-zinc-300 outline-none transition-colors focus:bg-zinc-100 focus:text-zinc-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:focus:bg-zinc-700 dark:focus:text-zinc-50">
+                {parseFloat(data?.formatted as string).toFixed(7)}{" "}
+                {data?.symbol}
+              </span>
+              <button
+                className="relative flex cursor-pointer select-none items-center space-x-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-zinc-100 focus:text-zinc-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:focus:bg-zinc-700 dark:focus:text-zinc-50"
+                onClick={() => copyToClipboard(address as string, setCopied)}
+              >
+                <span>{truncateAddress(address as `0x${string}`)}</span>
+                {copied ? (
+                  <CheckIcon className="text-emerald-500" />
+                ) : (
+                  <CopyIcon />
+                )}
+              </button>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onSelect={() => openUserProfile()}
+              >
                 Manage Profile
               </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => Clerk.signOut()}>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onSelect={() => Clerk.signOut()}
+              >
                 Sign out
               </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
-      ) : (
-        <Button onClick={() => Clerk.openSignIn()}>Sign in</Button>
+      ) : isLoaded && isSignedIn && !isConnected ? null : (
+        <Button variant="default" onClick={() => Clerk.openSignIn()}>
+          Sign in
+        </Button>
       )}
     </>
   );

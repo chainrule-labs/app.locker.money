@@ -1,4 +1,3 @@
-import console from "console";
 import Moralis from "moralis";
 
 export const getPortfolio = async (walletAddress: string) => {

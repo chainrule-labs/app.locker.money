@@ -11,7 +11,7 @@ dotenv.config({ path: path.resolve(__dirname, "../.env.development.local") });
 const chains = SUPPORTED_CHAINS;
 
 const description = "Locker transactions stream";
-const tag = "locker_transactions_stream";
+const tag = "lockerTxs";
 
 const createStream = async () => {
   console.log("Starting Moralis");
@@ -48,7 +48,7 @@ const updateStream = async (
     topic0: [topic],
   });
 
-  console.log("Stream updated to listen for ERC20");
+  console.log("Listening for ERC20 and native transfers...");
   console.log(updateResponse.toJSON());
 };
 
@@ -59,7 +59,6 @@ const createAndUpdateStream = async () => {
 
   const streamId = await createStream();
   await updateStream(streamId);
-  // await updateStream();
 };
 
 createAndUpdateStream();

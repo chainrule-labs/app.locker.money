@@ -7,6 +7,7 @@ import { eq } from "drizzle-orm";
 
 export async function getLocker() {
   const user = await currentUser();
+
   if (!user) {
     return { locker: null, txs: [] };
   }

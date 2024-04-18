@@ -34,3 +34,31 @@ export const getInitials = (name: string): string => {
   }
   return initials;
 };
+
+export const copyToClipboard = (
+  text: string,
+  setCopied: (value: boolean) => void,
+) => {
+  navigator.clipboard.writeText(text).then(
+    () => {
+      setCopied(true);
+      // Change back to default state after 2 seconds.
+      setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+    },
+    (err) => {
+      // eslint-disable-next-line no-console
+      console.error("Failed to Copy", err.message);
+    },
+  );
+};
+
+export const truncateAddress = (address: `0x${string}`): string => {
+  if (!address) return "No Account";
+  const match = address.match(
+    /^(0x[a-zA-Z0-9]{3})[a-zA-Z0-9]+([a-zA-Z0-9]{5})$/,
+  );
+  if (!match) return address;
+  return `${match[1]}...${match[2]}`;
+};
