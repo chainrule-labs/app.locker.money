@@ -7,6 +7,7 @@ import { eq } from "drizzle-orm";
 
 export async function getLocker() {
   const user = await currentUser();
+
   if (!user) {
     return { locker: null, txs: [] };
   }
@@ -23,6 +24,8 @@ export async function getLocker() {
     .from(transactions)
     .leftJoin(lockers, eq(transactions.lockerId, lockers.id))
     .where(eq(lockers.userId, user.id));
+
+  console.log("txs:", txs);
 
   return { locker: _locker[0], txs };
 }

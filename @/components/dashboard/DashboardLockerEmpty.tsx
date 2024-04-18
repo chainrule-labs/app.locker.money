@@ -19,6 +19,10 @@ export default function DashboardLockerEmpty({
 
   const { chain } = useAccount();
 
+  const reset = () => {
+    setErrorMessage("");
+  };
+
   const {
     data: hash,
     error,
@@ -64,7 +68,13 @@ export default function DashboardLockerEmpty({
   };
 
   useEffect(() => {
-    if (error) {
+    if (isConfirmed) {
+      reset();
+    }
+  }, [isConfirmed]);
+
+  useEffect(() => {
+    if (error && !JSON.stringify(error).includes("User rejected")) {
       setErrorMessage((error as BaseError).shortMessage || error.message);
     }
   }, [error]);
@@ -100,7 +110,7 @@ export default function DashboardLockerEmpty({
           {chain?.nativeCurrency.symbol} Amount:
         </span>
         <input
-          className="rounded-md bg-zinc-700 p-2"
+          className="rounded-md bg-zinc-700 p-2 font-normal"
           type="text"
           pattern="[0-9]*\.?[0-9]*"
           inputMode="decimal"
@@ -121,7 +131,7 @@ export default function DashboardLockerEmpty({
               Successful Deposit!
             </span>
             <a
-              className="mt-8 flex items-center space-x-2 self-center font-normal text-[#4A22EC]"
+              className="mt-8 flex items-center space-x-2 self-center font-normal text-[#4A22EC] hover:text-[#4C4FE4] hover:underline"
               href={`${chain?.blockExplorers?.default.url}/tx/${hash}`}
               target="_blank"
               rel="noopener noreferrer"
@@ -142,3 +152,8 @@ export default function DashboardLockerEmpty({
     </div>
   );
 }
+
+// Check if locker has been funded every 5 seconds
+// If funded, display message saying the locker is fundedq
+// If funded, display button to go to dashboard
+// After manual deposit, show button to go to dashboard

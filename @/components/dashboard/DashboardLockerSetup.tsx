@@ -21,7 +21,7 @@ export default function DashboardLockerSetup({
         </div>
 
         <p className="text">
-          Arbitrum Sepolia, Base Sepolia, Linea Sepolia, and Gnosis mainnet
+          Arbitrum Sepolia, Base Sepolia, Linea Sepolia, and Gnosis Mainnet
           supported.
         </p>
       </div>
