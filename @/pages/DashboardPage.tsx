@@ -1,7 +1,9 @@
 "use client";
 
 import DashboardLockerEmpty from "@/components/dashboard/DashboardLockerEmpty";
+import DashboardLockerSetup from "@/components/dashboard/DashboardLockerSetup";
 import DashboardNoLocker from "@/components/dashboard/DashboardNoLocker";
+import { getPortfolio } from "@/lib/moralis";
 import "@rainbow-me/rainbowkit/styles.css";
 import { getLocker } from "app/actions/getLocker";
 import { useEffect, useState } from "react";
@@ -11,30 +13,42 @@ export default function DashboardPage() {
   const [lockerAddress, setLockerAddress] = useState<`0x${string}` | null>(
     null,
   );
-  const [numTxs, setNumTxs] = useState<number>(0);
+  // const [numTxs, setNumTxs] = useState<number>(0);
+  const [transaction, setTransaction] = useState<any>(null);
+  const [lockerUsdValue, setLockerUsdValue] = useState<string>("$0.00");
 
   const getLockerInfo = async () => {
     const { locker, txs } = await getLocker();
     setLockerAddress(locker?.lockerAddress as `0x${string}`);
-    setNumTxs(txs.length);
+    // setNumTxs(txs.length);
+    setTransaction(txs[0]);
+    if (!!locker) {
+      const portfolio = await getPortfolio(locker?.lockerAddress);
+      setLockerUsdValue(portfolio!.totalNetworthUsd);
+    }
   };
 
   const initialLockerCheck = async () => {
     const { locker, txs } = await getLocker();
     setLockerAddress(locker?.lockerAddress as `0x${string}`);
-    setNumTxs(txs.length);
+    // setNumTxs(txs.length);
+    setTransaction(txs[0]);
+    if (!!locker) {
+      const portfolio = await getPortfolio(locker?.lockerAddress);
+      setLockerUsdValue(portfolio!.totalNetworthUsd);
+    }
     setIsInitialCheck(false);
   };
 
   useEffect(() => {
-    // Check numTxs every 5 seconds
+    // Check for transaction every 5 seconds
     const interval = setInterval(() => {
       getLockerInfo();
     }, 5000);
 
     // Cleanup the interval when the component unmounts
     return () => clearInterval(interval);
-  }, [numTxs]);
+  }, [transaction]);
 
   useEffect(() => {
     initialLockerCheck();
@@ -47,12 +61,14 @@ export default function DashboardPage() {
       </div>
     ) : !lockerAddress && !isInitialCheck ? (
       <DashboardNoLocker />
-    ) : lockerAddress && !isInitialCheck && numTxs < 1 ? (
+    ) : lockerAddress && !isInitialCheck && !transaction ? (
       <DashboardLockerEmpty lockerAddress={lockerAddress} />
     ) : (
-      <div className="flex h-full w-full items-center justify-center p-4">
-        <span>DashboardFunded - Locker deposits: {numTxs}</span>
-      </div>
+      <DashboardLockerSetup
+        locker={lockerAddress}
+        transaction={transaction}
+        lockerUsdValue={lockerUsdValue}
+      />
     );
 
   return (
