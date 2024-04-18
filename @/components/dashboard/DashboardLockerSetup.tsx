@@ -26,6 +26,8 @@ export default function DashboardLockerSetup({
     );
   };
 
+  // fetch lockerUsdValue here using getPortfolio
+
   return (
     <>
       <div className="space-y-12">

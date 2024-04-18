@@ -1,9 +1,7 @@
 "use client";
 
 import DashboardLockerEmpty from "@/components/dashboard/DashboardLockerEmpty";
-import DashboardLockerSetup from "@/components/dashboard/DashboardLockerSetup";
 import DashboardNoLocker from "@/components/dashboard/DashboardNoLocker";
-import { getPortfolio } from "@/lib/moralis";
 import "@rainbow-me/rainbowkit/styles.css";
 import { getLocker } from "app/actions/getLocker";
 import { useEffect, useState } from "react";
@@ -22,10 +20,10 @@ export default function DashboardPage() {
     setLockerAddress(locker?.lockerAddress as `0x${string}`);
     // setNumTxs(txs.length);
     setTransaction(txs[0] && txs.length > 0);
-    if (!!locker) {
-      const portfolio = await getPortfolio(locker?.lockerAddress);
-      setLockerUsdValue(portfolio!.totalNetworthUsd);
-    }
+    // if (!!locker) {
+    //   const portfolio = await getPortfolio(locker?.lockerAddress);
+    //   setLockerUsdValue(portfolio!.totalNetworthUsd);
+    // }
   };
 
   const initialLockerCheck = async () => {
@@ -33,10 +31,10 @@ export default function DashboardPage() {
     setLockerAddress(locker?.lockerAddress as `0x${string}`);
     // setNumTxs(txs.length);
     setTransaction(txs[0]);
-    if (!!locker && txs.length > 0) {
-      const portfolio = await getPortfolio(locker?.lockerAddress);
-      setLockerUsdValue(portfolio!.totalNetworthUsd);
-    }
+    // if (!!locker && txs.length > 0) {
+    //   const portfolio = await getPortfolio(locker?.lockerAddress);
+    //   setLockerUsdValue(portfolio!.totalNetworthUsd);
+    // }
     setIsInitialCheck(false);
   };
 
@@ -64,11 +62,12 @@ export default function DashboardPage() {
     ) : lockerAddress && !isInitialCheck && !transaction ? (
       <DashboardLockerEmpty lockerAddress={lockerAddress} />
     ) : (
-      <DashboardLockerSetup
-        locker={lockerAddress}
-        transaction={transaction}
-        lockerUsdValue={lockerUsdValue}
-      />
+      // <DashboardLockerSetup
+      //   locker={lockerAddress}
+      //   transaction={transaction}
+      //   lockerUsdValue={lockerUsdValue}
+      // />
+      <span>funded</span>
     );
 
   return (
@@ -79,3 +78,5 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+// move getPortfolio to DashboardLockerSetup
