@@ -29,6 +29,13 @@
       "when": 1713376611969,
       "tag": "0003_whole_star_brand",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1713411448070,
+      "tag": "0004_known_rockslide",
+      "breakpoints": true
     }
   ]
 }

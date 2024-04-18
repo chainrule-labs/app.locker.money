@@ -1,7 +1,7 @@
 "use server";
 
 import { DEFAULT_ZERODEV_SEED, PROVIDER_ZERODEV } from "@/lib/constants";
-import { getDrizzleDb } from "@/lib/drizzle";
+import { getNeonDrizzleDb } from "@/lib/database";
 import { getSmartAccountAddress } from "@/lib/zerodev";
 import { clerkClient, currentUser } from "@clerk/nextjs";
 import { lockers } from "db/schema";
@@ -39,7 +39,7 @@ export async function createLockerRecord(_ownerAddress: string | undefined) {
     lockerAddress,
   };
 
-  const db = getDrizzleDb();
+  const db = getNeonDrizzleDb();
   await db.insert(lockers).values(locker);
   console.log("inserted locker", locker);
 

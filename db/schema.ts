@@ -44,9 +44,16 @@ export const transactions = pgTable("transactions", {
     precision: 6,
     withTimezone: true,
   }).notNull(),
+  tokenAddress: text("token_address").notNull(),
   tokenName: text("token_name").notNull(),
   tokenSymbol: text("token_symbol").notNull(),
+
+  // with decimals, eg 1 USDC = 1.000000
   amount: text("amount").notNull(),
+
+  // without decimals, eg 1 USDC = 1000000
+  amountRaw: text("amount_raw").notNull(),
+
   lockerId: integer("locker_id")
     .references(() => lockers.id)
     .notNull(),

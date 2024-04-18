@@ -1,7 +1,7 @@
 import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 
-export const database = async () => {
+export const getNeonDrizzleDb = () => {
   if (!process.env.DATABASE_URL) {
     throw new Error("Please define the DATABASE_URL environment variable.");
   }
