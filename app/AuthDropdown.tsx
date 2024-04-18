@@ -13,13 +13,14 @@ import { useAuth, useClerk } from "@clerk/nextjs";
 import { CheckIcon, CopyIcon, HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import { FC, useState } from "react";
-import { useAccount, useBalance } from "wagmi";
+import { useAccount, useBalance, useDisconnect } from "wagmi";
 
 const AuthDropdown: FC = () => {
   const router = useRouter();
   const { isLoaded, isSignedIn } = useAuth();
-  const Clerk = useClerk();
+  const { signOut, openSignUp } = useClerk();
   const { isConnected, address, chain } = useAccount();
+  const { disconnect } = useDisconnect();
   const [copied, setCopied] = useState<boolean>(false);
 
   const { data } = useBalance({
@@ -74,7 +75,10 @@ const AuthDropdown: FC = () => {
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer"
-                onSelect={() => Clerk.signOut()}
+                onSelect={() => {
+                  disconnect();
+                  signOut(() => router.push("/"));
+                }}
               >
                 Sign out
               </DropdownMenuItem>
@@ -82,7 +86,7 @@ const AuthDropdown: FC = () => {
           </DropdownMenuContent>
         </DropdownMenu>
       ) : isLoaded && isSignedIn && !isConnected ? null : (
-        <Button variant="default" onClick={() => Clerk.openSignIn()}>
+        <Button variant="default" onClick={() => openSignUp()}>
           Sign in
         </Button>
       )}

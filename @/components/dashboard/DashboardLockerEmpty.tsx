@@ -157,3 +157,8 @@ export default function DashboardLockerEmpty({
 // If funded, display message saying the locker is fundedq
 // If funded, display button to go to dashboard
 // After manual deposit, show button to go to dashboard
+
+// Can just add a QR code.
+// If funding is received, show a message saying the locker is funded.
+// However, parent page will want to redirect to DashboardLockerSetup Page
+// within 5 seconds of Locker being funded.

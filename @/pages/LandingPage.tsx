@@ -2,20 +2,29 @@
 
 import { PATHS } from "@/lib/paths";
 import { useClerk } from "@clerk/nextjs";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import "node_modules/@rainbow-me/rainbowkit/dist/index.css";
-import { useAccount } from "wagmi";
+import { useEffect } from "react";
 
 type ILandingPageProps = {
   userId: string | null;
 };
 
 export default function LandingPage({ userId }: ILandingPageProps) {
+  const router = useRouter();
   const Clerk = useClerk();
 
-  const { openConnectModal } = useConnectModal();
-  const { isConnected } = useAccount();
+  useEffect(() => {
+    if (userId) {
+      router.push(PATHS.HOME);
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    if (userId) {
+      router.push(PATHS.HOME);
+    }
+  }, []);
 
   return (
     <div className="xs:grid xs:place-content-center h-full w-full p-4">
@@ -27,27 +36,12 @@ export default function LandingPage({ userId }: ILandingPageProps) {
           Save and invest on-chain every time you get paid.
         </h2>
       </div>
-      {userId && isConnected ? (
-        <Link href={PATHS.HOME}>
-          <button className="w-full rounded-lg bg-[#4A22EC] py-2 hover:bg-[#4C4FE4]">
-            Open Dashboard
-          </button>
-        </Link>
-      ) : userId && !isConnected && openConnectModal ? (
-        <button
-          className="w-full rounded-lg bg-[#4A22EC] py-2 hover:bg-[#4C4FE4]"
-          onClick={() => openConnectModal()}
-        >
-          Connect Wallet
-        </button>
-      ) : (
-        <button
-          className="w-full rounded-lg bg-[#4A22EC] py-2 hover:bg-[#4C4FE4]"
-          onClick={() => Clerk.openSignIn()}
-        >
-          Get Started
-        </button>
-      )}
+      <button
+        className="w-full rounded-lg bg-[#4A22EC] py-2 hover:bg-[#4C4FE4]"
+        onClick={() => Clerk.openSignIn()}
+      >
+        Get Started
+      </button>
     </div>
   );
 }

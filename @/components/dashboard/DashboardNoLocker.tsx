@@ -1,4 +1,5 @@
 "use client";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { createLockerRecord } from "app/actions/createLockerRecord";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -6,26 +7,41 @@ import { useAccount } from "wagmi";
 
 export default function DashboardNoLocker() {
   const [isCreatingLocker, setIsCreatingLocker] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const router = useRouter();
-  const { address } = useAccount();
+  const { openConnectModal } = useConnectModal();
+  const { address, isConnected } = useAccount();
 
   const genLockerAddress = async () => {
-    console.log("genLockerAddress", address);
-    const lockerInfo = await createLockerRecord(address);
-    console.log("lockerInfo", lockerInfo);
-    router.refresh();
+    setErrorMessage(null);
+    try {
+      await createLockerRecord(address);
+      router.refresh();
+    } catch (error) {
+      if (error.message.includes("lockers_owner_address_unique")) {
+        setErrorMessage(
+          "A Locker already exists for this wallet address. Try switching to a different account in your wallet.",
+        );
+      } else {
+        setErrorMessage(`${error}`);
+      }
+    }
   };
 
   useEffect(() => {
-    console.log("trigger gen-address", address, isCreatingLocker);
     if (isCreatingLocker && address) {
-      // generate locker address
       genLockerAddress();
     }
   }, [address, isCreatingLocker]);
 
+  useEffect(() => {
+    if (errorMessage) {
+      setIsCreatingLocker(false);
+    }
+  }, [errorMessage]);
+
   let createLockerButton = null;
-  if (isCreatingLocker) {
+  if (isCreatingLocker && isConnected) {
     createLockerButton = (
       <button
         className="w-full rounded-lg bg-[#4A22EC] py-2 text-white hover:bg-[#4C4FE4]"
@@ -38,7 +54,12 @@ export default function DashboardNoLocker() {
     createLockerButton = (
       <button
         className="w-full rounded-lg bg-[#4A22EC] py-2 text-white hover:bg-[#4C4FE4]"
-        onClick={() => setIsCreatingLocker(true)}
+        onClick={() => {
+          if (openConnectModal) {
+            openConnectModal();
+          }
+          setIsCreatingLocker(true);
+        }}
       >
         Create a Locker
       </button>
@@ -56,25 +77,18 @@ export default function DashboardNoLocker() {
           <li>
             <span>
               Program your Locker so it knows what to do with future deposits.
-              Here is an example program:
             </span>
-            <ul className="mt-2 list-disc space-y-2 pl-8 font-normal text-zinc-300">
-              <li>
-                Swap 10% to ETH, stake it on Lido, and store the received stETH
-                in the Locker.
-              </li>
-              <li>Swap 10% to WBTC and store it in the Locker.</li>
-              <li>Deposit 10% into a Locker Pool to earn yield.</li>
-              <li>
-                Send the remaining 70% to Coinbase for off-ramping into fiat.
-              </li>
-            </ul>
           </li>
           <li>
             Tell your employer or clients to pay you at your Locker address.
           </li>
         </ol>
       </div>
+      {errorMessage && (
+        <div className="mb-6 flex w-full items-center justify-center font-normal text-red-500">
+          <span>{errorMessage}</span>
+        </div>
+      )}
       {createLockerButton}
     </div>
   );
