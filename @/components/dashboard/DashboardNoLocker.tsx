@@ -1,24 +1,13 @@
 "use client";
-
-import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { createLockerRecord } from "app/actions/createLockerRecord";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 
 export default function DashboardNoLocker() {
-  const { openConnectModal } = useConnectModal();
   const [isCreatingLocker, setIsCreatingLocker] = useState(false);
   const router = useRouter();
-  const { isConnected, address } = useAccount();
-
-  const onCreateLocker = async () => {
-    console.log("onCreateLocker", isConnected, address);
-    setIsCreatingLocker(true);
-    if (!isConnected && openConnectModal) {
-      openConnectModal();
-    }
-  };
+  const { address } = useAccount();
 
   const genLockerAddress = async () => {
     console.log("genLockerAddress", address);
@@ -49,7 +38,7 @@ export default function DashboardNoLocker() {
     createLockerButton = (
       <button
         className="w-full rounded-lg bg-[#4A22EC] py-2 text-white hover:bg-[#4C4FE4]"
-        onClick={onCreateLocker}
+        onClick={() => setIsCreatingLocker(true)}
       >
         Create a Locker
       </button>

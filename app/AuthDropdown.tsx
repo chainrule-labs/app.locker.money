@@ -9,19 +9,22 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { copyToClipboard, truncateAddress } from "@/lib/utils";
-import { useAuth, useClerk, useUser } from "@clerk/nextjs";
+import { useAuth, useClerk } from "@clerk/nextjs";
 import { CheckIcon, CopyIcon, HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import { FC, useState } from "react";
-import { useAccount } from "wagmi";
+import { useAccount, useBalance } from "wagmi";
 
 const AuthDropdown: FC = () => {
   const router = useRouter();
-  const { user } = useUser(); // undefined for some reason
   const { isLoaded, isSignedIn } = useAuth();
   const Clerk = useClerk();
   const { isConnected, address, chain } = useAccount();
   const [copied, setCopied] = useState<boolean>(false);
+
+  const { data } = useBalance({
+    address: address,
+  });
 
   const openUserProfile = () => {
     router.push("/user-profile");
@@ -45,11 +48,15 @@ const AuthDropdown: FC = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuGroup>
-              <span className="relative flex items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-zinc-100 focus:text-zinc-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:focus:bg-zinc-700 dark:focus:text-zinc-50">
+              <span className="relative flex items-center rounded-sm px-2 py-1.5 text-sm text-zinc-300 outline-none transition-colors focus:bg-zinc-100 focus:text-zinc-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:focus:bg-zinc-700 dark:focus:text-zinc-50">
                 {chain?.name}
               </span>
+              <span className="relative flex items-center rounded-sm px-2 py-1.5 text-sm text-zinc-300 outline-none transition-colors focus:bg-zinc-100 focus:text-zinc-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:focus:bg-zinc-700 dark:focus:text-zinc-50">
+                {parseFloat(data?.formatted as string).toFixed(7)}{" "}
+                {data?.symbol}
+              </span>
               <button
-                className="relative flex cursor-default select-none items-center space-x-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-zinc-100 focus:text-zinc-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:focus:bg-zinc-700 dark:focus:text-zinc-50"
+                className="relative flex cursor-pointer select-none items-center space-x-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-zinc-100 focus:text-zinc-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:focus:bg-zinc-700 dark:focus:text-zinc-50"
                 onClick={() => copyToClipboard(address as string, setCopied)}
               >
                 <span>{truncateAddress(address as `0x${string}`)}</span>
@@ -59,16 +66,22 @@ const AuthDropdown: FC = () => {
                   <CopyIcon />
                 )}
               </button>
-              <DropdownMenuItem onSelect={() => openUserProfile()}>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onSelect={() => openUserProfile()}
+              >
                 Manage Profile
               </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => Clerk.signOut()}>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onSelect={() => Clerk.signOut()}
+              >
                 Sign out
               </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
-      ) : (
+      ) : isLoaded && isSignedIn && !isConnected ? null : (
         <Button variant="default" onClick={() => Clerk.openSignIn()}>
           Sign in
         </Button>

@@ -1,6 +1,5 @@
 "use client";
 import { ExternalLinkIcon } from "@radix-ui/react-icons";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useEffect, useState } from "react";
 import { parseEther } from "viem";
 import {
@@ -18,8 +17,7 @@ export default function DashboardLockerEmpty({
   const [amountInput, setAmountInput] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const { openConnectModal } = useConnectModal();
-  const { isConnected, address, chain } = useAccount();
+  const { chain } = useAccount();
 
   const {
     data: hash,
