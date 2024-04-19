@@ -41,9 +41,7 @@ export default function DashboardLockerSetup({
   return (
     <>
       <div className="space-y-12">
-        <p className="poppins w-full text-3xl font-bold">
-          Set up automated savings
-        </p>
+        <p className="w-full text-3xl font-bold">Set up automated savings</p>
 
         <div>
           <p>Congratulations, you funded your Locker with {lockerUsdValue}.</p>

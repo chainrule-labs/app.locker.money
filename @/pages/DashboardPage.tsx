@@ -40,13 +40,13 @@ export default function DashboardPage() {
   // Navigate to transaciton page
   useEffect(() => {
     if (lockerAddress && initialTxLength === 0 && latestTxLength > 0) {
-      router.push(`${PATHS.TX}?txHash=${transactions[0].hash}`);
+      router.push(`${PATHS.TX}/tx/${transactions[0].hash}`);
     }
   }, [lockerAddress, initialTxLength, latestTxLength, router]);
 
   const lockerState =
     !lockerAddress && isFirstRender.current ? (
-      <div className="flex h-full w-full items-center justify-center p-4">
+      <div className="flex size-full items-center justify-center p-4">
         <span>Loading...</span>
       </div>
     ) : !lockerAddress && !isFirstRender.current ? (
@@ -61,9 +61,9 @@ export default function DashboardPage() {
     );
 
   return (
-    <div className="xs:grid xs:place-content-center h-full w-full">
+    <div className="xs:grid xs:place-content-center size-full">
       <div className="flex flex-col justify-center">
-        <div className="min-w-1/3 flex flex-col space-y-12">{lockerState}</div>
+        <div className="flex flex-col space-y-12">{lockerState}</div>
       </div>
     </div>
   );
