@@ -3,7 +3,7 @@
 import { getNeonDrizzleDb } from "@/lib/database";
 import { currentUser } from "@clerk/nextjs";
 import { lockers, transactions } from "db/schema";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 
 export async function getLocker() {
   const user = await currentUser();
@@ -23,7 +23,8 @@ export async function getLocker() {
     .select()
     .from(transactions)
     .leftJoin(lockers, eq(transactions.lockerId, lockers.id))
-    .where(eq(lockers.userId, user.id));
+    .where(eq(lockers.userId, user.id))
+    .orderBy(desc(transactions.timestamp));
 
   return { locker: _locker[0], txs };
 }

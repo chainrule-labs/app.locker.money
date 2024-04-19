@@ -62,3 +62,45 @@ export const truncateAddress = (address: `0x${string}`): string => {
   if (!match) return address;
   return `${match[1]}...${match[2]}`;
 };
+
+export const chainId2ZeroDevClientInfo = (chainId: string) => {
+  switch (chainId.toString()) {
+    // sepolia - 11155111
+    case "11155111":
+      return {
+        rpc: process.env.NEXT_PUBLIC_BUNDLER_RPC_SEPOLIA,
+        paymaster: process.env.NEXT_PUBLIC_PAYMASTER_RPC_SEPOLIA,
+      };
+
+    // arbitrum sepolia - 421614
+    case "421614":
+      return {
+        rpc: process.env.NEXT_PUBLIC_BUNDLER_RPC_ARBITRUM_SEPOLIA,
+        paymaster: process.env.NEXT_PUBLIC_PAYMASTER_RPC_ARBITRUM_SEPOLIA,
+      };
+
+    // base sepolia - 84532
+    case "84532":
+      return {
+        rpc: process.env.NEXT_PUBLIC_BUNDLER_RPC_BASE_SEPOLIA,
+        paymaster: process.env.NEXT_PUBLIC_PAYMASTER_RPC_BASE_SEPOLIA,
+      };
+
+    // linea sepolia - 59141
+    case "59141":
+      return {
+        rpc: process.env.NEXT_PUBLIC_BUNDLER_RPC_LINEA_SEPOLIA,
+        paymaster: process.env.NEXT_PUBLIC_PAYMASTER_RPC_LINEA_SEPOLIA,
+      };
+
+    // gnosis mainnet - 100
+    case "100":
+      return {
+        rpc: process.env.NEXT_PUBLIC_BUNDLER_RPC_GNOSIS,
+        paymaster: process.env.NEXT_PUBLIC_PAYMASTER_RPC_GNOSIS,
+      };
+
+    default:
+      throw new Error(`Unsupported chainId: ${chainId}`);
+  }
+};
