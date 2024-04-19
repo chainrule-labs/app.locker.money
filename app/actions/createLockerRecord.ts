@@ -2,7 +2,7 @@
 
 import { DEFAULT_ZERODEV_SEED, PROVIDER_ZERODEV } from "@/lib/constants";
 import { getNeonDrizzleDb } from "@/lib/database";
-import { getSmartAccountAddress } from "@/lib/zerodev";
+import { getSmartAccountAddress } from "@/lib/zerodev-server";
 import { clerkClient, currentUser } from "@clerk/nextjs";
 import { lockers } from "db/schema";
 

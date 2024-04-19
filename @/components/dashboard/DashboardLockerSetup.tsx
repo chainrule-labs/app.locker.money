@@ -1,7 +1,9 @@
 "use client";
 import { getPortfolio } from "@/lib/moralis";
-import { createKernel } from "@/lib/zerodev";
+import { createUserAndSessionKernels } from "@/lib/zerodev-client";
+import { transferOnUserBehalf } from "@/lib/zerodev-server";
 import { getWalletClient } from "@wagmi/core";
+import { saveSessionKey } from "app/actions/saveSessionKey";
 import { useEffect, useState } from "react";
 import { useConfig } from "wagmi";
 
@@ -13,6 +15,7 @@ export default function DashboardLockerSetup({
   locker: any;
 }) {
   const [lockerUsdValue, setLockerUsdValue] = useState<string>("$0.00");
+  // console.log(locker);
   // const [isDeployingKernel, setIsDeployingKernel] = useState(false);
   const config = useConfig();
 
@@ -26,12 +29,20 @@ export default function DashboardLockerSetup({
   const onEnableAutomation = async () => {
     const walletClient = await getWalletClient(config);
     // await createKernel(walletClient, chain!);
-    await createKernel(
+    const { serializedSessionKey } = await createUserAndSessionKernels(
       walletClient,
       locker.ownerAddress,
-      transaction,
+      transaction.transactions.chainId,
       locker.lockerAddress,
     );
+
+    console.log("Serialized session key:", serializedSessionKey);
+
+    await saveSessionKey(serializedSessionKey, locker.id);
+    console.log("saved session key");
+    console.log(transaction);
+    // todo: not sure why transaction has shape {transactions, lockers}
+    await transferOnUserBehalf(transaction.transactions);
   };
 
   useEffect(() => {
@@ -61,8 +72,8 @@ export default function DashboardLockerSetup({
         </div>
 
         <p className="text-sm text-zinc-400">
-          If you don't want to automate anything, you can continue to deposit
-          manually into your locker: {locker.lockerAddress}.
+          If you don&apos;t want to automate anything, you can continue to
+          deposit manually into your locker: {locker.lockerAddress}.
         </p>
 
         <p className="text-sm text-zinc-400">
