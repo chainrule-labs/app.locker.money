@@ -21,7 +21,7 @@ export default function Transaction({
     100: "Gnosis Chain",
   };
 
-  const onContinue = () => {
+  const handleContinue = () => {
     // If locker is NOT deployed, route to DashboardSetup
     // If locker is deployed, route to DashboardPortfolio
 
@@ -63,7 +63,7 @@ export default function Transaction({
           </span>
           <button
             className="w-full rounded-lg bg-[#4A22EC] py-2 text-white hover:bg-[#4C4FE4]"
-            onClick={() => router.push(PATHS.HOME)}
+            onClick={() => handleContinue()}
           >
             Continue
           </button>
