@@ -3,7 +3,6 @@
 import DashboardLockerEmpty from "@/components/dashboard/DashboardLockerEmpty";
 import DashboardLockerSetup from "@/components/dashboard/DashboardLockerSetup";
 import DashboardNoLocker from "@/components/dashboard/DashboardNoLocker";
-import { getPortfolio } from "@/lib/moralis";
 import "@rainbow-me/rainbowkit/styles.css";
 import { getLocker } from "app/actions/getLocker";
 import { useEffect, useState } from "react";
@@ -16,25 +15,28 @@ export default function DashboardPage() {
   // const [numTxs, setNumTxs] = useState<number>(0);
   const [transaction, setTransaction] = useState<any>(null);
   const [lockerUsdValue, setLockerUsdValue] = useState<string>("$0.00");
+  const [locker, setLocker] = useState<any>(null);
 
   const getLockerInfo = async () => {
     const { locker, txs } = await getLocker();
     setLockerAddress(locker?.lockerAddress as `0x${string}`);
     // setNumTxs(txs.length);
-    setTransaction(txs[0] && txs.length > 0);
-    if (!!locker) {
-      const { netWorthUsd } = await getPortfolio(locker?.lockerAddress);
-      setLockerUsdValue(netWorthUsd);
-    }
+    setTransaction(txs[0]);
+    // if (!!locker) {
+    //   const { netWorthUsd } = await getPortfolio(locker?.lockerAddress);
+    //   setLockerUsdValue(netWorthUsd);
+    // }
   };
 
   const initialLockerCheck = async () => {
     const { locker, txs } = await getLocker();
+    setLocker(locker);
     setLockerAddress(locker?.lockerAddress as `0x${string}`);
     // setNumTxs(txs.length);
     setTransaction(txs[0]);
     if (!!locker && txs.length > 0) {
-      const { netWorthUsd } = await getPortfolio(locker?.lockerAddress);
+      // const { netWorthUsd } = await getPortfolio(locker?.lockerAddress);
+      const netWorthUsd = "$0.00";
       setLockerUsdValue(netWorthUsd);
     }
     setIsInitialCheck(false);
@@ -65,7 +67,7 @@ export default function DashboardPage() {
       <DashboardLockerEmpty lockerAddress={lockerAddress} />
     ) : (
       <DashboardLockerSetup
-        locker={lockerAddress}
+        locker={locker}
         transaction={transaction}
         lockerUsdValue={lockerUsdValue}
       />
