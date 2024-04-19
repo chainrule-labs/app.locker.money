@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { PATHS } from "@/lib/paths";
@@ -30,17 +31,19 @@ const TransactionPage = () => {
 
   const getTxDetails = async () => {
     const tx = await getTx(txHash as string);
-    const chain = supportedChains[tx?.chainId];
+    const chain = supportedChains[Number(tx?.chainId)];
     setTransaction(tx);
     setChainName(chain);
   };
 
   useEffect(() => {
-    getTxDetails();
+    if (typeof window !== "undefined") {
+      getTxDetails();
+    }
   }, []);
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center p-4 py-10">
+    <div className="flex size-full flex-col items-center justify-center p-4 py-10">
       <span className="mb-12 text-3xl">Great News!</span>
       <FaCheckCircle className="mb-12 text-emerald-500" size="50px" />
       {transaction && (

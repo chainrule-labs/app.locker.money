@@ -1,5 +1,5 @@
 import TransactionPage from "@/pages/TransactionPage";
 
-export default async function Transaction() {
+export default function Transaction() {
   return <TransactionPage />;
 }
