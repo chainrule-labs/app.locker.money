@@ -1,19 +1,27 @@
 "use client";
+import { getPortfolio } from "@/lib/moralis";
 import { createKernel } from "@/lib/zerodev";
 import { getWalletClient } from "@wagmi/core";
+import { useEffect, useState } from "react";
 import { useConfig } from "wagmi";
 
 export default function DashboardLockerSetup({
-  lockerUsdValue,
   transaction,
   locker,
 }: {
-  lockerUsdValue: string;
   transaction: any;
   locker: any;
 }) {
+  const [lockerUsdValue, setLockerUsdValue] = useState<string>("$0.00");
   // const [isDeployingKernel, setIsDeployingKernel] = useState(false);
   const config = useConfig();
+
+  const fetchPortfolio = async () => {
+    if (!!locker && transaction) {
+      const { netWorthUsd } = await getPortfolio(locker?.lockerAddress);
+      setLockerUsdValue(netWorthUsd);
+    }
+  };
 
   const onEnableAutomation = async () => {
     const walletClient = await getWalletClient(config);
@@ -26,7 +34,9 @@ export default function DashboardLockerSetup({
     );
   };
 
-  // fetch lockerUsdValue here using getPortfolio
+  useEffect(() => {
+    fetchPortfolio();
+  }, []);
 
   return (
     <>
