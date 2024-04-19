@@ -38,7 +38,7 @@ export default function LandingPage({ userId }: ILandingPageProps) {
       </div>
       <button
         className="w-full rounded-lg bg-[#4A22EC] py-2 hover:bg-[#4C4FE4]"
-        onClick={() => Clerk.openSignIn()}
+        onClick={() => Clerk.openSignUp()}
       >
         Get Started
       </button>

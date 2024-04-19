@@ -1,22 +1,30 @@
 "use client";
+import { getPortfolio } from "@/lib/moralis";
 import { createUserAndSessionKernels } from "@/lib/zerodev-client";
 import { transferOnUserBehalf } from "@/lib/zerodev-server";
 import { getWalletClient } from "@wagmi/core";
 import { saveSessionKey } from "app/actions/saveSessionKey";
+import { useEffect, useState } from "react";
 import { useConfig } from "wagmi";
 
 export default function DashboardLockerSetup({
-  lockerUsdValue,
   transaction,
   locker,
 }: {
-  lockerUsdValue: string;
   transaction: any;
   locker: any;
 }) {
+  const [lockerUsdValue, setLockerUsdValue] = useState<string>("$0.00");
   // console.log(locker);
   // const [isDeployingKernel, setIsDeployingKernel] = useState(false);
   const config = useConfig();
+
+  const fetchPortfolio = async () => {
+    if (!!locker && transaction) {
+      const { netWorthUsd } = await getPortfolio(locker?.lockerAddress);
+      setLockerUsdValue(netWorthUsd);
+    }
+  };
 
   const onEnableAutomation = async () => {
     const walletClient = await getWalletClient(config);
@@ -37,12 +45,14 @@ export default function DashboardLockerSetup({
     await transferOnUserBehalf(transaction.transactions);
   };
 
+  useEffect(() => {
+    fetchPortfolio();
+  }, []);
+
   return (
     <>
       <div className="space-y-12">
-        <p className="poppins w-full text-3xl font-bold">
-          Set up automated savings
-        </p>
+        <p className="w-full text-3xl font-bold">Set up automated savings</p>
 
         <div>
           <p>Congratulations, you funded your Locker with {lockerUsdValue}.</p>
@@ -62,8 +72,8 @@ export default function DashboardLockerSetup({
         </div>
 
         <p className="text-sm text-zinc-400">
-          If you don't want to automate anything, you can continue to deposit
-          manually into your locker: {locker.lockerAddress}.
+          If you don&apos;t want to automate anything, you can continue to
+          deposit manually into your locker: {locker.lockerAddress}.
         </p>
 
         <p className="text-sm text-zinc-400">

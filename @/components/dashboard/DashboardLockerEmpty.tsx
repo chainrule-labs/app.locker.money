@@ -47,67 +47,69 @@ export default function DashboardLockerEmpty({
           </div>
           <div className="flex w-fit flex-col self-center overflow-x-auto text-white">
             <table className="w-full text-left">
-              <tr>
-                <th className="py-2 text-center text-xl font-semibold">
-                  Supported Chains
-                </th>
-              </tr>
-              <tr>
-                <td className="py-4">
-                  <div className="flex items-center">
-                    <div className="mr-3 flex h-7 w-7 shrink-0 items-center justify-center">
-                      <img
-                        className="w-7"
-                        alt="gnosisChain"
-                        src="iconGnosis.svg"
-                      />
+              <tbody>
+                <tr>
+                  <th className="py-2 text-center text-xl font-semibold">
+                    Supported Chains
+                  </th>
+                </tr>
+                <tr>
+                  <td className="py-4">
+                    <div className="flex items-center">
+                      <div className="mr-3 flex h-7 w-7 shrink-0 items-center justify-center">
+                        <img
+                          className="w-7"
+                          alt="gnosisChain"
+                          src="iconGnosis.svg"
+                        />
+                      </div>
+                      <span className="mr-3">Gnosis Chain</span>
                     </div>
-                    <span className="mr-3">Gnosis Chain</span>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td className="py-4">
-                  <div className="flex items-center">
-                    <div className="mr-3 flex h-7 w-7 shrink-0 items-center justify-center">
-                      <img
-                        className="w-7"
-                        alt="baseSepolia"
-                        src="iconBase.svg"
-                      />
+                  </td>
+                </tr>
+                <tr>
+                  <td className="py-4">
+                    <div className="flex items-center">
+                      <div className="mr-3 flex h-7 w-7 shrink-0 items-center justify-center">
+                        <img
+                          className="w-7"
+                          alt="baseSepolia"
+                          src="iconBase.svg"
+                        />
+                      </div>
+                      <span className="mr-3">Base Sepolia</span>
                     </div>
-                    <span className="mr-3">Base Sepolia</span>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td className="py-4">
-                  <div className="flex items-center">
-                    <div className="mr-3 flex h-7 w-7 shrink-0 items-center justify-center">
-                      <img
-                        className="w-7"
-                        alt="arbSepolia"
-                        src="iconArbitrumOne.svg"
-                      />
+                  </td>
+                </tr>
+                <tr>
+                  <td className="py-4">
+                    <div className="flex items-center">
+                      <div className="mr-3 flex h-7 w-7 shrink-0 items-center justify-center">
+                        <img
+                          className="w-7"
+                          alt="arbSepolia"
+                          src="iconArbitrumOne.svg"
+                        />
+                      </div>
+                      <span className="mr-3">Arbitrum Sepolia</span>
                     </div>
-                    <span className="mr-3">Arbitrum Sepolia</span>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td className="py-4">
-                  <div className="flex items-center">
-                    <div className="mr-3 flex h-7 w-7 shrink-0 items-center justify-center">
-                      <img
-                        className="w-7"
-                        alt="lineaSepolia"
-                        src="iconLinea.svg"
-                      />
+                  </td>
+                </tr>
+                <tr>
+                  <td className="py-4">
+                    <div className="flex items-center">
+                      <div className="mr-3 flex h-7 w-7 shrink-0 items-center justify-center">
+                        <img
+                          className="w-7"
+                          alt="lineaSepolia"
+                          src="iconLinea.svg"
+                        />
+                      </div>
+                      <span className="mr-3">Linea Sepolia</span>
                     </div>
-                    <span className="mr-3">Linea Sepolia</span>
-                  </div>
-                </td>
-              </tr>
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </div>

@@ -46,7 +46,7 @@ export default function DashboardNoLocker() {
   if (isCreatingLocker && isConnected) {
     createLockerButton = (
       <button
-        className="w-full rounded-lg bg-[#4A22EC] py-2 text-white hover:bg-[#4C4FE4]"
+        className="w-full cursor-not-allowed rounded-lg bg-[#4A22EC] py-2 text-white hover:bg-[#4C4FE4]"
         disabled
       >
         Setting up Locker...

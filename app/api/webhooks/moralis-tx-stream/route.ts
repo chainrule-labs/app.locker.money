@@ -130,7 +130,7 @@ export async function POST(request: Request) {
   });
   const db = drizzle(client);
 
-  for (let tx of res.erc20Transfers) {
+  for (const tx of res.erc20Transfers) {
     console.log("Processing tx", tx);
 
     const {
@@ -194,13 +194,13 @@ export async function POST(request: Request) {
     console.log("User", user);
 
     const amountStr = `${amount} ${tokenSymbol}`;
-    const link = `${process.env.API_HOST}/dashboard?tx=${insertedTxs[0].insertedId}`;
+    const link = `${process.env.API_HOST}/tx/${insertedTxs[0].insertedId}`;
     const to = user.emailAddresses[0].emailAddress;
     await resend.emails.send({
       from: "Locker <contact@noreply.locker.money>",
       to,
-      subject: `Locker received ${amountStr}`,
-      html: `<p>Congrats you received a ${amountStr} deposit to your locker at ${toAddress}. <a href=${link}>See more.</a></p>`,
+      subject: `Received ${amountStr} in Locker`,
+      html: `<div><h1>Great news!</h1><br/><h3>Your locker with address ${toAddress} just received ${amountStr}.</h3><br/><a href=${link}>See more!</a></div>`,
     });
 
     console.log("Email sent to " + to);

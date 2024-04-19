@@ -3,81 +3,86 @@
 import DashboardLockerEmpty from "@/components/dashboard/DashboardLockerEmpty";
 import DashboardLockerSetup from "@/components/dashboard/DashboardLockerSetup";
 import DashboardNoLocker from "@/components/dashboard/DashboardNoLocker";
+import { PATHS } from "@/lib/paths";
 import "@rainbow-me/rainbowkit/styles.css";
 import { getLocker } from "app/actions/getLocker";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 export default function DashboardPage() {
-  const [isInitialCheck, setIsInitialCheck] = useState<boolean>(true);
+  const isFirstRender = useRef(true);
   const [lockerAddress, setLockerAddress] = useState<`0x${string}` | null>(
     null,
   );
-  // const [numTxs, setNumTxs] = useState<number>(0);
-  const [transaction, setTransaction] = useState<any>(null);
-  const [lockerUsdValue, setLockerUsdValue] = useState<string>("$0.00");
-  const [locker, setLocker] = useState<any>(null);
+  const [transactions, setTransactions] = useState<any>(null);
+  const [initialTxLength, setInitialTxLength] = useState<number>(0);
+  const [latestTxLength, setLatestTxLength] = useState<number>(0);
+  const router = useRouter();
 
-  const getLockerInfo = async () => {
+  const fetchLockerInfo = async () => {
     const { locker, txs } = await getLocker();
     setLockerAddress(locker?.lockerAddress as `0x${string}`);
-    // setNumTxs(txs.length);
-    setTransaction(txs[0]);
-    // if (!!locker) {
-    //   const { netWorthUsd } = await getPortfolio(locker?.lockerAddress);
-    //   setLockerUsdValue(netWorthUsd);
-    // }
-  };
-
-  const initialLockerCheck = async () => {
-    const { locker, txs } = await getLocker();
-    setLocker(locker);
-    setLockerAddress(locker?.lockerAddress as `0x${string}`);
-    // setNumTxs(txs.length);
-    setTransaction(txs[0]);
-    if (!!locker && txs.length > 0) {
-      // const { netWorthUsd } = await getPortfolio(locker?.lockerAddress);
-      const netWorthUsd = "$0.00";
-      setLockerUsdValue(netWorthUsd);
+    if (isFirstRender.current) {
+      setInitialTxLength(txs.length);
+      isFirstRender.current = false;
     }
-    setIsInitialCheck(false);
+    setLatestTxLength(txs.length);
+    setTransactions(txs);
   };
 
+  // Fetch locker info on mount and every 5 seconds
   useEffect(() => {
-    // Check for transaction every 5 seconds
-    const interval = setInterval(() => {
-      getLockerInfo();
-    }, 5000);
-
-    // Cleanup the interval when the component unmounts
+    fetchLockerInfo();
+    const interval = setInterval(fetchLockerInfo, 5000);
     return () => clearInterval(interval);
-  }, [transaction]);
-
-  useEffect(() => {
-    initialLockerCheck();
   }, []);
 
+  // Navigate to transaciton page
+  useEffect(() => {
+    if (lockerAddress && initialTxLength === 0 && latestTxLength > 0) {
+      router.push(`${PATHS.TX}/tx/${transactions[0].hash}`);
+    }
+  }, [lockerAddress, initialTxLength, latestTxLength, router]);
+
   const lockerState =
-    !lockerAddress && isInitialCheck ? (
-      <div className="flex h-full w-full items-center justify-center p-4">
+    !lockerAddress && isFirstRender.current ? (
+      <div className="flex size-full items-center justify-center p-4">
         <span>Loading...</span>
       </div>
-    ) : !lockerAddress && !isInitialCheck ? (
+    ) : !lockerAddress && !isFirstRender.current ? (
       <DashboardNoLocker />
-    ) : lockerAddress && !isInitialCheck && !transaction ? (
+    ) : lockerAddress && !isFirstRender.current && latestTxLength === 0 ? (
       <DashboardLockerEmpty lockerAddress={lockerAddress} />
     ) : (
       <DashboardLockerSetup
-        locker={locker}
-        transaction={transaction}
-        lockerUsdValue={lockerUsdValue}
+        locker={lockerAddress}
+        transaction={transactions[0]}
       />
     );
 
   return (
-    <div className="xs:grid xs:place-content-center h-full w-full">
+    <div className="xs:grid xs:place-content-center size-full">
       <div className="flex flex-col justify-center">
-        <div className="min-w-1/3 flex flex-col space-y-12">{lockerState}</div>
+        <div className="flex flex-col space-y-12">{lockerState}</div>
       </div>
     </div>
   );
 }
+
+// const lockerState =
+//   !lockerAddress && isFirstRender.current ? (
+//     <div className="flex h-full w-full items-center justify-center p-4">
+//       <span>Loading...</span>
+//     </div>
+//   ) : !lockerAddress && !isFirstRender.current ? (
+//     <DashboardNoLocker />
+//   ) : lockerAddress && !isFirstRender.current && latestTxLength === 0 ? (
+//     <DashboardLockerEmpty lockerAddress={lockerAddress} />
+//   ) : lockerAddress &&
+//     !isFirstRender.current &&
+//     initialTxLength === 0 &&
+//     latestTxLength > 0 ? (
+//     <TransactionPage transaction={transactions[0]} />
+//   ) : (
+//     <span>DashboardLockerSetup</span>
+//   );
