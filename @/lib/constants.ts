@@ -2,7 +2,7 @@ import { ENTRYPOINT_ADDRESS_V07 } from "permissionless";
 
 export const DEFAULT_SAVINGS_FACTOR = "0.2";
 export const DEFAULT_ZERODEV_SEED =
-  process.env.DEFAULT_ZERODEV_SEED || "639875";
+  process.env.NEXT_PUBLIC_DEFAULT_ZERODEV_SEED || "639875";
 export const PROVIDER_ZERODEV = "zerodev";
 
 // Subset of Moralis + ZeroDev supported chains

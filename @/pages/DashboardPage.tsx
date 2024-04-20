@@ -11,9 +11,7 @@ import { useEffect, useRef, useState } from "react";
 
 export default function DashboardPage() {
   const isFirstRender = useRef(true);
-  const [lockerAddress, setLockerAddress] = useState<`0x${string}` | null>(
-    null,
-  );
+  const [locker, setLocker] = useState<any>(null);
   const [transactions, setTransactions] = useState<any>(null);
   const [initialTxLength, setInitialTxLength] = useState<number>(0);
   const [latestTxLength, setLatestTxLength] = useState<number>(0);
@@ -21,7 +19,7 @@ export default function DashboardPage() {
 
   const fetchLockerInfo = async () => {
     const { locker, txs } = await getLocker();
-    setLockerAddress(locker?.lockerAddress as `0x${string}`);
+    setLocker(locker);
     if (isFirstRender.current) {
       setInitialTxLength(txs.length);
       isFirstRender.current = false;
@@ -37,16 +35,18 @@ export default function DashboardPage() {
     return () => clearInterval(interval);
   }, []);
 
+  const lockerAddress = locker?.lockerAddress;
+
   // Navigate to transaciton page
   useEffect(() => {
-    if (lockerAddress && initialTxLength === 0 && latestTxLength > 0) {
+    if (!!locker && initialTxLength === 0 && latestTxLength > 0) {
       router.push(`${PATHS.TX}/${transactions[0].transactions.hash}`);
     }
   }, [lockerAddress, initialTxLength, latestTxLength, router, transactions]);
 
   const lockerState =
     !lockerAddress && isFirstRender.current ? (
-      <div className="flex size-full items-center justify-center p-4">
+      <div className="mt-28 flex size-full items-center justify-center p-4 text-2xl">
         <span>Loading...</span>
       </div>
     ) : !lockerAddress && !isFirstRender.current ? (
@@ -57,10 +57,7 @@ export default function DashboardPage() {
       !isFirstRender.current &&
       initialTxLength > 0 &&
       latestTxLength > 0 ? (
-      <DashboardLockerSetup
-        locker={lockerAddress}
-        transaction={transactions[0]}
-      />
+      <DashboardLockerSetup locker={locker} transaction={transactions[0]} />
     ) : null;
 
   return (
@@ -71,21 +68,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
-// const lockerState =
-//   !lockerAddress && isFirstRender.current ? (
-//     <div className="flex h-full w-full items-center justify-center p-4">
-//       <span>Loading...</span>
-//     </div>
-//   ) : !lockerAddress && !isFirstRender.current ? (
-//     <DashboardNoLocker />
-//   ) : lockerAddress && !isFirstRender.current && latestTxLength === 0 ? (
-//     <DashboardLockerEmpty lockerAddress={lockerAddress} />
-//   ) : lockerAddress &&
-//     !isFirstRender.current &&
-//     initialTxLength === 0 &&
-//     latestTxLength > 0 ? (
-//     <TransactionPage transaction={transactions[0]} />
-//   ) : (
-//     <span>DashboardLockerSetup</span>
-//   );
