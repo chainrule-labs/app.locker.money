@@ -109,6 +109,9 @@ export async function POST(request: Request) {
 
     if (existingLockers.length < 1) break;
     console.log("Existing lockers");
+    const locker = existingLockers[0];
+    console.log("locker");
+    console.log(locker);
 
     // Check DB to confirm the transaction is not already processed
     const existingTxs = await db
@@ -118,7 +121,6 @@ export async function POST(request: Request) {
 
     if (existingTxs.length > 0) break;
     console.log("No existing tx");
-    const locker = existingLockers[0];
 
     const amount = formatUnits(value, 18);
     const newTx = {
@@ -142,6 +144,7 @@ export async function POST(request: Request) {
     // FIXME: Incorrectly assuming all payments to locker will be on the same chain
     const shouldTriggerAutoSave = !!locker.encryptedSessionKey;
     if (shouldTriggerAutoSave) {
+      console.log("Triggering ETH autosave");
       await transferOnUserBehalf(newTx);
     }
 
@@ -176,6 +179,9 @@ export async function POST(request: Request) {
 
     if (existingLockers.length < 1) break;
     console.log("Existing lockers");
+    const locker = existingLockers[0];
+    console.log("locker");
+    console.log(locker);
 
     // Check DB to confirm the transaction is not already processed
     const existingTxs = await db
@@ -185,7 +191,6 @@ export async function POST(request: Request) {
 
     if (existingTxs.length > 0) break;
     console.log("No existing tx");
-    const locker = existingLockers[0];
 
     const newTx = {
       hash,
@@ -208,6 +213,7 @@ export async function POST(request: Request) {
     // FIXME: Incorrectly assuming all payments to locker will be on the same chain
     const shouldTriggerAutoSave = !!locker.encryptedSessionKey;
     if (shouldTriggerAutoSave) {
+      console.log("Triggering ERC20 autosave");
       await transferOnUserBehalf(newTx);
     }
 
