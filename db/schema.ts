@@ -31,6 +31,8 @@ export const lockers = pgTable("lockers", {
     .$onUpdate(() => new Date())
     .notNull(),
   encryptedSessionKey: text("encrypted_session_key"),
+  // 0 - 100
+  autosavePctRemainInLocker: text("autosave_pct_remain_in_locker"),
 });
 
 export const transactions = pgTable("transactions", {

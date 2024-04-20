@@ -1,0 +1,1 @@
+ALTER TABLE "lockers" ADD COLUMN "autosave_pct_remain_in_locker" text;
