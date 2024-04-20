@@ -43,6 +43,13 @@
       "when": 1713594011320,
       "tag": "0005_narrow_sugar_man",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1713643363534,
+      "tag": "0006_tricky_luke_cage",
+      "breakpoints": true
     }
   ]
 }

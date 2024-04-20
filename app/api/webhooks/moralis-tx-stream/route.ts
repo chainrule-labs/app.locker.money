@@ -4,6 +4,8 @@ import { transferOnUserBehalf } from "@/lib/zerodev-server";
 import { lockers, transactions } from "db/schema";
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
+import Moralis from "moralis";
+import { headers } from "next/headers";
 import { Pool } from "pg";
 import process from "process";
 import { Resend } from "resend";
@@ -14,6 +16,36 @@ import { sendDepositReceivedEmail } from "./email";
 // https://moralis.io/how-to-monitor-all-eth-transfer-transactions/
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+const checkSignature = async ({
+  providedSignature,
+  body,
+}: {
+  providedSignature: string;
+  body: any;
+}) => {
+  if (!providedSignature) throw new Error("Signature not provided");
+
+  try {
+    await Moralis.start({
+      apiKey: process.env.MORALIS_API_KEY,
+    });
+  } catch (e: any) {
+    // Swallow error. Moralis probably already started.
+    console.warn("Moralis failed to start", e);
+  }
+
+  // const bodyJson = await request.json();
+  // console.log("got body");
+  // console.log(bodyJson);
+  console.log("Authenticity check");
+
+  Moralis.Streams.verifySignature({
+    body,
+    signature: providedSignature,
+  });
+  console.log("Passed authenticity check");
+};
 /**
  * Invoked whenever a new transaction is detected by Moralis.
  *      1) Filter for confirmed: false
@@ -33,6 +65,14 @@ export async function POST(request: Request) {
   console.log("moralis-tx-stream");
   const res = await request.json();
   console.log(res);
+
+  if (process.env.DISABLE_WEBHOOK_CHECK !== "true") {
+    const headersList = headers();
+    const providedSignature = headersList.get("x-signature") || "";
+    console.log("x-signature");
+    console.log(providedSignature);
+    await checkSignature({ providedSignature, body: res });
+  }
 
   // Filter for confirmed: false
   // We will err on the side of confirming too soon
