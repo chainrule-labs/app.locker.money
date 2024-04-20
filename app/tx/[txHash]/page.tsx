@@ -24,7 +24,7 @@ export default function Transaction({
 
   const handleContinue = () => {
     // If locker is NOT deployed, route to DashboardSetup
-    // If locker is deployed, route to DashboardPortfolio
+    // If locker is deployed, route to DashboardLockerPortfolio
 
     // For now, assume locker is not deployed...
     router.push(PATHS.HOME);
@@ -63,15 +63,15 @@ export default function Transaction({
           <div>
             <span className="text-3xl font-normal">
               You received{" "}
-              <span className="font-bold">
+              <strong>
                 {transaction.amount} {transaction.tokenSymbol}
-              </span>{" "}
+              </strong>{" "}
             </span>
-            <p className="text-center">on {chainName}</p>
+            <p className="text-center">on {chainName}!</p>
           </div>
 
           <button
-            className="w-full rounded-lg bg-[#4A22EC] py-2 text-2xl text-white hover:bg-[#4C4FE4]"
+            className="w-full rounded-lg bg-[#3040EE] py-2 text-lg text-white hover:bg-[#515EF1]"
             onClick={() => handleContinue()}
           >
             Continue

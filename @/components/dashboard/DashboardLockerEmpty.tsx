@@ -13,12 +13,10 @@ export default function DashboardLockerEmpty({
   const [copied, setCopied] = useState<boolean>(false);
 
   return (
-    <div className="xs:grid xs:place-content-center size-full p-4">
-      <div className="mb-12 flex flex-col space-y-4">
-        <h1 className="font- w-full text-xl font-normal">
-          Your Locker is Empty
-        </h1>
-        <div className="text-md mb-12 flex flex-col space-y-4 font-normal text-white">
+    <div className="flex w-full flex-1 flex-col items-center justify-start p-4">
+      <div className="mb-12 flex flex-col space-y-8">
+        <h1 className="w-full text-4xl">Your locker is empty</h1>
+        <div className="mb-12 flex flex-col space-y-4 text-white">
           <span>
             Tell your employer, hackathon organizer, or clients to pay you at
             your Locker address below.
@@ -27,26 +25,30 @@ export default function DashboardLockerEmpty({
             You can also deposit yourself by transferring funds to your Locker
             address from another account.
           </span>
-          <span>Native ETH and all ERC20s supported.</span>
+          <span>Native ETH and all ERC-20 tokens are supported.</span>
         </div>
-        <div className="flex flex-col space-y-4 font-normal text-zinc-300">
+        <div className="flex flex-col space-y-4">
           <div className="flex flex-col items-center justify-center space-y-3">
-            <span className="text-4xl font-semibold text-white">
-              Fund Your Locker
-            </span>
-            <QRCodeSVG className="self-center" value={lockerAddress} />
+            <span className="self-center text-4xl">Fund Your Locker</span>
+            <div className="mx-auto my-8 max-w-xs rounded-lg bg-white p-3 shadow-lg">
+              <QRCodeSVG
+                className="self-center"
+                value={lockerAddress}
+                size={200}
+              />
+            </div>
             <button
-              className="flex w-2/3 items-center justify-center break-all text-left text-3xl text-[#4A22EC] outline-none hover:text-[#4C4FE4] hover:underline"
+              className="flex items-center justify-center break-all text-left text-zinc-300 underline outline-none hover:text-[#515EF1]"
               onClick={() => copyToClipboard(lockerAddress, setCopied)}
             >
               <code>{lockerAddress}</code>
               {copied ? (
                 <PiCheckSquareOffset
                   className="ml-3 shrink-0 text-emerald-500"
-                  size="18px"
+                  size="25px"
                 />
               ) : (
-                <PiCopy className="ml-3 shrink-0" size="18px" />
+                <PiCopy className="ml-3 shrink-0" size="25px" />
               )}
             </button>
           </div>
@@ -194,7 +196,7 @@ export default function DashboardLockerEmpty({
           {chain?.nativeCurrency.symbol} Amount:
         </span>
         <input
-          className="rounded-md bg-zinc-700 p-2 font-normal"
+          className="rounded-md bg-zinc-700 p-2 "
           type="text"
           pattern="[0-9]*\.?[0-9]*"
           inputMode="decimal"
@@ -205,17 +207,17 @@ export default function DashboardLockerEmpty({
           onInput={(event) => handleAmountChange(event)}
         />
         {errorMessage && (
-          <span className="mt-8 self-center font-normal text-red-500">
+          <span className="mt-8 self-center  text-red-500">
             {errorMessage}
           </span>
         )}
         {isConfirmed && (
           <>
-            <span className="mt-8 self-center font-normal text-emerald-500">
+            <span className="mt-8 self-center  text-emerald-500">
               Successful Deposit!
             </span>
             <a
-              className="mt-8 flex items-center space-x-2 self-center font-normal text-[#4A22EC] hover:text-[#4C4FE4] hover:underline"
+              className="mt-8 flex items-center space-x-2 self-center  text-[#3040EE] hover:text-[#515EF1] hover:underline"
               href={`${chain?.blockExplorers?.default.url}/tx/${hash}`}
               target="_blank"
               rel="noopener noreferrer"
@@ -227,7 +229,7 @@ export default function DashboardLockerEmpty({
         )}
       </div>
       <button
-        className={`${!amountInput || isPending || isConfirming ? "cursor-not-allowed" : "cursor-pointer"} mt-12 flex h-10 w-full items-center justify-center rounded-lg bg-[#4A22EC] py-2 text-white hover:bg-[#4C4FE4]`}
+        className={`${!amountInput || isPending || isConfirming ? "cursor-not-allowed" : "cursor-pointer"} mt-12 flex h-10 w-full items-center justify-center rounded-lg bg-[#3040EE] py-2 text-white hover:bg-[#515EF1]`}
         onClick={onDeposit}
         disabled={!amountInput || isPending || isConfirming}
       >
