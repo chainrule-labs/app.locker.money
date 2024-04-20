@@ -1,6 +1,7 @@
 "use client";
 
 import DashboardLockerEmpty from "@/components/dashboard/DashboardLockerEmpty";
+// import DashboardLockerPortfolio from "@/components/dashboard/DashboardLockerPortfolio";
 import DashboardLockerSetup from "@/components/dashboard/DashboardLockerSetup";
 import DashboardNoLocker from "@/components/dashboard/DashboardNoLocker";
 import { PATHS } from "@/lib/paths";
@@ -58,7 +59,8 @@ export default function DashboardPage() {
       initialTxLength > 0 &&
       latestTxLength > 0 ? (
       <DashboardLockerSetup locker={locker} transaction={transactions[0]} />
-    ) : null;
+    ) : // <DashboardLockerPortfolio />
+    null;
 
   return (
     <div className="xs:grid xs:place-content-center size-full p-4">
