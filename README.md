@@ -2,11 +2,17 @@
 
 Save every time you interact or get paid on-chain.
 
-- Web: [app.locker.money](https://app.lockher.money)
+Modular, and non-custodial smart accounts, called Lockers, that automate the allocation of cryptocurrency payments after they've been deposited. Lockers solve the problem of cumbersome, manual distribution of crypto-native salaries and contract payments into channels such as savings, fiat off-ramps, and crypto investments.
+
+[app.locker.money](https://app.locker.money)
 
 ## Why Locker
 
-# TODO
+Whether you currently accept payments with your EOA, CEX, or multisig, there are a bunch of cumbersome steps you have to take to get money where you want after the money lands. With Locker, you set up your preferences once and get notified when your tokens automatically do what you want within 30 seconds of deposit.
+
+Here's one example: when a user gets paid in USDC, 5% is swapped for ETH, 15% is saved in an on-chain, yield-bearing savings account, 10% is sent to an on-chain hot wallet, and 70% is off-ramped into their off-chain bank account–all entirely automated.
+
+We hope hackers at ETH Global can use Locker for accepting their winnings and their next web3 contract.
 
 ## Getting started
 
@@ -77,10 +83,12 @@ Locker uses the ZeroDev SDK to spin up bespoke smart accounts (Lockers) with sco
 
 ### Usage
 
-# TODO
+The easiest way to test is by sending ETH or any ERC20 to one of these addresses. You can see how the tokens are automatically distributed and we keep the payment.
 
-### Next steps
+Follow these steps to create a Locker and automate your savings.
 
-- Add state to Lockers
-- Non-4337, token allowance based flow
-- Dynamically allow-list Lockers for paymaster.
+1. Register for an account
+2. Create a Locker
+3. Fund your locker
+4. Enable automatic savings
+5. Get paid and confirm distribution

@@ -1,0 +1,1 @@
+ALTER TABLE "lockers" DROP CONSTRAINT "lockers_owner_address_unique";

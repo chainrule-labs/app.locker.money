@@ -13,7 +13,7 @@ export const lockers = pgTable("lockers", {
   seed: text("seed").notNull(),
   provider: text("provider").notNull(),
   // eventually we will support multiple lockers per EOA, but not yet
-  ownerAddress: text("owner_address").notNull().unique(),
+  ownerAddress: text("owner_address").notNull(),
   lockerAddress: text("locker_address").notNull().unique(),
   createdAt: timestamp("created_at", {
     mode: "date",
