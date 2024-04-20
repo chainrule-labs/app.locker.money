@@ -24,7 +24,6 @@ import {
 } from "viem";
 import { DEFAULT_ZERODEV_SEED } from "./constants";
 import { chainId2ZeroDevClientInfo } from "./utils";
-import { ERC20_TRANSFER_ABI } from "./viem";
 
 const entryPoint = ENTRYPOINT_ADDRESS_V07;
 
@@ -180,7 +179,7 @@ const createSessionKernelAccount = async ({
         target: zeroAddress,
         valueLimit: BigInt(0),
         // abi: [ERC20TransferFunctionABI],
-        abi: ERC20_TRANSFER_ABI,
+        // abi: ERC20_TRANSFER_ABI,
         functionName: "transfer",
         args: [
           {

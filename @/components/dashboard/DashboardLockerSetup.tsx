@@ -170,7 +170,12 @@ export default function DashboardLockerSetup({
                         <div className="relative mr-3 size-4 shrink-0 items-center justify-center">
                           <Image src="/iconGnosis.svg" alt="gnosisChain" fill />
                         </div>
-                        <span className="mr-3">Gnosis Chain</span>
+                        <span className="mr-3">
+                          Gnosis Chain
+                          <span className="text-gray-400">
+                            : contact@chainrule.io for access
+                          </span>
+                        </span>
                       </div>
                     </td>
                   </tr>
