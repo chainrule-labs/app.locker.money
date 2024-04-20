@@ -76,42 +76,47 @@ export default function DashboardLockerSetup({
       <div className="mb-12 flex flex-col space-y-8">
         <h1 className="w-full text-4xl">Set up automatic savings</h1>
         <div className="mb-12 flex flex-col space-y-4 text-white">
-          <span>
-            The next time you receive ETH or ERC20, your Locker will
+          <span className="text-lg">
+            Next time you receive ETH or an ERC-20 token, your Locker will
             automatically transfer funds based on the settings you choose below.
           </span>
         </div>
-        <div className="flex w-full flex-row">
-          <div className="flex w-1/5 flex-row">
-            <input
-              type="text"
-              value={pctRemain}
-              onChange={onPctUpdated}
-              autoFocus
-              className="w-4/5 rounded-md bg-zinc-100 p-3 text-4xl text-black"
-            />
-            <span className="w-1/5 text-4xl">%</span>
+        {/* ****************** */}
+        <div className="flex w-fit flex-col space-y-8 self-center rounded-xl bg-zinc-900 p-6">
+          <div className="flex items-center justify-between rounded-lg p-4">
+            <div className="flex flex-col items-start">
+              <span className="mb-2 text-lg text-white">
+                Amount to keep in your locker
+              </span>
+              <div className="flex items-center space-x-3">
+                <input
+                  type="text"
+                  value={pctRemain}
+                  onChange={onPctUpdated}
+                  autoFocus
+                  className="w-20 rounded-md bg-zinc-700 p-2 text-2xl text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-[#515EF1]"
+                  placeholder="%"
+                />
+                <span className="text-2xl text-white">%</span>
+              </div>
+            </div>
           </div>
 
-          <span className="ml-10 w-4/5 text-left text-xl">
-            Remains in your Locker for savings.
-          </span>
-        </div>
-
-        <div className="flex w-full flex-row">
-          <div className="flex w-1/5 flex-row">
-            <span className="grow rounded-md bg-neutral-700 p-3 text-4xl">
-              {100 - parseFloat(pctRemain)}
-            </span>
-
-            <span className="w-1/5 text-4xl">%</span>
+          <div className="flex items-center justify-between rounded-lg p-4">
+            <div className="flex flex-col items-start">
+              <span className="mb-2 text-lg text-white">
+                Amount to forward to your wallet
+              </span>
+              <div className="flex items-center space-x-3">
+                <span className="w-20 rounded-md bg-zinc-800 p-2 text-2xl text-white">
+                  {100 - parseFloat(pctRemain)}
+                </span>
+                <span className="text-2xl text-white">%</span>
+              </div>
+            </div>
           </div>
-
-          <span className="ml-10 w-4/5 break-words text-xl">
-            Forwarded to your EOA {locker.ownerAddress}.
-          </span>
         </div>
-
+        {/* ****************** */}
         <div className="w-full space-y-1">
           {isDeployingKernel ? (
             <button
