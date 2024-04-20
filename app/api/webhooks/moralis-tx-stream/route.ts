@@ -1,5 +1,6 @@
 "use server";
 
+import { transferOnUserBehalf } from "@/lib/zerodev-server";
 import { clerkClient } from "@clerk/nextjs";
 import { lockers, transactions } from "db/schema";
 import { eq } from "drizzle-orm";
@@ -195,10 +196,17 @@ export async function POST(request: Request) {
       .insert(transactions)
       .values(newTx)
       .returning({ insertedTxHash: transactions.hash });
-    // TODO trigger locker to move funds if it has already been deployed
+
+    // Trigger locker to move funds if it has already been deployed
+    // FIXME: Incorrectly assuming all payments to locker will be on the same chain
+    const shouldTriggerAutoSave = !!locker.encryptedSessionKey;
+    if (shouldTriggerAutoSave) {
+      await transferOnUserBehalf(newTx);
+    }
 
     const { userId } = locker;
-    // Update metadata with Locker information
+
+    // Send email
     const user = await clerkClient.users.getUser(userId);
     console.log("User", user);
 
