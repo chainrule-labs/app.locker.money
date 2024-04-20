@@ -28,12 +28,12 @@ export default function LandingPage({ userId }: ILandingPageProps) {
 
   return (
     <div className="xs:grid xs:place-content-center h-full w-full p-4">
-      <div className="mb-12 flex flex-col space-y-4">
+      <div className="mb-12 flex flex-col space-y-6">
         <h1 className="font- w-full text-4xl font-normal">
-          Automated On-Chain Savings & Investments
+          Automate Your Money
         </h1>
         <h2 className="text-lg font-normal text-zinc-300">
-          Save and invest on-chain every time you get paid.
+          Save and invest on-chain every time you get paid or make a deposit.
         </h2>
       </div>
       <button

@@ -15,18 +15,21 @@ export default function DashboardLockerSetup({
   locker: any;
 }) {
   const [lockerUsdValue, setLockerUsdValue] = useState<string>("$0.00");
-  // console.log(locker);
-  // const [isDeployingKernel, setIsDeployingKernel] = useState(false);
+  console.log(locker);
+  const [isDeployingKernel, setIsDeployingKernel] = useState(false);
   const config = useConfig();
 
   const fetchPortfolio = async () => {
-    if (!!locker && transaction) {
+    if (!!locker?.lockerAddress) {
+      console.log("fetching portfolio");
+      console.log(locker);
       const { netWorthUsd } = await getPortfolio(locker?.lockerAddress);
       setLockerUsdValue(netWorthUsd);
     }
   };
 
   const onEnableAutomation = async () => {
+    setIsDeployingKernel(true);
     const walletClient = await getWalletClient(config);
     // await createKernel(walletClient, chain!);
     const { serializedSessionKey } = await createUserAndSessionKernels(
@@ -43,47 +46,58 @@ export default function DashboardLockerSetup({
     console.log(transaction);
     // todo: not sure why transaction has shape {transactions, lockers}
     await transferOnUserBehalf(transaction.transactions);
+    setIsDeployingKernel(false);
   };
 
   useEffect(() => {
-    fetchPortfolio();
-  }, []);
+    if (!!locker?.lockerAddress) fetchPortfolio();
+  }, [locker?.lockerAddress]);
 
   return (
     <>
       <div className="space-y-12">
-        <p className="w-full text-3xl font-bold">Set up automated savings</p>
+        <div className="space-y-3">
+          <p className="w-full text-xl font-bold">Set up automatic savings</p>
 
-        <div>
-          <p>Congratulations, you funded your Locker with {lockerUsdValue}.</p>
           <p>
-            To take it to the next level, automate your money moves by setting
-            up a saving rule.
+            Congratulations, you funded your Locker with {lockerUsdValue}. To
+            take it to the next level, automate your money by enabling Auto
+            Save.
           </p>
         </div>
 
-        <div>
-          <button
-            className="rounded-md bg-indigo-400 p-3"
-            onClick={onEnableAutomation}
-          >
-            Automate savings
-          </button>
+        <div className="space-y-1">
+          {isDeployingKernel ? (
+            <button
+              className="w-full cursor-wait rounded-md bg-indigo-700 p-3 text-2xl"
+              disabled
+            >
+              Setting Up Auto Save...
+            </button>
+          ) : (
+            <button
+              className="w-full rounded-md bg-indigo-400 p-3 text-2xl"
+              onClick={onEnableAutomation}
+            >
+              Turn on Auto Save
+            </button>
+          )}
+          <div className="flex w-full justify-center text-sm text-zinc-400">
+            Staking and yield coming soon
+          </div>
         </div>
 
-        <p className="text-sm text-zinc-400">
-          If you don&apos;t want to automate anything, you can continue to
-          deposit manually into your locker: {locker.lockerAddress}.
-        </p>
+        <div className="space-y-4">
+          <p className="text-sm text-white">
+            If you don&apos;t want to automate anything, you can continue to
+            deposit manually into your locker: {locker.lockerAddress}.
+          </p>
 
-        <p className="text-sm text-zinc-400">
-          Arbitrum Sepolia, Base Sepolia, Linea Sepolia, and Gnosis mainnet
-          supported.
-        </p>
-
-        <p className="text-sm text-zinc-400">
-          Staking and yield options coming soon.
-        </p>
+          <p className="text-sm text-white">
+            Arbitrum Sepolia, Base Sepolia, Linea Sepolia, and Gnosis mainnet
+            supported.
+          </p>
+        </div>
       </div>
     </>
   );

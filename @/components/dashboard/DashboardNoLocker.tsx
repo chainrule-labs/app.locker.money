@@ -46,7 +46,7 @@ export default function DashboardNoLocker() {
   if (isCreatingLocker && isConnected) {
     createLockerButton = (
       <button
-        className="w-full cursor-not-allowed rounded-lg bg-[#4A22EC] py-2 text-white hover:bg-[#4C4FE4]"
+        className="w-full cursor-not-allowed rounded-lg bg-[#4A22EC] py-3 text-2xl text-white hover:bg-[#4C4FE4]"
         disabled
       >
         Setting up Locker...
@@ -55,7 +55,7 @@ export default function DashboardNoLocker() {
   } else {
     createLockerButton = (
       <button
-        className="w-full rounded-lg bg-[#4A22EC] py-2 text-white hover:bg-[#4C4FE4]"
+        className="w-full rounded-lg bg-[#4A22EC] py-3 text-2xl text-white hover:bg-[#4C4FE4]"
         onClick={() => {
           if (openConnectModal) {
             openConnectModal();
@@ -63,24 +63,28 @@ export default function DashboardNoLocker() {
           setIsCreatingLocker(true);
         }}
       >
-        Create a Locker
+        Create Locker
       </button>
     );
   }
 
   return (
     <div className="xs:grid xs:place-content-center size-full p-4">
-      <div className="mb-12 flex flex-col space-y-4">
-        <h1 className="w-full text-3xl font-normal">How does Locker work?</h1>
-        <ol className="list-decimal space-y-4 pl-8 font-normal text-zinc-300">
-          <li>Create a Locker for your savings.</li>
+      <div className="mb-12 flex flex-col space-y-7">
+        <h1 className="w-full text-xl font-normal">How does Locker work?</h1>
+        <ol className="list-decimal space-y-6 pl-8 text-2xl font-normal text-zinc-300">
+          <li>
+            <strong>Create</strong> a Locker for your savings.
+          </li>
           <li>
             <span>
-              Program your Locker so it knows what to do with future deposits.
+              <strong>Customize</strong> how your Locker distributes future
+              deposits.
             </span>
           </li>
           <li>
-            Tell your employer or clients to pay you at your Locker address.
+            <strong>Get paid</strong>. Tell people to pay you at your Locker
+            address.
           </li>
         </ol>
       </div>
@@ -90,6 +94,9 @@ export default function DashboardNoLocker() {
         </div>
       )}
       {createLockerButton}
+      <div className="mt-4 flex w-full items-center justify-center text-sm text-slate-600">
+        <span>Free to create!</span>
+      </div>
     </div>
   );
 }

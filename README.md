@@ -4,6 +4,10 @@ Save every time you interact or get paid on-chain.
 
 - Web: [app.locker.money](https://app.lockher.money)
 
+## Why Locker
+
+# TODO
+
 ## Getting started
 
 Prerequisites:
@@ -55,8 +59,28 @@ Use `yarn drizzle:studio` then visit [local.drizzle.studio](https://local.drizzl
 - [﻿Drizzle ORM](https://orm.drizzle.team/) for managing and interacting with data.
 - [Zephyr template](https://github.com/zenzen-sol/zephyr)
 
-TODO:
+Here's a diagram detailing how all these pieces come together. ![Locker Overview](./docs/flow.png)
 
-- Architecture diagram
-- Deployment addresses
-- Usage instructions
+### Deployment addresses
+
+Locker uses the ZeroDev SDK to spin up bespoke smart accounts (Lockers) with scoped permissions. As such, we do not have any on-chain factory contracts. Here are contract addresses of some of the Lockers we created while testing. Every time a user creates a Locker, they will generate a similar on-chain contract.
+
+# TODO
+
+| Chain            | Address |
+| ---------------- | ------- |
+| Gnosis Mainnet   | -       |
+| Ethereum Sepolia | -       |
+| Arbitrum Sepolia | -       |
+| Base Sepolia     | -       |
+| Linea Sepolia    | -       |
+
+### Usage
+
+# TODO
+
+### Next steps
+
+- Add state to Lockers
+- Non-4337, token allowance based flow
+- Dynamically allow-list Lockers for paymaster.

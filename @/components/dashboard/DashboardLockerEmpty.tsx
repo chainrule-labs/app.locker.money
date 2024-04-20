@@ -15,12 +15,13 @@ export default function DashboardLockerEmpty({
   return (
     <div className="xs:grid xs:place-content-center size-full p-4">
       <div className="mb-12 flex flex-col space-y-4">
-        <h1 className="font- w-full text-3xl font-normal">
+        <h1 className="font- w-full text-xl font-normal">
           Your Locker is Empty
         </h1>
-        <div className="mb-12 flex flex-col space-y-4 font-normal text-white">
+        <div className="text-md mb-12 flex flex-col space-y-4 font-normal text-white">
           <span>
-            Tell your employer or clients to pay you at your Locker address.
+            Tell your employer, hackathon organizer, or clients to pay you at
+            your Locker address below.
           </span>
           <span>
             You can also deposit yourself by transferring funds to your Locker
@@ -28,11 +29,13 @@ export default function DashboardLockerEmpty({
           </span>
         </div>
         <div className="flex flex-col space-y-4 font-normal text-zinc-300">
-          <div className="flex flex-col items-center justify-center space-y-2">
-            <span className="text-xl font-semibold text-white">Locker</span>
+          <div className="flex flex-col items-center justify-center space-y-3">
+            <span className="text-4xl font-semibold text-white">
+              Fund Your Locker
+            </span>
             <QRCodeSVG className="self-center" value={lockerAddress} />
             <button
-              className="flex items-center justify-center break-all text-[#4A22EC] outline-none hover:text-[#4C4FE4] hover:underline"
+              className="flex w-2/3 items-center justify-center break-all text-left text-3xl text-[#4A22EC] outline-none hover:text-[#4C4FE4] hover:underline"
               onClick={() => copyToClipboard(lockerAddress, setCopied)}
             >
               <code>{lockerAddress}</code>
