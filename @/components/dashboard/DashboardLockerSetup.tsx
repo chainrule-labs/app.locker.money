@@ -14,6 +14,7 @@ export default function DashboardLockerSetup({
   transaction: any;
   locker: any;
 }) {
+  const [pctRemain, setPctRemain] = useState<string>("20");
   const [lockerUsdValue, setLockerUsdValue] = useState<string>("$0.00");
   console.log(locker);
   const [isDeployingKernel, setIsDeployingKernel] = useState(false);

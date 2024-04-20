@@ -27,6 +27,7 @@ export default function DashboardLockerEmpty({
             You can also deposit yourself by transferring funds to your Locker
             address from another account.
           </span>
+          <span>Native ETH and all ERC20s supported.</span>
         </div>
         <div className="flex flex-col space-y-4 font-normal text-zinc-300">
           <div className="flex flex-col items-center justify-center space-y-3">

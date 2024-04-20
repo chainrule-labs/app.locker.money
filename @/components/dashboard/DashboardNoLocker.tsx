@@ -94,8 +94,8 @@ export default function DashboardNoLocker() {
         </div>
       )}
       {createLockerButton}
-      <div className="mt-4 flex w-full items-center justify-center text-sm text-slate-600">
-        <span>Free to create!</span>
+      <div className="mt-4 flex w-full items-center justify-center text-zinc-100">
+        <span>It's free!</span>
       </div>
     </div>
   );

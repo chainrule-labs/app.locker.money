@@ -46,7 +46,7 @@ export default function DashboardPage() {
 
   const lockerState =
     !lockerAddress && isFirstRender.current ? (
-      <div className="mt-28 flex size-full items-center justify-center p-4 text-2xl">
+      <div className="mt-28 flex size-full items-center justify-center text-2xl">
         <span>Loading...</span>
       </div>
     ) : !lockerAddress && !isFirstRender.current ? (
@@ -61,7 +61,7 @@ export default function DashboardPage() {
     ) : null;
 
   return (
-    <div className="xs:grid xs:place-content-center size-full">
+    <div className="xs:grid xs:place-content-center size-full p-4">
       <div className="flex flex-col justify-center">
         <div className="flex flex-col space-y-12">{lockerState}</div>
       </div>
