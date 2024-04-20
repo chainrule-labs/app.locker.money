@@ -25,7 +25,9 @@ export default function DashboardLockerEmpty({
             You can also deposit yourself by transferring funds to your Locker
             address from another account.
           </span>
-          <span>Native ETH and all ERC-20 tokens are supported.</span>
+          <span>
+            Send native ETH or any ERC-20 token to your Locker to start saving.
+          </span>
         </div>
         <div className="flex flex-col space-y-4">
           <div className="flex flex-col items-center justify-center space-y-3">

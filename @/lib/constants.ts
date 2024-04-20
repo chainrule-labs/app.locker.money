@@ -25,4 +25,11 @@ export const SUPPORTED_CHAINS = [
   "0x64",
 ];
 
+export const SUPPORTED_CHAIN_NAMES: { [key: number]: string } = {
+  "84532": "Base Sepolia",
+  "59141": "Linea Sepolia",
+  "421614": "Arbitrum Sepolia",
+  "100": "Gnosis Chain",
+};
+
 export const ENTRYPOINT = ENTRYPOINT_ADDRESS_V07;
