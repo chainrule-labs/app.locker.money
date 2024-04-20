@@ -15,6 +15,7 @@ export default function Transaction({
   const [chainName, setChainName] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
   const supportedChains: { [key: number]: string } = {
+    11155111: "Sepolia",
     84532: "Base Sepolia",
     59141: "Linea Sepolia",
     421614: "Arbitrum Sepolia",
@@ -33,6 +34,7 @@ export default function Transaction({
     try {
       const tx = await getTx(params.txHash);
       const chain = supportedChains[Number(tx?.chainId)];
+      console.log("chainId", tx?.chainId);
       setTransaction(tx);
       setChainName(chain);
     } finally {
@@ -51,23 +53,30 @@ export default function Transaction({
           <span>Loading...</span>
         </div>
       ) : transaction ? (
-        <>
-          <span className="mb-12 text-3xl">Great News!</span>
-          <FaCheckCircle className="mb-12 text-emerald-500" size="50px" />
-          <span className="mb-12 text-lg font-normal">
-            You received{" "}
-            <span className="text-xl font-bold">
-              {transaction.amount} {transaction.tokenSymbol}
-            </span>{" "}
-            on {chainName}!
-          </span>
+        <div className="flex flex-col justify-center space-y-12 text-center">
+          <span className="text-xl">Great News!</span>
+          <FaCheckCircle
+            className="flex self-center justify-self-center text-emerald-500 placeholder:place-self-center"
+            size="50px"
+          />
+
+          <div>
+            <span className="text-3xl font-normal">
+              You received{" "}
+              <span className="font-bold">
+                {transaction.amount} {transaction.tokenSymbol}
+              </span>{" "}
+            </span>
+            <p className="text-center">on {chainName}</p>
+          </div>
+
           <button
-            className="w-full rounded-lg bg-[#4A22EC] py-2 text-white hover:bg-[#4C4FE4]"
+            className="w-full rounded-lg bg-[#4A22EC] py-2 text-2xl text-white hover:bg-[#4C4FE4]"
             onClick={() => handleContinue()}
           >
             Continue
           </button>
-        </>
+        </div>
       ) : (
         <span className="mb-12 text-2xl">Transaction Not Found</span>
       )}
