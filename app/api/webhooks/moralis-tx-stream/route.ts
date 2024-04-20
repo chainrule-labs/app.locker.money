@@ -207,10 +207,10 @@ export async function POST(request: Request) {
     const to = user.emailAddresses[0].emailAddress;
     const emailHTML = `<div style="font-family: Arial, sans-serif; color: #333; text-align: start; background-color: #F7F7F7; padding: 20px;">
     <div style="max-width: 600px; margin: auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-      <img src="${process.env.API_HOST}/iconLockerTransOvals.svg" alt="Locker Logo" style="width: 100px; height: auto; margin-bottom: 20px;">
+      <img src="${process.env.API_HOST}/iconLockerTransOvals.png" alt="Locker Logo" style="width: 100px; height: auto; margin-bottom: 20px;">
       <h2 style="color: #4C4FE4;">Update on Your Locker Transaction</h2>
       <p>Your locker with address ${toAddress} just received ${amountStr} on the ${chainName} network.</p>
-      <a href="${link}" style="color: #2AAAD9; text-decoration: none; font-weight: bold; display: inline-block; margin-top: 20px; padding: 10px 15px; background-color: #4C4FE4; border-radius: 4px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">Go to your Locker dashboard</a>
+      <a href="${link}" style="color: #ffffff; text-decoration: none; font-weight: bold; display: inline-block; margin-top: 20px; padding: 10px 15px; background-color: #4C4FE4; border-radius: 4px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">Go to your Locker dashboard</a>
       <hr style="border-color: #E5E5E5; border-style: solid; border-width: 1px 0 0;">
       <p style="font-size: small; color: #666;">You received this email because you are registered with Locker. If you believe this was an error, please <a href="mailto:support@chainrule.io" style="color: #4C4FE4;">contact us</a>.</p>
     </div>
