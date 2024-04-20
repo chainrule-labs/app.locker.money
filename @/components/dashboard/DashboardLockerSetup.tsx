@@ -21,14 +21,11 @@ export default function DashboardLockerSetup({
   const [pctRemain, setPctRemain] = useState<string>("20");
 
   const [lockerUsdValue, setLockerUsdValue] = useState<string>("$0.00");
-  console.log(locker);
   const [isDeployingKernel, setIsDeployingKernel] = useState(false);
   const config = useConfig();
 
   const fetchPortfolio = async () => {
     if (!!locker?.lockerAddress) {
-      console.log("fetching portfolio");
-      console.log(locker);
       const { netWorthUsd } = await getPortfolio(locker?.lockerAddress);
       setLockerUsdValue(netWorthUsd);
     }

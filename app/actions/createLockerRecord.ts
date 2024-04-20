@@ -3,8 +3,9 @@
 import { DEFAULT_ZERODEV_SEED, PROVIDER_ZERODEV } from "@/lib/constants";
 import { getNeonDrizzleDb } from "@/lib/database";
 import { getSmartAccountAddress } from "@/lib/zerodev-server";
-import { clerkClient, currentUser } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs";
 import { lockers } from "db/schema";
+import Moralis from "moralis";
 
 export async function createLockerRecord(_ownerAddress: string | undefined) {
   if (!_ownerAddress) {
@@ -44,8 +45,24 @@ export async function createLockerRecord(_ownerAddress: string | undefined) {
   console.log("inserted locker", locker);
 
   // Update metadata with Locker information
-  await clerkClient.users.updateUserMetadata(user!.id, {
-    privateMetadata: lockerInfo,
+  // await clerkClient.users.updateUserMetadata(user!.id, {
+  //   privateMetadata: lockerInfo,
+  // });
+
+  // Directly register Moralis stream
+  try {
+    await Moralis.start({
+      apiKey: process.env.MORALIS_API_KEY,
+    });
+  } catch (e: any) {
+    // Swallow error. Moralis probably already started.
+    console.warn("Moralis failed to start", e);
+  }
+
+  // add locker to stream
+  const response = await Moralis.Streams.addAddress({
+    id: process.env.MORALIS_STREAM_ID!,
+    address: [lockerAddress],
   });
 
   return lockerInfo;

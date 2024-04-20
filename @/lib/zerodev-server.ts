@@ -62,6 +62,7 @@ export const transferOnUserBehalf = async (transaction: any) => {
   if (_lockers.length === 0) throw new Error(`Locker not found.`);
 
   const locker = _lockers[0];
+  console.log("Found corresponding locker", locker);
   const { encryptedSessionKey: serializedSessionKey } = locker;
   if (serializedSessionKey === null) throw new Error(`Session key not found.`);
 
@@ -103,12 +104,27 @@ export const transferOnUserBehalf = async (transaction: any) => {
     },
   });
 
+  console.log("Calculating saving factor");
   const savingsFactor =
     parseFloat(locker.autosavePctRemainInLocker || "0.0") / 100;
-  const amountRaw = BigInt(parseFloat(transaction.amountRaw) * savingsFactor);
+
+  const amountRaw = BigInt(
+    Math.floor(parseFloat(transaction.amountRaw) * savingsFactor),
+  );
   console.log("Session:", sessionKeyAccount.address);
   console.log("Amount raw:", amountRaw);
   console.log("Locker owner:", locker.ownerAddress);
+
+  const isNativeTransfer = transaction.tokenAddress === "0x";
+  const to = isNativeTransfer ? locker.ownerAddress : transaction.tokenAddress;
+  const value = isNativeTransfer ? amountRaw : BigInt(0);
+
+  const erc20Data = encodeFunctionData({
+    abi: ERC20_TRANSFER_ABI,
+    functionName: "transfer",
+    args: [locker.ownerAddress as `0x${string}`, amountRaw],
+  });
+  const data = isNativeTransfer ? "0x" : erc20Data;
 
   const userOpHash = await kernelClient.sendUserOperation({
     userOperation: {
@@ -116,14 +132,10 @@ export const transferOnUserBehalf = async (transaction: any) => {
       // callGasLimit: "0xD6D8",
       // verificationGasLimit: "0xF4240",
       callData: await sessionKeyAccount.encodeCallData({
-        to: transaction.tokenAddress,
-        value: BigInt(0),
+        to,
+        value,
         // callType: "delegatecall",
-        data: encodeFunctionData({
-          abi: ERC20_TRANSFER_ABI,
-          functionName: "transfer",
-          args: [locker.ownerAddress as `0x${string}`, amountRaw],
-        }),
+        data,
       }),
     },
   });
