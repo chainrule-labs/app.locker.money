@@ -103,7 +103,9 @@ export const transferOnUserBehalf = async (transaction: any) => {
     },
   });
 
-  const amountRaw = BigInt(parseFloat(transaction.amountRaw) * 0.2);
+  const savingsFactor =
+    parseFloat(locker.autosavePctRemainInLocker || "0.0") / 100;
+  const amountRaw = BigInt(parseFloat(transaction.amountRaw) * savingsFactor);
   console.log("Session:", sessionKeyAccount.address);
   console.log("Amount raw:", amountRaw);
   console.log("Locker owner:", locker.ownerAddress);

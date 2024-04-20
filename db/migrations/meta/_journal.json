@@ -36,6 +36,13 @@
       "when": 1713411448070,
       "tag": "0004_known_rockslide",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1713594011320,
+      "tag": "0005_narrow_sugar_man",
+      "breakpoints": true
     }
   ]
 }

@@ -12,10 +12,15 @@ import { eq } from "drizzle-orm";
 export const saveSessionKey = async (
   serializedSessionKey: string,
   lockerId: number,
+  autosavePctRemainInLocker: string,
 ) => {
   const db = getNeonDrizzleDb();
+
   await db
     .update(lockers)
-    .set({ encryptedSessionKey: serializedSessionKey })
+    .set({
+      encryptedSessionKey: serializedSessionKey,
+      autosavePctRemainInLocker,
+    })
     .where(eq(lockers.id, lockerId));
 };
