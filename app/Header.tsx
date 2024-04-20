@@ -7,7 +7,7 @@ const Header: FC = () => {
   return (
     <header className="top-0 z-10 mb-5 flex w-full items-center justify-between p-4">
       <Link
-        className="outline-nones relative mr-2 flex h-9 w-28 shrink-0 justify-center"
+        className="relative mr-2 flex h-9 w-28 shrink-0 justify-center outline-none"
         href="/"
       >
         <Image src="/logoLocker.svg" alt="logo" fill />

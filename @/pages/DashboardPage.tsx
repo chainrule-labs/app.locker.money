@@ -40,9 +40,9 @@ export default function DashboardPage() {
   // Navigate to transaciton page
   useEffect(() => {
     if (lockerAddress && initialTxLength === 0 && latestTxLength > 0) {
-      router.push(`${PATHS.TX}/tx/${transactions[0].hash}`);
+      router.push(`${PATHS.TX}/${transactions[0].transactions.hash}`);
     }
-  }, [lockerAddress, initialTxLength, latestTxLength, router]);
+  }, [lockerAddress, initialTxLength, latestTxLength, router, transactions]);
 
   const lockerState =
     !lockerAddress && isFirstRender.current ? (
@@ -53,12 +53,15 @@ export default function DashboardPage() {
       <DashboardNoLocker />
     ) : lockerAddress && !isFirstRender.current && latestTxLength === 0 ? (
       <DashboardLockerEmpty lockerAddress={lockerAddress} />
-    ) : (
+    ) : lockerAddress &&
+      !isFirstRender.current &&
+      initialTxLength > 0 &&
+      latestTxLength > 0 ? (
       <DashboardLockerSetup
         locker={lockerAddress}
         transaction={transactions[0]}
       />
-    );
+    ) : null;
 
   return (
     <div className="xs:grid xs:place-content-center size-full">

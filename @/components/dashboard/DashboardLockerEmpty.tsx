@@ -1,5 +1,6 @@
 "use client";
 import { copyToClipboard } from "@/lib/utils";
+import Image from "next/image";
 import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
 import { PiCheckSquareOffset, PiCopy } from "react-icons/pi";
@@ -12,7 +13,7 @@ export default function DashboardLockerEmpty({
   const [copied, setCopied] = useState<boolean>(false);
 
   return (
-    <div className="xs:grid xs:place-content-center h-full w-full p-4">
+    <div className="xs:grid xs:place-content-center size-full p-4">
       <div className="mb-12 flex flex-col space-y-4">
         <h1 className="font- w-full text-3xl font-normal">
           Your Locker is Empty
@@ -56,12 +57,8 @@ export default function DashboardLockerEmpty({
                 <tr>
                   <td className="py-4">
                     <div className="flex items-center">
-                      <div className="mr-3 flex h-7 w-7 shrink-0 items-center justify-center">
-                        <img
-                          className="w-7"
-                          alt="gnosisChain"
-                          src="iconGnosis.svg"
-                        />
+                      <div className="relative mr-3 size-7 shrink-0 items-center justify-center">
+                        <Image src="/iconGnosis.svg" alt="gnosisChain" fill />
                       </div>
                       <span className="mr-3">Gnosis Chain</span>
                     </div>
@@ -70,12 +67,8 @@ export default function DashboardLockerEmpty({
                 <tr>
                   <td className="py-4">
                     <div className="flex items-center">
-                      <div className="mr-3 flex h-7 w-7 shrink-0 items-center justify-center">
-                        <img
-                          className="w-7"
-                          alt="baseSepolia"
-                          src="iconBase.svg"
-                        />
+                      <div className="relative mr-3 size-7 shrink-0 items-center justify-center">
+                        <Image src="/iconBase.svg" alt="baseSepolia" fill />
                       </div>
                       <span className="mr-3">Base Sepolia</span>
                     </div>
@@ -84,11 +77,11 @@ export default function DashboardLockerEmpty({
                 <tr>
                   <td className="py-4">
                     <div className="flex items-center">
-                      <div className="mr-3 flex h-7 w-7 shrink-0 items-center justify-center">
-                        <img
-                          className="w-7"
+                      <div className="relative mr-3 size-7 shrink-0 items-center justify-center">
+                        <Image
+                          src="/iconArbitrumOne.svg"
                           alt="arbSepolia"
-                          src="iconArbitrumOne.svg"
+                          fill
                         />
                       </div>
                       <span className="mr-3">Arbitrum Sepolia</span>
@@ -98,12 +91,8 @@ export default function DashboardLockerEmpty({
                 <tr>
                   <td className="py-4">
                     <div className="flex items-center">
-                      <div className="mr-3 flex h-7 w-7 shrink-0 items-center justify-center">
-                        <img
-                          className="w-7"
-                          alt="lineaSepolia"
-                          src="iconLinea.svg"
-                        />
+                      <div className="relative mr-3 size-7 shrink-0 items-center justify-center">
+                        <Image src="/iconLinea.svg" alt="lineaSepolia" fill />
                       </div>
                       <span className="mr-3">Linea Sepolia</span>
                     </div>
@@ -118,7 +107,10 @@ export default function DashboardLockerEmpty({
   );
 }
 
-// CODE TO DEPOSIT DIRECTLY HERE (DO NOT DELETE)
+// ***************************************************************************** //
+// *************** CODE TO DEPOSIT THROUGH UI (DO NOT DELETE) *************** //
+// ***************************************************************************** //
+
 // import { useEffect, useState } from "react";
 // import { parseEther } from "viem";
 // import {

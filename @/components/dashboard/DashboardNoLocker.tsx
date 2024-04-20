@@ -69,11 +69,9 @@ export default function DashboardNoLocker() {
   }
 
   return (
-    <div className="xs:grid xs:place-content-center h-full w-full p-4">
+    <div className="xs:grid xs:place-content-center size-full p-4">
       <div className="mb-12 flex flex-col space-y-4">
-        <h1 className="font- w-full text-3xl font-normal">
-          How does Locker work?
-        </h1>
+        <h1 className="w-full text-3xl font-normal">How does Locker work?</h1>
         <ol className="list-decimal space-y-4 pl-8 font-normal text-zinc-300">
           <li>Create a Locker for your savings.</li>
           <li>

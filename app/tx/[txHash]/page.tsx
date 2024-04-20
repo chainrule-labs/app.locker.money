@@ -69,7 +69,7 @@ export default function Transaction({
           </button>
         </>
       ) : (
-        <span className="mb-12 text-3xl">Transaction Not Found</span>
+        <span className="mb-12 text-2xl">Transaction Not Found</span>
       )}
     </div>
   );

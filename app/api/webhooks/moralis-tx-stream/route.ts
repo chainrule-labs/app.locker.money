@@ -185,7 +185,7 @@ export async function POST(request: Request) {
     const insertedTxs = await db
       .insert(transactions)
       .values(newTx)
-      .returning({ insertedId: transactions.id });
+      .returning({ insertedTxHash: transactions.hash });
     // TODO trigger locker to move funds if it has already been deployed
 
     const { userId } = locker;
@@ -194,13 +194,13 @@ export async function POST(request: Request) {
     console.log("User", user);
 
     const amountStr = `${amount} ${tokenSymbol}`;
-    const link = `${process.env.API_HOST}/tx/${insertedTxs[0].insertedId}`;
+    const link = `${process.env.API_HOST}/tx/${insertedTxs[0].insertedTxHash}`;
     const to = user.emailAddresses[0].emailAddress;
     await resend.emails.send({
       from: "Locker <contact@noreply.locker.money>",
       to,
       subject: `Received ${amountStr} in Locker`,
-      html: `<div><h1>Great news!</h1><br/><h3>Your locker with address ${toAddress} just received ${amountStr}.</h3><br/><a href=${link}>See more!</a></div>`,
+      html: `<div><h1>Great news!</h1><br/><p>Your locker with address ${toAddress} just received ${amountStr}.</p><br/><a href=${link}>See more!</a></div>`,
     });
 
     console.log("Email sent to " + to);
