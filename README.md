@@ -14,6 +14,14 @@ Here's one example: when a user gets paid in USDC, 5% is swapped for ETH, 15% is
 
 We hope hackers at ETH Global can use Locker for accepting their winnings and their next web3 contract.
 
+### Further justification
+
+Locker is based on a similar concept we explored at ETH Denver - Auto HODL. In the last few weeks, we have been comparing saving mechanisms based on when you pay or get paid. We used historic ETH Global bounty payment data to help clarify things. By [looking at](https://github.com/chainrule-labs/utility-scripts/blob/main/market-research/get_hacker_blockchain_usage.py) the most recent 1,000 transactions from winners at 7 past ETH Globals, we discovered that the average hackathon winner only executes about 2-3 on-chain transactions per month. If Locker only helps you save when you transact, then we will be missing a lot of savings.
+
+This is why for this hackathon we explored the strategy of saving when you get paid instead.
+
+![Justification](./docs/sending.png)
+
 ## Getting started
 
 Prerequisites:
@@ -84,6 +92,7 @@ Follow these steps to create a Locker and automate your savings.
 
 1. Register for an account
 2. Create a Locker
+
 3. Fund your locker
 4. Enable automatic savings
 5. Get paid and confirm distribution
