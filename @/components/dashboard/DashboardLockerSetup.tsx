@@ -145,8 +145,14 @@ export default function DashboardLockerSetup({
             <div className="flex flex-col items-start justify-center space-y-3">
               <span className="text-sm text-zinc-400">Supported chains:</span>
               <span className="text-sm">
-                Gnosis Chain, Sepolia, Base Sepolia, Arbitrum Sepolia, and Linea
-                Sepolia.
+                Gnosis Chain
+                {/* (<a
+                  href="mailto:support@chainrule.io"
+                  className="underline hover:text-[#515EF1]"
+                >
+                  get access
+                </a>) */}
+                , Sepolia, Base Sepolia, Arbitrum Sepolia, and Linea Sepolia.
               </span>
             </div>
           </div>
