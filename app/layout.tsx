@@ -117,7 +117,7 @@ export default function RootLayout({
         <Toaster />
         <GlobalProviders>
           <main
-            className={`${inter.className} mx-auto flex min-h-screen w-full min-w-[230px] max-w-2xl flex-col items-center`}
+            className={`${inter.className} mx-auto flex min-h-screen w-full min-w-[230px] max-w-4xl flex-col items-center`}
           >
             <Header />
             {children}

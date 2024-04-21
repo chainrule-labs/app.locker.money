@@ -69,11 +69,24 @@ export default function DashboardLockerEmpty({
                         <Image src="/iconGnosis.svg" alt="gnosisChain" fill />
                       </div>
                       <span className="mr-3">
-                        Gnosis Chain{" "}
-                        <span className="text-gray-400">
-                          : contact@chainrule.io for access
-                        </span>
+                        Gnosis Chain
+                        {/* (<a
+                          href="mailto:support@chainrule.io"
+                          className="underline hover:text-[#515EF1]"
+                        >
+                          get access
+                        </a>) */}
                       </span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="py-4">
+                    <div className="flex items-center">
+                      <div className="relative mr-3 size-7 shrink-0 items-center justify-center">
+                        <Image src="/iconEthereum.svg" alt="sepolia" fill />
+                      </div>
+                      <span className="mr-3">Sepolia</span>
                     </div>
                   </td>
                 </tr>

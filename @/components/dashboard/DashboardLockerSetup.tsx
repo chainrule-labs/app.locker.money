@@ -1,12 +1,10 @@
 "use client";
-import { getPortfolio } from "@/lib/moralis";
-import { copyToClipboard } from "@/lib/utils";
+import { copyToClipboard, truncateAddress } from "@/lib/utils";
 import { createUserAndSessionKernels } from "@/lib/zerodev-client";
 import { transferOnUserBehalf } from "@/lib/zerodev-server";
 import { getWalletClient } from "@wagmi/core";
 import { saveSessionKey } from "app/actions/saveSessionKey";
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { PiCheckSquareOffset, PiCopy } from "react-icons/pi";
 import { useConfig } from "wagmi";
 
@@ -19,17 +17,8 @@ export default function DashboardLockerSetup({
 }) {
   const [copied, setCopied] = useState<boolean>(false);
   const [pctRemain, setPctRemain] = useState<string>("20");
-
-  const [lockerUsdValue, setLockerUsdValue] = useState<string>("$0.00");
   const [isDeployingKernel, setIsDeployingKernel] = useState(false);
   const config = useConfig();
-
-  const fetchPortfolio = async () => {
-    if (!!locker?.lockerAddress) {
-      const { netWorthUsd } = await getPortfolio(locker?.lockerAddress);
-      setLockerUsdValue(netWorthUsd);
-    }
-  };
 
   const onEnableAutomation = async () => {
     setIsDeployingKernel(true);
@@ -51,10 +40,6 @@ export default function DashboardLockerSetup({
     await transferOnUserBehalf(transaction.transactions);
     setIsDeployingKernel(false);
   };
-
-  useEffect(() => {
-    if (!!locker?.lockerAddress) fetchPortfolio();
-  }, [locker?.lockerAddress]);
 
   const onPctUpdated = (e: any) => {
     // Don't accept numbers with more than 4 characters
@@ -79,7 +64,7 @@ export default function DashboardLockerSetup({
           </span>
         </div>
         {/* ****************** */}
-        <div className="flex w-fit flex-col space-y-8 self-center rounded-xl bg-zinc-900 p-6">
+        <div className="flex w-full min-w-fit max-w-96 shrink flex-col space-y-8 self-center rounded-xl bg-zinc-900 p-6">
           <div className="flex items-center justify-between rounded-lg p-4">
             <div className="flex flex-col items-start">
               <span className="mb-2 text-lg text-white">
@@ -114,107 +99,61 @@ export default function DashboardLockerSetup({
           </div>
         </div>
         {/* ****************** */}
-        <div className="w-full space-y-1">
+        <div className="flex w-full flex-col items-center justify-center space-y-1">
           {isDeployingKernel ? (
             <button
-              className="w-full cursor-wait rounded-xl bg-[#3040EE] py-3 text-xl hover:bg-[#515EF1]"
+              className="w-full max-w-96 shrink cursor-wait items-center justify-center rounded-xl bg-[#3040EE] py-3 text-xl hover:bg-[#515EF1]"
               disabled
             >
               Setting Up Auto Save...
             </button>
           ) : (
             <button
-              className="w-full rounded-xl bg-[#3040EE] py-3 text-xl hover:bg-[#515EF1]"
+              className="w-full max-w-96 shrink items-center justify-center rounded-xl bg-[#3040EE] py-3 text-xl hover:bg-[#515EF1]"
               onClick={onEnableAutomation}
             >
               Turn on Auto Save
             </button>
           )}
-          <div className="text-center text-sm text-zinc-400">
+          <div className="text-center text-sm">
             Staking and yield coming soon.
           </div>
         </div>
         <div className="space-y-8">
-          <p className="mt-6 text-sm text-zinc-300">
-            If you don&apos;t want to automate anything, you can continue
-            receiving payments at your locker address. Automate when you&apos;re
-            ready.
+          <p className="mt-6 text-sm">
+            If you don&apos;t want to automate yet, you can continue receiving
+            payments at your locker address. Automate when you&apos;re ready.
           </p>
           <div className="flex flex-col space-y-4">
             <div className="flex flex-col items-start justify-center space-y-3">
-              <span className="text-sm text-zinc-300">Your Locker:</span>
+              <span className="text-sm text-zinc-400">Your Locker:</span>
               <button
-                className="flex items-center justify-center break-all text-left text-sm text-zinc-300 underline outline-none hover:text-[#515EF1]"
+                className="flex items-center justify-center break-all text-left text-sm underline outline-none hover:text-[#515EF1]"
                 onClick={() => copyToClipboard(locker.lockerAddress, setCopied)}
               >
-                <code>{locker.lockerAddress}</code>
+                <code>{truncateAddress(locker.lockerAddress)}</code>
                 {copied ? (
                   <PiCheckSquareOffset
                     className="ml-3 shrink-0 text-emerald-500"
-                    size="20px"
+                    size="15px"
                   />
                 ) : (
-                  <PiCopy className="ml-3 shrink-0" size="20px" />
+                  <PiCopy className="ml-3 shrink-0" size="15px" />
                 )}
               </button>
             </div>
-            <div className="flex w-fit flex-col overflow-x-auto text-sm text-zinc-300">
-              <table className="w-full text-left">
-                <tbody>
-                  <tr>
-                    <th className="py-2 font-semibold">Supported Chains</th>
-                  </tr>
-                  <tr>
-                    <td className="py-4">
-                      <div className="flex items-center">
-                        <div className="relative mr-3 size-4 shrink-0 items-center justify-center">
-                          <Image src="/iconGnosis.svg" alt="gnosisChain" fill />
-                        </div>
-                        <span className="mr-3">
-                          Gnosis Chain
-                          <span className="text-gray-400">
-                            : contact@chainrule.io for access
-                          </span>
-                        </span>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="py-4">
-                      <div className="flex items-center">
-                        <div className="relative mr-3 size-4 shrink-0 items-center justify-center">
-                          <Image src="/iconBase.svg" alt="baseSepolia" fill />
-                        </div>
-                        <span className="mr-3">Base Sepolia</span>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="py-4">
-                      <div className="flex items-center">
-                        <div className="relative mr-3 size-4 shrink-0 items-center justify-center">
-                          <Image
-                            src="/iconArbitrumOne.svg"
-                            alt="arbSepolia"
-                            fill
-                          />
-                        </div>
-                        <span className="mr-3">Arbitrum Sepolia</span>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="py-4">
-                      <div className="flex items-center">
-                        <div className="relative mr-3 size-4 shrink-0 items-center justify-center">
-                          <Image src="/iconLinea.svg" alt="lineaSepolia" fill />
-                        </div>
-                        <span className="mr-3">Linea Sepolia</span>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <div className="flex flex-col items-start justify-center space-y-3">
+              <span className="text-sm text-zinc-400">Supported chains:</span>
+              <span className="text-sm">
+                Gnosis Chain
+                {/* (<a
+                  href="mailto:support@chainrule.io"
+                  className="underline hover:text-[#515EF1]"
+                >
+                  get access
+                </a>) */}
+                , Sepolia, Base Sepolia, Arbitrum Sepolia, and Linea Sepolia.
+              </span>
             </div>
           </div>
         </div>

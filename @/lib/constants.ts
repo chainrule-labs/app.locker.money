@@ -26,10 +26,19 @@ export const SUPPORTED_CHAINS = [
 ];
 
 export const SUPPORTED_CHAIN_NAMES: { [key: number]: string } = {
-  "84532": "Base Sepolia",
-  "59141": "Linea Sepolia",
-  "421614": "Arbitrum Sepolia",
   "100": "Gnosis Chain",
+  "11155111": "Sepolia",
+  "84532": "Base Sepolia",
+  "421614": "Arbitrum Sepolia",
+  "59141": "Linea Sepolia",
+};
+
+export const SUPPORTED_CHAIN_EXPLORERS: { [key: number]: string } = {
+  "100": "https://gnosisscan.io",
+  "11155111": "https://sepolia.etherscan.io",
+  "84532": "https://sepolia.basescan.org",
+  "421614": "https://sepolia.arbiscan.io",
+  "59141": "https://sepolia.lineascan.build",
 };
 
 export const ENTRYPOINT = ENTRYPOINT_ADDRESS_V07;
