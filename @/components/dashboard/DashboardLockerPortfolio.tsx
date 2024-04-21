@@ -58,7 +58,7 @@ const DashboardLockerPortfolio = ({
 }) => {
   const [lockerInfo, setLockerInfo] = useState<any>(null);
   const [txList, setTxList] = useState<any>(null);
-  const [lockerUsdValue, setLockerUsdValue] = useState<string>("0.00");
+  const [lockerUsdValue, setLockerUsdValue] = useState<string>("0.50");
   const [copied, setCopied] = useState<boolean>(false);
 
   const fetchPortfolio = async () => {
@@ -99,33 +99,47 @@ const DashboardLockerPortfolio = ({
   return (
     <div className="flex w-full flex-1 flex-col items-start justify-start p-4">
       <div className="mb-12 flex flex-col">
-        <h1 className="mb-8 w-full text-4xl">Locker Portfolio</h1>
-        <span className="mb-1 text-zinc-400">USD value</span>
+        <h1 className="mb-8 text-4xl">Locker Portfolio</h1>
+        <span className="mb-1 text-sm opacity-70">USD value</span>
         <span className="mb-8 text-3xl">${lockerUsdValue}</span>
-        <span className="mb-1 text-lg">My locker</span>
-        <button
-          className="flex w-fit items-center justify-start text-left text-sm text-zinc-300 underline outline-none hover:text-[#515EF1]"
-          onClick={() => copyToClipboard(lockerInfo.address, setCopied)}
-        >
-          <code>
-            {lockerInfo && truncateAddress(lockerInfo.address as `0x${string}`)}
-          </code>
-          {copied ? (
-            <PiCheckSquareOffset
-              className="ml-3 shrink-0 text-emerald-500"
-              size="18px"
-            />
-          ) : (
-            <PiCopy className="ml-3 shrink-0" size="18px" />
-          )}
-        </button>
+        <span className="mb-2 text-xl">My locker</span>
+
+        <div className="mb-4 flex w-full items-center">
+          <button
+            className="flex w-full items-center justify-start text-left underline outline-none hover:text-[#515EF1] sm:w-fit"
+            onClick={() => copyToClipboard(lockerInfo.address, setCopied)}
+          >
+            <code className="block truncate">
+              {lockerInfo && truncateAddress(lockerInfo.address)}
+            </code>
+            {copied ? (
+              <PiCheckSquareOffset
+                className="ml-3 shrink-0 text-emerald-500"
+                size="18px"
+              />
+            ) : (
+              <PiCopy className="ml-3 shrink-0" size="18px" />
+            )}
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <span className="text-sm sm:text-base">
+            Save percentage: {lockerInfo && lockerInfo.savePercentage}%
+          </span>
+          <span className="text-sm sm:text-base">
+            Withdraw percentage:{" "}
+            {lockerInfo && 100 - parseFloat(lockerInfo.savePercentage)}%
+          </span>
+        </div>
       </div>
-      {txList ? (
+
+      {txList && (
         <>
           <span className="mb-1 text-lg">Transaction history</span>
           <TxTable txList={txList} />
         </>
-      ) : null}
+      )}
     </div>
   );
 };

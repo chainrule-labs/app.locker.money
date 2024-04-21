@@ -102,14 +102,14 @@ export default function DashboardLockerSetup({
         <div className="flex w-full flex-col items-center justify-center space-y-1">
           {isDeployingKernel ? (
             <button
-              className="w-full max-w-96 shrink cursor-wait items-center justify-center rounded-xl bg-[#3040EE] py-3 text-xl hover:bg-[#515EF1]"
+              className="w-full max-w-96 shrink cursor-wait items-center justify-center rounded-xl bg-[#3040EE] py-3 text-lg hover:bg-[#515EF1]"
               disabled
             >
               Setting Up Auto Save...
             </button>
           ) : (
             <button
-              className="w-full max-w-96 shrink items-center justify-center rounded-xl bg-[#3040EE] py-3 text-xl hover:bg-[#515EF1]"
+              className="w-full max-w-96 shrink items-center justify-center rounded-xl bg-[#3040EE] py-3 text-lg hover:bg-[#515EF1]"
               onClick={onEnableAutomation}
             >
               Turn on Auto Save
@@ -145,14 +145,14 @@ export default function DashboardLockerSetup({
             <div className="flex flex-col items-start justify-center space-y-3">
               <span className="text-sm text-zinc-400">Supported chains:</span>
               <span className="text-sm">
-                Gnosis Chain
-                {/* (<a
+                Gnosis Chain (
+                <a
                   href="mailto:support@chainrule.io"
                   className="underline hover:text-[#515EF1]"
                 >
-                  get access
-                </a>) */}
-                , Sepolia, Base Sepolia, Arbitrum Sepolia, and Linea Sepolia.
+                  contact us to get access
+                </a>
+                ) , Sepolia, Base Sepolia, Arbitrum Sepolia, and Linea Sepolia.
               </span>
             </div>
           </div>

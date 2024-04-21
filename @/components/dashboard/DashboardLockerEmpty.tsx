@@ -58,27 +58,9 @@ export default function DashboardLockerEmpty({
             <table className="w-full text-left">
               <tbody>
                 <tr>
-                  <th className="py-2 text-center text-xl font-semibold">
+                  <th className="py-2 text-xl font-semibold">
                     Supported Chains
                   </th>
-                </tr>
-                <tr>
-                  <td className="py-4">
-                    <div className="flex items-center">
-                      <div className="relative mr-3 size-7 shrink-0 items-center justify-center">
-                        <Image src="/iconGnosis.svg" alt="gnosisChain" fill />
-                      </div>
-                      <span className="mr-3">
-                        Gnosis Chain
-                        {/* (<a
-                          href="mailto:support@chainrule.io"
-                          className="underline hover:text-[#515EF1]"
-                        >
-                          get access
-                        </a>) */}
-                      </span>
-                    </div>
-                  </td>
                 </tr>
                 <tr>
                   <td className="py-4">
@@ -124,9 +106,38 @@ export default function DashboardLockerEmpty({
                     </div>
                   </td>
                 </tr>
+                <tr>
+                  <td className="py-4">
+                    <div className="flex items-center">
+                      <div className="relative mr-3 size-7 shrink-0 items-center justify-center">
+                        <Image src="/iconGnosis.svg" alt="gnosisChain" fill />
+                      </div>
+                      <span className="mr-3">
+                        <span className="text-zinc-400">
+                          Gnosis Chain
+                          <br />(
+                          <a
+                            href="mailto:support@chainrule.io"
+                            className="underline hover:text-[#515EF1]"
+                          >
+                            contact us
+                          </a>
+                          )
+                        </span>
+                      </span>
+                    </div>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
+          <a
+            href="https://faucet.circle.com/"
+            target="_blank"
+            className="self-center underline hover:text-[#515EF1]"
+          >
+            Testnet Faucet
+          </a>
         </div>
       </div>
     </div>
