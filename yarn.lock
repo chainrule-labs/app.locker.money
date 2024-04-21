@@ -3440,23 +3440,23 @@
     "@walletconnect/window-getters" "^1.0.1"
     tslib "1.14.1"
 
-"@zerodev/ecdsa-validator@^5.2.2":
-  version "5.2.2"
-  resolved "https://registry.yarnpkg.com/@zerodev/ecdsa-validator/-/ecdsa-validator-5.2.2.tgz#95e7dde6b07255eae50b1aa948a5b2f4e56f9793"
-  integrity sha512-K/vYejUbIESwaiF2eelaTXqKJeyU/KwSTbf1Z/WqlmCr7cf20O4YxNcogSqEInXpk5B2qSr/F7nZDA2Iz6wVsg==
+"@zerodev/ecdsa-validator@^5.2.3":
+  version "5.2.3"
+  resolved "https://registry.yarnpkg.com/@zerodev/ecdsa-validator/-/ecdsa-validator-5.2.3.tgz#19f55620c2254df53677662ce0715172675f28ed"
+  integrity sha512-zeJjYhOW5EWK6XnctPt3iVnrqmrHfb81p/fJKaY4yQnL2ZYPrH37ZgtY1z5COETPCDTm65+jPfc1Zn/dziyAXQ==
 
-"@zerodev/permissions@^5.2.1":
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/@zerodev/permissions/-/permissions-5.2.1.tgz#ac1ed2c307570ee6cd25b91ca8d7478a93e1f0bf"
-  integrity sha512-vxU9WHdk3saC/obMDBCwaMaxWKnrvpy3jarqimHUUbxAN6yEZO0tO4qef7vNyRUCT7FQm6lglv1zI3fWqJnzLQ==
+"@zerodev/permissions@^5.2.5":
+  version "5.2.5"
+  resolved "https://registry.yarnpkg.com/@zerodev/permissions/-/permissions-5.2.5.tgz#6d20cf2f0b7798329bd75d0a82e2ddabf2856a16"
+  integrity sha512-9bnKB+pzKETIXaVgjy/Gg4oALIn0tM/6EQbeMU4wiWr5i/XD0sMCCkoTwiBWLsgVRKxiSJcX6xmTPtOC5rhi6A==
   dependencies:
     "@simplewebauthn/browser" "^9.0.1"
     merkletreejs "^0.3.11"
 
-"@zerodev/sdk@^5.2.3":
-  version "5.2.3"
-  resolved "https://registry.yarnpkg.com/@zerodev/sdk/-/sdk-5.2.3.tgz#86febb6de91839f61e7eac30c11c55aa16cd3109"
-  integrity sha512-8A1tVOgR67GnT0CGnYZOkMtroUnIq9T5JgBZBqc6X8O9IsVhPChMGVvT3k2fCHo1eUXEjOZDxdKrtcX7YYQFcw==
+"@zerodev/sdk@^5.2.6":
+  version "5.2.6"
+  resolved "https://registry.yarnpkg.com/@zerodev/sdk/-/sdk-5.2.6.tgz#6f7badbdd1df71d9822b6af44f72143644629c40"
+  integrity sha512-JxDlA+rV6iuy66HtV6r2NVUNVF6XvENikBkYu1hMiJfvJ07VCSnkm4HSCpIgJlfZaD/iAyhe4NBuNTzTR+nh8Q==
   dependencies:
     semver "^7.6.0"
 
@@ -7962,10 +7962,10 @@ peberminta@^0.9.0:
   resolved "https://registry.yarnpkg.com/peberminta/-/peberminta-0.9.0.tgz#8ec9bc0eb84b7d368126e71ce9033501dca2a352"
   integrity sha512-XIxfHpEuSJbITd1H3EeQwpcZbTLHc+VVr8ANI9t5sit565tsI4/xK3KWTUFE2e6QiangUkh3B0jihzmGnNrRsQ==
 
-permissionless@^0.1.16:
-  version "0.1.16"
-  resolved "https://registry.yarnpkg.com/permissionless/-/permissionless-0.1.16.tgz#f78ae7bf9b406104c0af4a9a690ca0f3eb3f5b02"
-  integrity sha512-UGC3yJiGYcPHJ+LohSFJSIxQGIQ2DMREYXGwVtb0DdvTVuO+uqqEymD6LZnKdtLF2KGhBPODv37LqvRyh+ma3g==
+permissionless@^0.1.20:
+  version "0.1.20"
+  resolved "https://registry.yarnpkg.com/permissionless/-/permissionless-0.1.20.tgz#c17407db215faab22e74a102fbca521e00787504"
+  integrity sha512-e+jHLOdDvOiHEAIKGPo1HCviTOnwxSkqFmfCQve7Zl1VbeFTBYWZF78fsZlhO5Gje1irfqsh+SCfbpPjFA4fcA==
 
 pg-cloudflare@^1.1.1:
   version "1.1.1"
