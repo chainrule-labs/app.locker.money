@@ -14,6 +14,14 @@ Here's one example: when a user gets paid in USDC, 5% is swapped for ETH, 15% is
 
 We hope hackers at ETH Global can use Locker for accepting their winnings and their next web3 contract.
 
+### Further justification
+
+Locker is based on a similar concept we explored at ETH Denver - Auto HODL. In the last few weeks, we have been comparing saving mechanisms based on when you pay or get paid. We used historic ETH Global bounty payment data to help clarify things. By [looking at](https://github.com/chainrule-labs/utility-scripts/blob/main/market-research/get_hacker_blockchain_usage.py) the most recent 1,000 transactions from winners at 7 past ETH Globals, we discovered that the average hackathon winner only executes about 2-3 on-chain transactions per month. If Locker only helps you save when you transact, then we will be missing a lot of savings.
+
+This is why for this hackathon we explored the strategy of saving when you get paid instead.
+
+![Justification](./docs/sending.png)
+
 ## Getting started
 
 Prerequisites:
@@ -66,24 +74,3 @@ Use `yarn drizzle:studio` then visit [local.drizzle.studio](https://local.drizzl
 - [Zephyr template](https://github.com/zenzen-sol/zephyr)
 
 Here's a diagram detailing how all these pieces come together. ![Locker Overview](./docs/flow.png)
-
-### Deployment addresses
-
-Locker uses the ZeroDev SDK to spin up bespoke smart accounts (Lockers) with scoped permissions. As such, we do not have any on-chain factory contracts. Here are contract addresses of some of the Lockers we created while testing. Every time a user creates a Locker, they will generate a similar on-chain contract.
-
-| Chain | Address |
-| --- | --- |
-| Gnosis Mainnet | - |
-| Arbitrum Sepolia | [0x508A81D69eb02A07DD2027cE7e39f27A5D48Bb3C](https://sepolia.arbiscan.io/address/0x508a81d69eb02a07dd2027ce7e39f27a5d48bb3c#tokentxns) |
-
-The easiest way to test is by sending ETH or any ERC20 to one of these addresses. You can see how the tokens are automatically distributed and we keep the payment. The Locker is configured to save 12.5% and forward the rest to a hot wallet (0xf46A02660F466dA0BfD558A02a53FD891Fb33A44).
-
-### Usage
-
-Follow these steps to create a Locker and automate your savings.
-
-1. Register for an account
-2. Create a Locker
-3. Fund your locker
-4. Enable automatic savings
-5. Get paid and confirm distribution
