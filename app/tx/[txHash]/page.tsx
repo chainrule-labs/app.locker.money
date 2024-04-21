@@ -1,4 +1,5 @@
 "use client";
+import { SUPPORTED_CHAIN_NAMES } from "@/lib/constants";
 import { PATHS } from "@/lib/paths";
 import { getTx } from "app/actions/getTx";
 import { useRouter } from "next/navigation";
@@ -14,26 +15,17 @@ export default function Transaction({
   const [transaction, setTransaction] = useState<any>(null);
   const [chainName, setChainName] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
-  const supportedChains: { [key: number]: string } = {
-    11155111: "Sepolia",
-    84532: "Base Sepolia",
-    59141: "Linea Sepolia",
-    421614: "Arbitrum Sepolia",
-    100: "Gnosis Chain",
-  };
 
   const handleContinue = () => {
-    // If locker is NOT deployed, route to DashboardSetup
-    // If locker is deployed, route to DashboardLockerPortfolio
-
-    // For now, assume locker is not deployed...
+    // If locker is NOT deployed, home page will render DashboardLockerSetup
+    // If locker is deployed, home page will render DashboardLockerSetup DashboardLockerPortfolio
     router.push(PATHS.HOME);
   };
 
   const getTxDetails = async () => {
     try {
       const tx = await getTx(params.txHash);
-      const chain = supportedChains[Number(tx?.chainId)];
+      const chain = SUPPORTED_CHAIN_NAMES[Number(tx?.chainId)];
       console.log("chainId", tx?.chainId);
       setTransaction(tx);
       setChainName(chain);

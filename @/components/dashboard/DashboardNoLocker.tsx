@@ -46,7 +46,7 @@ export default function DashboardNoLocker() {
   if (isCreatingLocker && isConnected) {
     createLockerButton = (
       <button
-        className="w-full cursor-wait rounded-lg bg-[#3040EE] py-3 text-2xl text-white hover:bg-[#515EF1]"
+        className="w-full cursor-wait rounded-lg bg-[#3040EE] py-3 text-lg hover:bg-[#515EF1]"
         disabled
       >
         Setting up Locker...
@@ -55,7 +55,7 @@ export default function DashboardNoLocker() {
   } else {
     createLockerButton = (
       <button
-        className="w-full rounded-xl bg-[#3040EE] py-3 text-lg hover:bg-[#515EF1]"
+        className="w-full max-w-96 shrink items-center justify-center rounded-xl bg-[#3040EE] py-3 text-lg hover:bg-[#515EF1]"
         onClick={() => {
           if (openConnectModal) {
             openConnectModal();
@@ -74,7 +74,6 @@ export default function DashboardNoLocker() {
         <h1 className="w-full text-4xl">How Locker works</h1>
         <ol className="space-y-6 text-lg">
           <li className="flex">
-            <span className="whitespace-nowrap text-3xl">1️⃣</span>
             <span className="ml-4 flex-1">
               <strong className="bg-gradient-to-r from-[#2AAAD9] to-[#5C6BF1] bg-clip-text text-3xl text-transparent">
                 Create
@@ -83,7 +82,6 @@ export default function DashboardNoLocker() {
             </span>
           </li>
           <li className="flex">
-            <span className="whitespace-nowrap text-3xl">2️⃣</span>
             <span className="ml-4 flex-1">
               <strong className="bg-gradient-to-r from-[#2AAAD9] to-[#5C6BF1] bg-clip-text text-3xl text-transparent">
                 Customize
@@ -92,7 +90,6 @@ export default function DashboardNoLocker() {
             </span>
           </li>
           <li className="flex">
-            <span className="whitespace-nowrap text-3xl">3️⃣</span>
             <span className="ml-4 flex-1">
               <strong className="bg-gradient-to-r from-[#2AAAD9] to-[#5C6BF1] bg-clip-text text-3xl text-transparent">
                 Get paid

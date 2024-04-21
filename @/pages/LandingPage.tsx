@@ -36,7 +36,7 @@ export default function LandingPage({ userId }: ILandingPageProps) {
         </h2>
       </div>
       <button
-        className="w-full rounded-xl bg-[#3040EE] py-3 text-lg hover:bg-[#515EF1]"
+        className="w-full max-w-96 shrink items-center justify-center rounded-xl bg-[#3040EE] py-3 text-lg hover:bg-[#515EF1]"
         onClick={() => Clerk.openSignUp()}
       >
         Get Started

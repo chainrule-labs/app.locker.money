@@ -1,7 +1,7 @@
 "use client";
 
 import DashboardLockerEmpty from "@/components/dashboard/DashboardLockerEmpty";
-// import DashboardLockerPortfolio from "@/components/dashboard/DashboardLockerPortfolio";
+import DashboardLockerPortfolio from "@/components/dashboard/DashboardLockerPortfolio";
 import DashboardLockerSetup from "@/components/dashboard/DashboardLockerSetup";
 import DashboardNoLocker from "@/components/dashboard/DashboardNoLocker";
 import { PATHS } from "@/lib/paths";
@@ -10,9 +10,12 @@ import { getLocker } from "app/actions/getLocker";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
+// TODO: Since session keys are chain-specific, the DB needs account for this.
+// Once DB is updated, need to update dashboard logic.
+
 export default function DashboardPage() {
   const isFirstRender = useRef(true);
-  const [locker, setLocker] = useState<any>(null);
+  const [lockerInfo, setLockerInfo] = useState<any>(null);
   const [transactions, setTransactions] = useState<any>(null);
   const [initialTxLength, setInitialTxLength] = useState<number>(0);
   const [latestTxLength, setLatestTxLength] = useState<number>(0);
@@ -20,7 +23,7 @@ export default function DashboardPage() {
 
   const fetchLockerInfo = async () => {
     const { locker, txs } = await getLocker();
-    setLocker(locker);
+    setLockerInfo(locker);
     if (isFirstRender.current) {
       setInitialTxLength(txs.length);
       isFirstRender.current = false;
@@ -29,38 +32,42 @@ export default function DashboardPage() {
     setTransactions(txs);
   };
 
-  // Fetch locker info on mount and every 5 seconds
+  // Fetch lockerInfo on mount and every 5 seconds
   useEffect(() => {
     fetchLockerInfo();
     const interval = setInterval(fetchLockerInfo, 5000);
     return () => clearInterval(interval);
   }, []);
 
-  const lockerAddress = locker?.lockerAddress;
-
-  // Navigate to transaciton page
+  // Handle navigation to transaciton page
   useEffect(() => {
-    if (!!locker && initialTxLength === 0 && latestTxLength > 0) {
+    if (!!lockerInfo && initialTxLength === 0 && latestTxLength > 0) {
       router.push(`${PATHS.TX}/${transactions[0].transactions.hash}`);
     }
-  }, [lockerAddress, initialTxLength, latestTxLength, router, transactions]);
+  }, [lockerInfo, initialTxLength, latestTxLength, router, transactions]);
 
   const lockerState =
-    !lockerAddress && isFirstRender.current ? (
+    !lockerInfo && isFirstRender.current ? (
       <div className="mt-28 flex size-full items-center justify-center text-2xl">
         <span>Loading...</span>
       </div>
-    ) : !lockerAddress && !isFirstRender.current ? (
+    ) : !lockerInfo && !isFirstRender.current ? (
       <DashboardNoLocker />
-    ) : lockerAddress && !isFirstRender.current && latestTxLength === 0 ? (
-      <DashboardLockerEmpty lockerAddress={lockerAddress} />
-    ) : lockerAddress &&
+    ) : lockerInfo && !isFirstRender.current && latestTxLength === 0 ? (
+      <DashboardLockerEmpty lockerAddress={lockerInfo.lockerAddress} />
+    ) : lockerInfo &&
       !isFirstRender.current &&
       initialTxLength > 0 &&
-      latestTxLength > 0 ? (
-      <DashboardLockerSetup locker={locker} transaction={transactions[0]} />
-    ) : // <DashboardLockerPortfolio />
-    null;
+      latestTxLength > 0 &&
+      !lockerInfo.autosavePctRemainInLocker ? (
+      <DashboardLockerSetup locker={lockerInfo} transaction={transactions[0]} />
+    ) : lockerInfo &&
+      !isFirstRender.current &&
+      initialTxLength > 0 &&
+      latestTxLength > 0 &&
+      lockerInfo.autosavePctRemainInLocker ? (
+      <DashboardLockerPortfolio transactions={transactions} />
+    ) : null;
 
   return (
     <div className="xs:grid xs:place-content-center size-full p-4">

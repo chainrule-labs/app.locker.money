@@ -12,6 +12,7 @@ import {
   baseSepolia,
   gnosis,
   lineaSepolia,
+  sepolia,
 } from "viem/chains";
 import { WagmiProvider } from "wagmi";
 
@@ -20,7 +21,7 @@ const queryClient = new QueryClient();
 const config = getDefaultConfig({
   appName: "Locker Beta",
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_ID!,
-  chains: [baseSepolia, arbitrumSepolia, lineaSepolia, gnosis],
+  chains: [gnosis, sepolia, baseSepolia, arbitrumSepolia, lineaSepolia],
   ssr: true, // If your dApp uses server side rendering (SSR)
 });
 
