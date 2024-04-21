@@ -24,7 +24,8 @@ export default function DashboardNoLocker() {
             "A Locker already exists for this wallet address. Try switching to a different account in your wallet.",
           );
         } else {
-          setErrorMessage(`${error}`);
+          // setErrorMessage(`${error}`);
+          console.error(error);
         }
       }
     }
