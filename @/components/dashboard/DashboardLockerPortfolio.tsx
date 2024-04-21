@@ -58,7 +58,7 @@ const DashboardLockerPortfolio = ({
 }) => {
   const [lockerInfo, setLockerInfo] = useState<any>(null);
   const [txList, setTxList] = useState<any>(null);
-  const [lockerUsdValue, setLockerUsdValue] = useState<string>("0.50");
+  const [lockerUsdValue, setLockerUsdValue] = useState<string>("0.00");
   const [copied, setCopied] = useState<boolean>(false);
 
   const fetchPortfolio = async () => {
