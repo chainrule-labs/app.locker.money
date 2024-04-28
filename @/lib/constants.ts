@@ -18,8 +18,12 @@ export const SUPPORTED_CHAINS = [
   // base sepolia - 84532
   "0x14a34",
 
+  // linea mainnet - 59144
+  "0xe708",
+
+  // ZeroDev is on linea goerli currently but moralis is on sepolia, so we have to use mainnet
   // linea sepolia - 59141
-  "0xe705",
+  // "0xe705",
 
   // gnosis mainnet - 100
   "0x64",
@@ -30,7 +34,8 @@ export const SUPPORTED_CHAIN_NAMES: { [key: number]: string } = {
   "11155111": "Sepolia",
   "84532": "Base Sepolia",
   "421614": "Arbitrum Sepolia",
-  "59141": "Linea Sepolia",
+  // "59141": "Linea Sepolia",
+  "59144": "Linea",
 };
 
 export const SUPPORTED_CHAIN_EXPLORERS: { [key: number]: string } = {
@@ -38,7 +43,8 @@ export const SUPPORTED_CHAIN_EXPLORERS: { [key: number]: string } = {
   "11155111": "https://sepolia.etherscan.io",
   "84532": "https://sepolia.basescan.org",
   "421614": "https://sepolia.arbiscan.io",
-  "59141": "https://sepolia.lineascan.build",
+  // "59141": "https://sepolia.lineascan.build",
+  "59144": "https://lineascan.build",
 };
 
 export const ENTRYPOINT = ENTRYPOINT_ADDRESS_V07;

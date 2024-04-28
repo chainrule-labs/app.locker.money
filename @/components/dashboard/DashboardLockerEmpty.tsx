@@ -102,7 +102,17 @@ export default function DashboardLockerEmpty({
                       <div className="relative mr-3 size-7 shrink-0 items-center justify-center">
                         <Image src="/iconLinea.svg" alt="lineaSepolia" fill />
                       </div>
-                      <span className="mr-3">Linea Sepolia</span>
+                      <span className="text-zinc-400">
+                        Linea
+                        <br />(
+                        <a
+                          href="mailto:support@chainrule.io"
+                          className="underline hover:text-[#515EF1]"
+                        >
+                          contact us
+                        </a>
+                        )
+                      </span>
                     </div>
                   </td>
                 </tr>
