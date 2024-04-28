@@ -65,18 +65,18 @@ const DashboardLockerPortfolio = ({
   const [copied, setCopied] = useState<boolean>(false);
   const [eFrogsPct, setEFrogsPct] = useState<string>("0");
 
-  // const ethSaved = transactions.reduce((acc, txObj) => {
-  //   if (txObj.transactions.tokenSymbol === "ETH") {
-  //     const amount = parseFloat(txObj.transactions.amount);
-  //     const autosavePct = parseFloat(txObj.lockers.autosavePctRemainInLocker);
+  const ethSaved = transactions.reduce((acc, txObj) => {
+    if (txObj.transactions.tokenSymbol === "ETH") {
+      const amount = parseFloat(txObj.transactions.amount);
+      const autosavePct = parseFloat(txObj.lockers.autosavePctRemainInLocker);
 
-  //     const contribution = (amount * autosavePct) / 100;
-  //     return acc + contribution;
-  //   }
-  //   return acc;
-  // }, 0);
+      const contribution = (amount * autosavePct) / 100;
+      return acc + contribution;
+    }
+    return acc;
+  }, 0);
 
-  const ethSaved = 0.02;
+  // const ethSaved = 0.02;
 
   const fetchPortfolio = async () => {
     if (lockerInfo) {
