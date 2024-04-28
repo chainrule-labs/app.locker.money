@@ -37,7 +37,6 @@
     "class-variance-authority": "^0.7.0",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.30.7",
-    "element-js-sdk": "^3.0.0",
     "eslint-plugin-drizzle": "^0.2.3",
     "geist": "^1.2.2",
     "i18next": "^23.10.1",
