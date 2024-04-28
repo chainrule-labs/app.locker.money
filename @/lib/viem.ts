@@ -3,6 +3,7 @@ import {
   arbitrumSepolia,
   baseSepolia,
   gnosis,
+  linea,
   lineaSepolia,
   sepolia,
 } from "viem/chains";
@@ -24,6 +25,10 @@ export const chainId2Chain = (chainId: string) => {
     // linea sepolia - 59141
     case "59141":
       return lineaSepolia;
+
+    // linea - 59144
+    case "59144":
+      return linea;
 
     // gnosis mainnet - 100
     case "100":

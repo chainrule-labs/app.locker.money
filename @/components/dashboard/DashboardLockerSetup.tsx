@@ -152,7 +152,7 @@ export default function DashboardLockerSetup({
                 >
                   contact us to get access
                 </a>
-                ) , Sepolia, Base Sepolia, Arbitrum Sepolia, and Linea Sepolia.
+                ) , Sepolia, Base Sepolia, Arbitrum Sepolia, and Linea.
               </span>
             </div>
           </div>

@@ -1,8 +1,11 @@
 "use client";
 
+import { getCollectionFloor } from "@/lib/element";
 import { getPortfolio } from "@/lib/moralis";
 import { copyToClipboard, truncateAddress } from "@/lib/utils";
 import TxTable from "app/TxTable";
+import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { PiCheckSquareOffset, PiCopy } from "react-icons/pi";
 
@@ -60,6 +63,20 @@ const DashboardLockerPortfolio = ({
   const [txList, setTxList] = useState<any>(null);
   const [lockerUsdValue, setLockerUsdValue] = useState<string>("0.00");
   const [copied, setCopied] = useState<boolean>(false);
+  const [eFrogsPct, setEFrogsPct] = useState<string>("0");
+
+  // const ethSaved = transactions.reduce((acc, txObj) => {
+  //   if (txObj.transactions.tokenSymbol === "ETH") {
+  //     const amount = parseFloat(txObj.transactions.amount);
+  //     const autosavePct = parseFloat(txObj.lockers.autosavePctRemainInLocker);
+
+  //     const contribution = (amount * autosavePct) / 100;
+  //     return acc + contribution;
+  //   }
+  //   return acc;
+  // }, 0);
+
+  const ethSaved = 0.02;
 
   const fetchPortfolio = async () => {
     if (lockerInfo) {
@@ -68,8 +85,15 @@ const DashboardLockerPortfolio = ({
     }
   };
 
+  const fetchEfrogsFloor = async () => {
+    const floor = await getCollectionFloor();
+    const pct = (ethSaved / parseFloat(floor)).toFixed(2);
+    setEFrogsPct(pct.toString());
+  };
+
   useEffect(() => {
-    fetchPortfolio();
+    // fetchPortfolio();
+    fetchEfrogsFloor();
 
     // Set the txList state
     const newTxList: Tx[] = transactions.map((txObj: TransactionData) => ({
@@ -100,8 +124,20 @@ const DashboardLockerPortfolio = ({
     <div className="flex w-full flex-1 flex-col items-start justify-start p-4">
       <div className="mb-12 flex flex-col">
         <h1 className="mb-8 text-4xl">Locker Portfolio</h1>
-        <span className="mb-1 text-sm opacity-70">USD value</span>
-        <span className="mb-8 text-3xl">${lockerUsdValue}</span>
+        <span className="mb-1 text-sm opacity-70">ETH saved</span>
+        <span className="mb-1 text-3xl">{ethSaved} ETH</span>
+        <div className="flex flex-row">
+          <span className="mb-8 text-emerald-500">
+            You can buy {eFrogsPct} efrogs
+          </span>
+          <Link
+            href="https://element.market/collections/ethereum-frogs"
+            target="_blank"
+          >
+            <Image src="/efrogs.jpeg" width={64} height={64} alt="efrogs" />
+          </Link>
+        </div>
+
         <span className="mb-2 text-xl">My locker</span>
 
         <div className="mb-4 flex w-full items-center">

@@ -19,8 +19,9 @@ export const getPortfolio = async (walletAddress: string) => {
       address: walletAddress,
     });
 
-    // return response.
-    return { netWorthUsd: response.result.totalNetworthUsd };
+    const { total_networth_usd: netWorthUsd } = response.toJSON();
+    console.log(netWorthUsd);
+    return { netWorthUsd };
   } catch (e) {
     console.error(e);
   }
