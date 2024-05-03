@@ -4,6 +4,7 @@ import { getCollectionFloor } from "@/lib/element";
 import { getPortfolio } from "@/lib/moralis";
 import { copyToClipboard, truncateAddress } from "@/lib/utils";
 import TxTable from "app/TxTable";
+import createOfframp from "app/actions/createOfframp";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -120,6 +121,10 @@ const DashboardLockerPortfolio = ({
     setLockerInfo(newLockerInfo);
   }, [transactions]);
 
+  const setupOfframp = async () => {
+    const data = await createOfframp();
+  };
+
   return (
     <div className="flex w-full flex-1 flex-col items-start justify-start p-4">
       <div className="mb-12 flex flex-col">
@@ -167,6 +172,15 @@ const DashboardLockerPortfolio = ({
             Withdraw percentage:{" "}
             {lockerInfo && 100 - parseFloat(lockerInfo.savePercentage)}%
           </span>
+        </div>
+
+        <div className="my-4">
+          <button
+            className="w-full rounded-md bg-cyan-600 p-3"
+            onClick={setupOfframp}
+          >
+            Add offramp
+          </button>
         </div>
       </div>
 

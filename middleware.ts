@@ -8,6 +8,7 @@ export default authMiddleware({
     "/",
     "/api/webhooks/clerk-user-updated",
     "/api/webhooks/moralis-tx-stream",
+    "/api/webhooks/beam",
   ],
 });
 
