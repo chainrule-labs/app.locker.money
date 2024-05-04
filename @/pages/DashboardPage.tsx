@@ -5,11 +5,12 @@ import DashboardLockerPortfolio from "@/components/dashboard/DashboardLockerPort
 import DashboardLockerSetup from "@/components/dashboard/DashboardLockerSetup";
 import DashboardNoLocker from "@/components/dashboard/DashboardNoLocker";
 import { PATHS } from "@/lib/paths";
+import { AarcProvider } from "@aarc-xyz/deposit-widget";
 import "@rainbow-me/rainbowkit/styles.css";
 import { getLocker } from "app/actions/getLocker";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-
+import { useAccount } from "wagmi";
 // TODO: Since session keys are chain-specific, the DB needs account for this.
 // Once DB is updated, need to update dashboard logic.
 
@@ -20,7 +21,8 @@ export default function DashboardPage() {
   const [initialTxLength, setInitialTxLength] = useState<number>(0);
   const [latestTxLength, setLatestTxLength] = useState<number>(0);
   const router = useRouter();
-
+  const account = useAccount();
+  console.log("account", account);
   const fetchLockerInfo = async () => {
     const { locker, txs } = await getLocker();
     setLockerInfo(locker);
@@ -69,10 +71,25 @@ export default function DashboardPage() {
       <DashboardLockerPortfolio transactions={transactions} />
     ) : null;
 
+  const aarcConfig = {
+    aarcSDK: process.env.NEXT_PUBLIC_AARC_API_KEY!,
+    destination: {
+      walletAddress: lockerInfo?.lockerAddress,
+    },
+    appearance: {
+      logoUrl: "demo.aarc.xyz/AarcLogo.png",
+      themeColor: "#1677FF",
+    },
+  };
+
+  console.log("aarcConfig", aarcConfig);
+
   return (
     <div className="xs:grid xs:place-content-center size-full p-4">
       <div className="flex flex-col justify-center">
-        <div className="flex flex-col space-y-12">{lockerState}</div>
+        <div className="flex flex-col space-y-12">
+          <AarcProvider config={aarcConfig}>{lockerState}</AarcProvider>
+        </div>
       </div>
     </div>
   );
